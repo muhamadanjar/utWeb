@@ -1,0 +1,46 @@
+version: '2'
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: web.dockerfile
+    volumes:
+      - ./:/var/www
+    ports:
+      - "83:80"
+    links:
+      - app
+
+  app:
+    build:
+      context: ./
+      dockerfile: app.dockerfile
+    volumes:
+      - ./:/var/www
+      #- ./php/php.ini-development:/usr/local/etc/php/php.ini
+    links:
+      - database
+    environment:
+      - DB_PORT=5432
+      - DB_CONNECTION=pgsql
+      - DB_HOST=database
+      - DB_DATABASE=simjakotabogor
+      - DB_USERNAME=postgres
+      # - "DB_HOST=database"
+  
+  database:
+    image: cac1057bc4c9
+    environment:
+        POSTGRES_PASSWORD: 'xcWI3128'
+        POSTGRES_DB: 'simjakotabogor'
+        POSTGRES_USER: 'postgres'
+        POSTGRES_HOST: 'localhost'
+    ports:
+        - "54321:5432"
+    volumes:
+        - ./postgres-data:/var/lib/postgresql/data
+
+  cache:
+    image: redis:3.0
+    ports: 
+      - "63791:6379"

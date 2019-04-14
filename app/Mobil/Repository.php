@@ -1,0 +1,28 @@
+<?php
+namespace App\Mobil;
+
+use App\Mobil\Contracts\RepositoryInterface;
+use MulutBusuk\Workspaces\Repositories\Eloquent\EloquentRepository as baseRepository;
+use App\Mobil\Models\Mobil;
+use DB;
+
+class Repository extends baseRepository implements RepositoryInterface
+{
+    /*
+     * Created on Fri Dec 14 2018
+     * Author Muhamad Anjar
+     * Copyright (c) 2018 Cupplisser
+     */
+
+    protected $parent;
+    protected $vname;
+    public function __construct()
+    {
+        parent::__construct(new Mobil());
+        $this->parent = 'jalan/';
+        $this->vname = 'lists';
+    }
+
+    
+
+}

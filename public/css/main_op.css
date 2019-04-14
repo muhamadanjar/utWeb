@@ -1,0 +1,143 @@
+body{
+   font-family: Muli;
+}
+.appName{
+  display: none;
+  padding-left: 10px;
+}
+.appHeader {
+    /*background: url("../images/linen.jpg") repeat-x scroll left top transparent;*/
+    background:#336699;
+    height: 70px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.appHeader .headerLogo {
+    float: left;
+    left: 30px;
+    position: relative;
+    top: 8px;
+}
+.appHeader .headerTitle {
+    color: #ffffff;
+    float: left;
+    font-size: 16pt;
+    font-weight: bold;
+    left: 60px;
+    top: 25px; /*15px*/
+    position: relative;
+}
+.appHeader .subHeaderTitle {
+    color: #CFCFCF;
+    font-size: small;
+    padding-left: 20px;
+}
+.appHeader .search {
+    float: left;
+    left: 80px;
+    position: relative;
+    top: 18px;
+}
+.appHeader .headerLinks {
+    float: right;
+    color: #ffffff;
+    position: relative;
+    top: 27px;
+    right: 10px;
+    text-align: right;
+}
+.appHeader .headerLinks a {
+    color: #ffffff;
+}
+.appHeader .headerLinks.login {
+    float: right;
+    color: #ffffff;
+    position: relative;
+    top: 27px;
+    right: 120px;
+    /*text-align: right;*/
+}
+.appHeader .headerLinks.login a {
+    color: #ffffff;
+}
+
+@media screen and (max-width: 767px) {
+    /* hide the sidebars by default on extra-small devices (phones) */
+    #sidebarLeft, #sidebarBottom, #sidebarTop {
+        display: none;
+    }
+    /* no search widget in app header */
+    .appHeader .search {
+        display: none;
+    }
+    /* no logo in app header */
+    .appHeader .headerLogo {
+        display: none;
+    }
+    /* move the title when no logo */
+    .appHeader .headerTitle {
+        left: 10px;
+        font-size: 13pt;
+    }
+}
+/* Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) {
+  .appName{
+    display: inline-block;
+  }
+}
+
+.main-map{
+    height:100%;
+}
+.basemapTools{
+    top: 30px;
+    right: .5em;
+}
+.ol-touch .basemapTools {
+    top: 10px;
+}
+#map{
+    background: url('/images/noisy_grid.png');
+    padding:0;
+}
+/* Layer Control */
+button.layer-control {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 8px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 14px;
+    transition: 0.4s;
+}
+button.layer-control.active, button.layer-control:hover {
+    background-color: #ccc;
+}
+
+button.layer-control:after {
+    content: '\002B';
+    color: #777;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+button.layer-control.active:after {
+    content: "\2212";
+}
+
+div.layer-control-panel {
+    padding: 0 10px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    overflow-y: scroll;
+    transition: max-height 0.2s ease-out;
+}
+
+/*@import url('popup.csss');*/
