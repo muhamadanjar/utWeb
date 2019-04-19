@@ -89,16 +89,21 @@ class ApiCtrl extends Controller
     }
     public function login()
     {
-        if (Auth::attempt(['username' => request('username'), 'password' => request('password')])) {
-            $user = Auth::user();
-            $success['token'] = $user->createToken('MyApp')->accessToken;
-            $user->api_token = $success['token'];
-            $user->latestlogin = Carbon::now();
-            $user->save();
-            return response()->json(['success' => true, 'data' => $success], $this->successStatus);
-        } else {
-            return response()->json(['error' => true, 'message' => 'Unauthorised'], 401);
+        try {
+            if (Auth::attempt(['username' => request('username'), 'password' => request('password')])) {
+                $user = Auth::user();
+                $success['token'] = $user->createToken('MyApp')->accessToken;
+                $user->api_token = $success['token'];
+                $user->latestlogin = Carbon::now();
+                $user->save();
+                return response()->json(['success' => true, 'data' => $success], $this->successStatus);
+            } else {
+                return response()->json(['error' => true, 'message' => 'Unauthorised'], 401);
+            }
+        } catch (\Exception $th) {
+            echo $th->getMessage();
         }
+        
     }
 
     public function register(Request $request)
