@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 24/04/2019 14:38:19
+ Date: 25/04/2019 00:43:18
 */
 
 SET NAMES utf8mb4;
@@ -786,6 +786,7 @@ CREATE TABLE `oauth_access_tokens` (
 BEGIN;
 INSERT INTO `oauth_access_tokens` VALUES ('0319390460b583f32319acdca2f47bb4014d487610c0ed2f34749fc09f69e403b9fabff0c5ae57dd', 1, 3, 'MyApp', '[]', '0', '2019-04-17 15:57:11', '2019-04-17 15:57:11', '2020-04-17 15:57:11');
 INSERT INTO `oauth_access_tokens` VALUES ('06a58996eafc1c255c08e022b23a51d702ce666b2905496c4a35b5d96820e908ec720b66a15544aa', 1, 3, '1', '[]', '0', '2019-04-19 10:05:46', '2019-04-19 10:05:46', '2020-04-19 10:05:46');
+INSERT INTO `oauth_access_tokens` VALUES ('0c172f7f10c2eff2aab29bf3c5fcdb0ddcb4f681bd7bf56bf490376d543fd149a05073d54e4a3931', 49, 3, 'MyApp', '[]', '0', '2019-04-24 15:37:47', '2019-04-24 15:37:47', '2020-04-24 15:37:47');
 INSERT INTO `oauth_access_tokens` VALUES ('1006097ee1e494ac23c79ed178160cf950c4f7e718d28fae6577b4e7149923d2c0ce2d3eb9646d35', 1, 1, '1', '[]', 'f', '2018-12-17 15:51:56', '2018-12-17 15:51:56', '2019-12-17 15:51:56');
 INSERT INTO `oauth_access_tokens` VALUES ('10c36e32bf4eeac3228eb9e8a5763b7e1a611086be400f3e1f21b32b1ba283b2391bd8044d427f4f', 1, 3, 'MyApp', '[]', '0', '2019-04-17 15:57:52', '2019-04-17 15:57:52', '2020-04-17 15:57:52');
 INSERT INTO `oauth_access_tokens` VALUES ('11508371b7145823b7c7a0c5d99d89020d149e98276c1a1a28f857559fd5fa8db087bbece84a80d7', 1, 1, '1', '[]', 'f', '2018-12-26 02:30:42', '2018-12-26 02:30:42', '2019-12-26 02:30:42');
@@ -1158,6 +1159,22 @@ INSERT INTO `promo` VALUES (33, '', NULL, '', '', '1970-01-01 00:00:00', '1970-0
 COMMIT;
 
 -- ----------------------------
+-- Table structure for rent_package
+-- ----------------------------
+DROP TABLE IF EXISTS `rent_package`;
+CREATE TABLE `rent_package` (
+  `rp_id` int(11) NOT NULL AUTO_INCREMENT,
+  `rp_name` varchar(200) DEFAULT NULL,
+  `rp_total_price` int(11) DEFAULT NULL,
+  `rp_miles_km` int(11) DEFAULT NULL,
+  `rp_hour` int(11) DEFAULT NULL,
+  `rp_add_mile_km` int(11) DEFAULT NULL,
+  `rp_add_min` int(11) DEFAULT NULL,
+  `rp_car_type` int(11) DEFAULT NULL,
+  PRIMARY KEY (`rp_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for reviews
 -- ----------------------------
 DROP TABLE IF EXISTS `reviews`;
@@ -1167,6 +1184,7 @@ CREATE TABLE `reviews` (
   `driver_id` int(11) DEFAULT NULL,
   `rate` int(5) DEFAULT NULL,
   `description` text,
+  `date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -1272,15 +1290,18 @@ BEGIN;
 INSERT INTO `sessions` VALUES ('1XHEh7qz6pYOgQgpgP4RFcTeOcQ2y2R8gBlMml2y', 1, '192.168.43.110', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/67.0', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoicW5Fc0d4QncwV014a2ZTZlBSaTgzdWUzVWdrQW9aV1dBNWNpYzFadCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDU6Imh0dHA6Ly8xOTIuMTY4LjQzLjExMC9iYWNrZW5kL2Rhc2hib2FyZC9pbmRleCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czoxMzoicGFzc3dvcmRfaGFzaCI7czo2MDoiJDJ5JDEwJC9scXJxZXkySjJIR2s4S2w4OENSNy5YTjQ0UWVaMC91b2d4em5FTnZvdzVEUzVKTC5MN3ZHIjtzOjg6Imxpbmtfd2ViIjtzOjk6ImRhc2hib2FyZCI7czoyMjoiUEhQREVCVUdCQVJfU1RBQ0tfREFUQSI7YTowOnt9fQ==', 1555754932);
 INSERT INTO `sessions` VALUES ('2Qr9Cp04F5w2xiseUZmBa2TmVFHaNxDBAjIgmbGQ', NULL, '127.0.0.1', 'PostmanRuntime/7.6.0', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiTjVQd0VtVFR4dWd4RmtmdUdqVWlPeUhRdHdmTjdVUUgyYXF4YmxvOSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1555853635);
 INSERT INTO `sessions` VALUES ('3kfZ2FBvONnT3RWtxMpEEcJKgg5D5xkdvSH87aP3', NULL, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/67.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoidW10N0NJcENFaTJoU2JiZzVjSk1nM2N6QW1lUmRrTE5IalhOVFF0QiI7czoyMjoiUEhQREVCVUdCQVJfU1RBQ0tfREFUQSI7YToxOntzOjMyOiI1MzZkNTU2YjdmMmQ3NzQ1MjdhOTMxY2RiNDJkYTZmNiI7Tjt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MTY6Imh0dHA6Ly9sb2NhbGhvc3QiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1555935143);
+INSERT INTO `sessions` VALUES ('4ygsOhfrzIkJaGAOU1sWCkgjJ3qb2fmNZqUtE6yH', NULL, '::1', 'PostmanRuntime/7.6.0', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoieFl6UDFJc1NsT1RieWRCeGo5Y1gzVmNmTFNvV2dYVnR4NFhOQmVkOCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1556120124);
 INSERT INTO `sessions` VALUES ('5NA55KNZ3IyD8xtf99CEglfhVllI9toKxMFLtXDP', NULL, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/67.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiUHJXT2s5emxlSHpFbXBJM0JaT2hMdWgyM29rRHhOakMyT3NOTzQxZiI7czoyMjoiUEhQREVCVUdCQVJfU1RBQ0tfREFUQSI7YTowOnt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1555935143);
 INSERT INTO `sessions` VALUES ('5xTDomNaWWC1Hl4GQ5L6VS5c4i5KkS4mcMDoWOkw', NULL, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/67.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTGpkM2ZweUFiN2Z1dDJGajZreW1KdzZMUjFvcGxndmI3VTFEN1JqbSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NTc6Imh0dHA6Ly9sb2NhbGhvc3QvX2RlYnVnYmFyL2Fzc2V0cy9qYXZhc2NyaXB0P3Y9MTU1NTY1NzU5NSI7fX0=', 1555858503);
 INSERT INTO `sessions` VALUES ('805F7ckhWzzDpZUHA2mQUoZzuI32jOnX83tfUkYp', NULL, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/67.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoielF3eDBnYkpvM1FDTUpkZlZKb1Q0V0hDMkRvN2t1YUZaSnFjcFNtbiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NTc6Imh0dHA6Ly9sb2NhbGhvc3QvX2RlYnVnYmFyL2Fzc2V0cy9qYXZhc2NyaXB0P3Y9MTU1NTY1NzU5NSI7fX0=', 1555935143);
 INSERT INTO `sessions` VALUES ('bXYUqcMQnFZKcsYypGh5UvDzkA5niIymrP8QnJHq', NULL, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/67.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiS0F4aFhCbUNWN1N5dmY2UVk0eXY4bWk5MXJoTTZ6NDVrTlFvTE5kQiI7czoyMjoiUEhQREVCVUdCQVJfU1RBQ0tfREFUQSI7YTowOnt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly9sb2NhbGhvc3QvZ2VyYmFuZy9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1555935143);
 INSERT INTO `sessions` VALUES ('felVTqV565ncjvN8GAc6Aisd1gu81lkq4eNslXax', NULL, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/67.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoicENXaUNHOUNjdDk4eFBhN1ZNN3dtalJrSjU1MW5pZHpNaVdhUEtyYyI7czoyMjoiUEhQREVCVUdCQVJfU1RBQ0tfREFUQSI7YTowOnt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1555935144);
+INSERT INTO `sessions` VALUES ('gbc7QktrhKS35Bzgz5cZUzJuZPUqOaJrjuBLwHRU', NULL, '127.0.0.1', 'PostmanRuntime/7.6.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoia0YzMzBSWUg5ZlRhMW41U0JkRXNrRjBFYll0TjlRbUlZS01kbnlLMiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czoyMjoiUEhQREVCVUdCQVJfU1RBQ0tfREFUQSI7YTowOnt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzg6Imh0dHA6Ly9yZW50YWwuZXhhbXBsZS5jb20vYXBpL3R5cGVfY2FyIjt9fQ==', 1556124953);
 INSERT INTO `sessions` VALUES ('inuloKjULKkITv1pmq7T0E79FdGTQYpWuHR2WyOR', 1, '192.168.43.110', 'okhttp/3.12.1', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiRVhqeUxDSXgxaXVzZ0dKRDc5VVBHSnI5S0MyQVE1ZGo0TlU3SU85QyI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1555823030);
 INSERT INTO `sessions` VALUES ('iz0DEzgZBSx21gHKCnkqOqqO2eNiAuM4togBLBbC', NULL, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/67.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiWG1WVzVEU3FyeHBUbkg3cGJsUGtVakZmdU5PSXhEa1BuMkhUb2hUdiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NTc6Imh0dHA6Ly9sb2NhbGhvc3QvX2RlYnVnYmFyL2Fzc2V0cy9qYXZhc2NyaXB0P3Y9MTU1NTY1NzU5NSI7fX0=', 1555821623);
 INSERT INTO `sessions` VALUES ('KgFaouOa8tNYEzs9fNsfrRHg5CFoK6i7XOplZgxH', NULL, '192.168.43.110', 'okhttp/3.12.1', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoibjQzM3BXaDNYSHpsdkdsazBmbVhRVklmdGQ4VXF0S0xxSHRrNXFJMyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1555853019);
 INSERT INTO `sessions` VALUES ('MgsI5IZBHdWuln4G9Rfqm1HEWxXHTT0tBkYbRVrD', NULL, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/67.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTHFJOWg5YVpxekZnMmRkM2ZybVlLNzdOSGxIQ0xNQm5JTU1YcFNTRyI7czoyMjoiUEhQREVCVUdCQVJfU1RBQ0tfREFUQSI7YTowOnt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1555858502);
+INSERT INTO `sessions` VALUES ('mLLybxlF1KdM78XDd9btzYN0LDNyAbeP99ayDz6n', NULL, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiRXZMVnVqWTkyZFQ3R2pVb05Jb3YxSzZxaGl2Vm9nQWlWYzl3eUF0NSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly9sb2NhbGhvc3QvZ2VyYmFuZy9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6MjI6IlBIUERFQlVHQkFSX1NUQUNLX0RBVEEiO2E6MDp7fX0=', 1556111476);
 INSERT INTO `sessions` VALUES ('Oele9SOqmUIFWzkoZDXaFSvWqphzL92sXf8MvStR', NULL, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/67.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiRWFRWnZZbnBvSDgyUFpFZDJ2ODhZR1k0TnVwV1pJbzVVVUk1RUp5YiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NTg6Imh0dHA6Ly9sb2NhbGhvc3QvX2RlYnVnYmFyL2Fzc2V0cy9zdHlsZXNoZWV0cz92PTE1NTU2NTc1OTUiO319', 1555821623);
 INSERT INTO `sessions` VALUES ('OuRuI8LR7dX5aF4szY0VZpCYFB8RUo6Z3umqzJBr', NULL, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/67.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiUWlYajQ5anBBZ1VVSkQxVmpXa21WM1dqVFRvUnpTaDVjTXFJNGpzVCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NTg6Imh0dHA6Ly9sb2NhbGhvc3QvX2RlYnVnYmFyL2Fzc2V0cy9zdHlsZXNoZWV0cz92PTE1NTU2NTc1OTUiO319', 1555935143);
 INSERT INTO `sessions` VALUES ('QzKJxD3AyfUCuRQPeZjlE2J7544OyyFdLy9VHVvT', NULL, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:67.0) Gecko/20100101 Firefox/67.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoidE8wTDdkT0JUc2lCMVdXV3llaUlqd2dpYUIxZWJzdXZ1RG54TVVLOCI7czoyMjoiUEhQREVCVUdCQVJfU1RBQ0tfREFUQSI7YTowOnt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1555821623);
@@ -1658,8 +1679,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `trip`;
 CREATE TABLE `trip` (
-  `trip_id` int(11) NOT NULL,
-  `trip_code` varchar(15) DEFAULT NULL,
+  `trip_id` int(11) NOT NULL AUTO_INCREMENT,
+  `trip_code` varchar(20) DEFAULT NULL,
   `trip_job` varchar(10) DEFAULT NULL,
   `trip_bookby` int(11) DEFAULT NULL,
   `trip_address_origin` varchar(255) DEFAULT NULL,
@@ -1667,8 +1688,21 @@ CREATE TABLE `trip` (
   `trip_date` datetime DEFAULT NULL,
   `trip_driver` int(11) DEFAULT NULL,
   `trip_type` int(11) DEFAULT NULL,
+  `trip_status` int(11) DEFAULT NULL,
+  `trip_total` double DEFAULT NULL,
   PRIMARY KEY (`trip_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of trip
+-- ----------------------------
+BEGIN;
+INSERT INTO `trip` VALUES (8, '5980', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `trip` VALUES (9, '6', NULL, NULL, NULL, NULL, '2019-04-24 00:00:00', NULL, 1, 0, NULL);
+INSERT INTO `trip` VALUES (10, 'MTA=', NULL, NULL, NULL, NULL, '2019-04-24 00:00:00', NULL, 1, 0, NULL);
+INSERT INTO `trip` VALUES (11, 'NDI3MzM1OTk2', NULL, NULL, NULL, NULL, '2019-04-24 00:00:00', NULL, 1, 0, NULL);
+INSERT INTO `trip` VALUES (16, 'NDUxMjU3ODgz', NULL, NULL, NULL, NULL, '2019-04-24 00:00:00', NULL, 1, 0, NULL);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for trip_detail
@@ -1685,6 +1719,13 @@ CREATE TABLE `trip_detail` (
   `data` text,
   PRIMARY KEY (`trip_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of trip_detail
+-- ----------------------------
+BEGIN;
+INSERT INTO `trip_detail` VALUES (16, NULL, NULL, NULL, NULL, 5145, 39720, NULL);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for type
@@ -1708,14 +1749,21 @@ CREATE TABLE `type` (
 -- Records of type
 -- ----------------------------
 BEGIN;
-INSERT INTO `type` VALUES (1, 'Coupe', NULL, 0, NULL, NULL, NULL, NULL, '2018-03-29 05:26:21', '2018-03-29 05:26:21');
-INSERT INTO `type` VALUES (2, 'Hatcback', NULL, 0, NULL, NULL, NULL, NULL, '2018-03-29 05:26:21', '2018-03-29 05:26:21');
-INSERT INTO `type` VALUES (3, 'Minivan', NULL, 0, NULL, NULL, NULL, NULL, '2018-03-29 05:26:21', '2018-03-29 05:26:21');
-INSERT INTO `type` VALUES (4, 'Sedan', NULL, 0, NULL, NULL, NULL, NULL, '2018-03-29 05:26:21', '2018-03-29 05:26:21');
-INSERT INTO `type` VALUES (5, 'Sports Car', NULL, 0, NULL, NULL, NULL, NULL, '2018-03-29 05:26:21', '2018-03-29 05:26:21');
-INSERT INTO `type` VALUES (6, 'Sport Vehicle', NULL, 0, NULL, NULL, NULL, NULL, '2018-03-29 05:26:21', '2018-03-29 05:26:21');
-INSERT INTO `type` VALUES (7, 'Station Wagon', NULL, 0, NULL, NULL, NULL, NULL, '2018-03-29 05:26:21', '2018-03-29 05:26:21');
+INSERT INTO `type` VALUES (1, 'Basic', NULL, 1, 1, 1, 3, 10, '2018-03-29 05:26:21', '2018-03-29 05:26:21');
+INSERT INTO `type` VALUES (2, 'Luxurious', NULL, 1, 4, 4, 10, 20, '2018-03-29 05:26:21', '2018-03-29 05:26:21');
+INSERT INTO `type` VALUES (3, 'Pool', NULL, 1, 1, 1, 5, 6, '2018-03-29 05:26:21', '2018-03-29 05:26:21');
 COMMIT;
+
+-- ----------------------------
+-- Table structure for user_dokumen
+-- ----------------------------
+DROP TABLE IF EXISTS `user_dokumen`;
+CREATE TABLE `user_dokumen` (
+  `user_id` int(11) DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
+  `dokumen` varchar(255) DEFAULT NULL,
+  `date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for user_location
@@ -1791,7 +1839,7 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of users
@@ -1814,6 +1862,7 @@ INSERT INTO `users` VALUES (45, 'ihwantesting', 'ihwanusername', 'ihwanemail@gma
 INSERT INTO `users` VALUES (46, 'Rudy', 'rudy', 'rudy@gmail.com', '$2y$10$bKROtVs6DqbH8Inf2C0BYuxV12B5bOqk94KMB3pttngHY.LxDqNpi', '1', 1, NULL, NULL, NULL, NULL, NULL, '2018-11-04 04:56:02', '2018-11-04 09:53:12');
 INSERT INTO `users` VALUES (47, 'ihwan sofian', 'ihwan123', 'ihwan123@gmail.com', '$2y$10$yyd9/qbyhlh94Mry0ZXaG.k3O3lil9tTG2AMdunFfq2J7w6ZF0mAa', '1', 1, NULL, '1541321413_fotoktp.jpg', NULL, NULL, NULL, '2018-11-04 08:38:24', '2018-11-04 08:50:20');
 INSERT INTO `users` VALUES (48, 'Muhamad Anjar', 'mulutbusuk', 'anjar@password.com', '$2y$10$dpHqLul3GXdGk0KgP9cFz.LIZIWyN5KFr/NwDYCzGxlY83d7kCdnW', NULL, 0, NULL, NULL, NULL, NULL, NULL, '2019-04-17 16:06:17', '2019-04-17 16:06:17');
+INSERT INTO `users` VALUES (49, 'Testing user', 'testing', 'testing@example.com', '$2y$10$2v/ipbdN/WAPCP7or3mDTuKAn0FQN6GZ9.SV9AM32oqspAsyu8Wm.', NULL, 0, NULL, NULL, NULL, NULL, NULL, '2019-04-24 15:37:47', '2019-04-24 15:37:47');
 COMMIT;
 
 -- ----------------------------

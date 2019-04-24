@@ -13,6 +13,7 @@ use Config;
 use MulutBusuk\Workspaces\Repositories\Eloquent\AuditTrail\Activity\RepositoryInterface as StatistikRepository;
 use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\RepositoryInterface as ModeratorRepository;
 use App\User;
+use App\Trip;
 class ApiCtrl extends Controller
 {
     use ServerInformasi;
@@ -106,8 +107,7 @@ class ApiCtrl extends Controller
         
     }
 
-    public function register(Request $request)
-    {
+    public function register(Request $request){
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'username' => 'required',
@@ -204,6 +204,51 @@ class ApiCtrl extends Controller
         $user = Auth::guard('api');
         $this->moderatorrepo($user->id,$request);
         return response()->json($user,200);
+    }
+
+    public function booking_taxi(Request $request){
+        DB::beginTransaction();
+        try {
+            $trip = new Trip();
+            $trip->trip_code = base64_encode(rand());
+            $trip->trip_job = $request->job;
+            $trip->trip_bookby = $request->trip_bookby;
+            $trip->trip_address_origin = $request->trip_address_origin;
+            $trip->trip_address_destination = $request->trip_address_destination;
+            $trip->trip_date = date('Y-m-d');
+            $trip->trip_type = 1;
+            $trip->trip_status = 0;
+            $trip->trip_total = $request->trip_total;
+            $trip->save();
+                $td = [
+                    'trip_id'=>$trip->getKey(),
+                    'trip_or_latitude'=>$request->trip_or_latitude,
+                    'trip_or_longitude'=>$request->trip_or_longitude,
+                    'trip_des_latitude'=>$request->trip_des_latitude,
+                    'trip_des_longitude'=>$request->trip_des_longitude,
+                    'duration' => $request->duration,
+                    'distance' => $request->distance
+                ];
+                DB::table('trip_detail')->insert(
+                    $td
+                );
+            
+            DB::commit();    
+            return response()->json(['status'=>true,'data'=>$trip],200);
+        } catch (ValidationException $e) {
+            DB::rollback();
+        } catch(\Exception $e){
+            DB::rollback();
+            throw $e;
+        }
+        
+    }
+
+    public function get_type_car()
+    {
+        $type = new \App\Mobil\Models\Type();
+        $data = $type->active()->get();
+        return response()->json(['status'=>true,'data'=>$data]);
     }
 
 }
