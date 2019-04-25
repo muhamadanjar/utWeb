@@ -1,4 +1,4 @@
-importScripts('../ajax.js');
+importScripts('./ajax.js');
 let timeReqLastCoord;
 let timeReqLastCoordNode;
 let timeReqLastSensorNode;

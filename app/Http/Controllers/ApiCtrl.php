@@ -251,4 +251,10 @@ class ApiCtrl extends Controller
         return response()->json(['status'=>true,'data'=>$data]);
     }
 
+    public function userGetLocation()
+    {
+        $ul = DB::table('user_location')->get();
+        return response()->json(['status'=>true,'data'=>$ul],200);
+    }
+
 }

@@ -28,6 +28,6 @@ Route::post('register', 'ApiCtrl@register');
 Route::post('user/details', 'ApiCtrl@details');
 Route::post('user/update_position', 'ApiCtrl@userUpdateLocation');
 Route::post('booking','ApiCtrl@booking_taxi');
-
+Route::get('user/location','ApiCtrl@userGetLocation');
 Route::get('type_car','ApiCtrl@get_type_car');
 

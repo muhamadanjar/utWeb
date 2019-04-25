@@ -115,19 +115,37 @@
 
 
 	<script>
+		let worker = null;
+		let vectorSource =null;
+		let vectorLayer = null;	
 		$(function () {
+			worker = new Worker('webworker.js');
+			worker.addEventListener('error', function(a) {
+							console.error('Error: Line ' + a.lineno + ' in ' + a.filename + ': ' + a.message);
+			}, false);
+
+			worker.addEventListener('message', function(a) {
+				if (a.data.cmd === 'resLastPosition') { resLastPosition(a.data.val); }
+			}
+			vectorSource = new ol.source.Vector();
+      vectorLayer = new ol.layer.Vector({
+            source: vectorSource,
+            id:'layer_vector'
+      });
 			var map = new ol.Map({
         target: 'map',
         layers: [
           new ol.layer.Tile({
             source: new ol.source.OSM()
-          })
+					}),
+					vectorLayer
         ],
         view: new ol.View({
           center: ol.proj.fromLonLat([98.669689, 3.590003]),
           zoom: 12
         })
-      });
+			});
+			worker.postMessage({ cmd: 'reqLastPosition', val: 'api/user/location'});
 			$.ajax({
 				type: 'GET',
 				url: `${Laravel.serverUrl}/api/driver/jumlah`,
@@ -170,6 +188,19 @@
 					item.hide();
 				} else {
 					item.show();
+				}
+			}
+
+			function resLastPosition(a) {
+				if(a.code === 200){
+					var b = a.message;
+					b.map((v,i)=>{
+						var feature = new ol.Feature({
+							geometry: new ol.geom.Point([v.longitude, v.latitude]),
+							name: v.user_id,
+						});
+						vectorSource.addFeature(feature);
+					});
 				}
 			}
 

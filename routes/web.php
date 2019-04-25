@@ -46,6 +46,10 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::resource('pengumuman', 'PengumumanCtrl', ['only' => ['index', 'create', 'edit', 'destroy']]);
 	Route::post('pengumuman/post', 'PengumumanCtrl@postPengumuman')->name('pengumuman.post');
 
+	Route::resource('promo', 'PromoCtrl', ['only' => ['index', 'create', 'edit', 'destroy']]);
+	Route::post('promo/post', 'PromoCtrl@post')->name('promo.post');
+	Route::post('promo/upload', 'PromoCtrl@upload')->name('promo.upload');
+
 	Route::resource('laporan', 'LaporanCtrl', ['only' => ['index']]);
 
 	

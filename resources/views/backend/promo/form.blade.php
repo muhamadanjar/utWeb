@@ -1,4 +1,4 @@
-@extends('layouts.adminlte.main')
+@extends('templates::adminlte.main')
 
 @section('content-admin')
   <?php
@@ -6,15 +6,23 @@
     $id = '';
     $kode_promo ='';
     $name = '';
-    
+    $discount = '';
+    $status = '';
     $image='';
+    $usage_limit = 0;
+    $service_type = '';
+    $valid = '';
     $tgl_mulai='';
     $tgl_akhir='';
     if(session('aksi') == 'edit'){
         $id = $promo->id;
         $kode_promo =$promo->kode_promo;
         $name = $promo->name;
-        
+        $discount = $promo->discount;
+        $status = $promo->status;
+        $usage_limit = $promo->usage_limit;
+        $service_type = $promo->service_type;
+        $valid = $promo->valid;
         $image=$promo->foto;
         $tgl_mulai=$promo->tgl_mulai;
         $tgl_akhir=$promo->tgl_akhir;
@@ -38,7 +46,13 @@
                             <input type="hidden" name="id" class="form-control" id="id" value="{{$id}}">
                             <div class="form-group">
                                 <label for="kode_promo">Kode Promo</label>
-                                <input type="text" name="kode_promo" class="form-control" id="kode_promo" value="{{$kode_promo}}">
+                                <div class="input-group">
+                                    <input type="text" name="kode_promo" class="form-control" id="kode_promo" value="{{$kode_promo}}">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-primary">Generate</button>
+                                    </div>
+                                </div>
+                                
                             </div>
                             <div class="form-group">
                                 <label for="kode_promo">Promo</label>
@@ -52,6 +66,10 @@
                                 <label for="kode_promo">Sampai</label>
                                 <input type="text" name="tgl_akhir" class="form-control" id="tgl_akhir" value="{{$tgl_akhir}}">
                             </div>
+                            <div class="form-group">
+                                    <label for="kode_promo">Batas Pemakaian</label>
+                                    <input type="text" name="usage_limit" class="form-control" id="usage_limit" value="{{$usage_limit}}">
+                                </div>
                             <div class="form-group">
                                 <label for="kode_promo">Deskripsi</label>
                                 <textarea name="description" id="description" class="form-control"></textarea>

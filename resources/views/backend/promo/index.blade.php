@@ -1,4 +1,4 @@
-@extends('layouts.adminlte.main')
+@extends('templates::adminlte.main')
 @section('content-admin')
     <div class="box box-default">
         <div class="box-header with-border">
@@ -46,7 +46,7 @@
 
 <script type="text/javascript" src="{{ url('/plugins/datatables/datatables.min.js')}}"></script>
 
-@include('layouts.handlebar')
+
 <script src="{{ asset('/js/rm.js') }}"></script>
 
 
