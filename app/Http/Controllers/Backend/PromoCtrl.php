@@ -54,9 +54,10 @@ class PromoCtrl extends BackendCtrl
             $promo->save();
         }catch(Exception $e){
             \DB::rollback();
+            
             return redirect()->route('backend.promo.index')->with('flash.error',$e);
         }
-        return redirect()->route('backend.promo.index');
+        return redirect()->route('backend.promo.index')->with('flash.success','Berhasil');
     }
     public function upload(){
         $promo =  new Promo();

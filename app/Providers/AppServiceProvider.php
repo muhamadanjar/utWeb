@@ -12,6 +12,7 @@ use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\Models\Setting;
 use MulutBusuk\Workspaces\Repositories\Eloquent\Menu\Menu;
 use Carbon\Carbon;
 
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -53,9 +54,9 @@ class AppServiceProvider extends ServiceProvider
         \Config::set('moderator::view_login', 'templates::adminlte.login');
         \Config::set('moderator::view_profil', 'templates::adminlte.profile');
 
-        // if ($this->app->environment() == 'production') {
-        //     URL::forceScheme('https');
-        // }
+        if ($this->app->environment() == 'production') {
+            URL::forceScheme('https');
+        }
     }
 
 

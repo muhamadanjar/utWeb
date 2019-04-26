@@ -25,7 +25,15 @@
                 </thead>
                 
                 <tbody>
-                    
+                    @foreach($promo as $k => $v)
+                    <tr>
+                        <td></td>
+                        <td>{{ $v->kode_promo}}</td>
+                        <td>{{ $v->name}}</td>
+                        <td>{{ $v->tgl_mulai}}</td>
+                        <td>{{ $v->tgl_akhir}}</td>
+                    </tr>
+                    @endforeach
                 </tbody>
                 
             </table>

@@ -37,6 +37,8 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 		Route::post('upload', 'DokumenCtrl@upload')->name('upload');
 	});
 
+	Route::resource('trip_job','TripCtrl');
+
 	
     //Link
 	// Route::resource('link', 'LinkCtrl', ['only' => ['index', 'create', 'edit', 'destroy']]);

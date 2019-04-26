@@ -21,22 +21,15 @@ class AuthServiceProvider extends ServiceProvider{
      *
      * @return void
      */
-    public function boot(GateContract $gate)
-    {
+    public function boot(GateContract $gate){
         $this->registerPolicies($gate);
-
         foreach($this->getPermissions() as $permission) {
             $gate->define($permission->name, function($user) use ($permission) {
-
                 return $user->hasRole($permission->roles);
             });
         }
-
         Passport::routes();
-
         $_uri = url()->current();
-
-
     }
 
     private function getPermissions(){
