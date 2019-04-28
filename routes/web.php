@@ -54,8 +54,5 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::post('promo/upload', 'PromoCtrl@upload')->name('promo.upload');
 
 	Route::resource('laporan', 'LaporanCtrl', ['only' => ['index']]);
-
-	
-	
 	// User Profile
 });

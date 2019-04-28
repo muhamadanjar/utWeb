@@ -91,13 +91,17 @@ class ApiCtrl extends Controller
     //Auth
     public function login(){
         try {
-            if (Auth::attempt(['username' => request('username'), 'password' => request('password')])) {
+            $r_user = request('username');
+            $user_email = (filter_var($r_user,FILTER_VALIDATE_EMAIL)) ? 'email' : 'username' ;
+            if (Auth::attempt([$user_email => $r_user, 'password' => request('password')])) {
                 $user = Auth::user();
-                $success['token'] = $user->createToken('MyApp')->accessToken;
-                $user->api_token = $success['token'];
+                $response['status'] = true;
+                $response['data']['token'] = $user->createToken('MyApp')->accessToken;
+                $response['token'] = $user->createToken('MyApp')->accessToken;
+                $user->api_token = $response['token'];
                 $user->latestlogin = Carbon::now();
                 $user->save();
-                return response()->json(['success' => true, 'data' => $success], $this->successStatus);
+                return response()->json($response, $this->successStatus);
             } else {
                 return response()->json(['error' => true, 'message' => 'Unauthorised'], 401);
             }
@@ -234,6 +238,12 @@ class ApiCtrl extends Controller
     public function GetTypeCar(){
         $type = new \App\Mobil\Models\Type();
         $data = $type->active()->get();
+        return response()->json(['status'=>true,'data'=>$data]);
+    }
+
+    public function GetRentPackage(){
+        $rent = new \App\Mobil\Models\RentPackage();
+        $data = $rent->active()->get();
         return response()->json(['status'=>true,'data'=>$data]);
     }
 
