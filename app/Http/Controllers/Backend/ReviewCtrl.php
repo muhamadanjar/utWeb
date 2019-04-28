@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 
-class ReviewCtrl extends Controller
+class ReviewCtrl extends BackendCtrl
 {
     public function index()
     {

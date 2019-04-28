@@ -14,6 +14,8 @@ use MulutBusuk\Workspaces\Repositories\Eloquent\AuditTrail\Activity\RepositoryIn
 use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\RepositoryInterface as ModeratorRepository;
 use App\User;
 use App\Trip;
+use App\Promo;
+use App\Setting;
 class ApiCtrl extends Controller
 {
     use ServerInformasi;
@@ -23,20 +25,16 @@ class ApiCtrl extends Controller
         $this->moderatorrepo = $md;
         
     }
-    function getprovinsi($id = '')
-    {
+    function getprovinsi($id = ''){
         $provinsi = DB::table('wilayah_provinsi')->orderBy('nama_provinsi', 'ASC')->get();
         return response()->json(['data' => $provinsi], 200);
     }
 
-    function getkabupaten($id = '')
-    {
+    function getkabupaten($id = ''){
         $kabupaten = DB::table('wilayah_kabupaten')->where('kode_prov', $id)->orderBy('nama_kabupaten', 'ASC')->get();
         return response()->json(['data' => $kabupaten], 200);
     }
-    public function getkecamatan($id)
-    {
-        # 
+    public function getkecamatan($id){
         if (strpos($id, ',') !== false) {
             $id = explode(',', $id);
         } else {
@@ -62,7 +60,7 @@ class ApiCtrl extends Controller
         }
         $desa = DB::table('wilayah_desa')->whereRaw($w, $l)->get();
         
-        return response()->json(['data' => $desa], 200, [], JSON_NUMERIC_CHECK);
+        return response()->json(['status'=>true,'data' => $desa], 200, [], JSON_NUMERIC_CHECK);
     }
     public function serverinformasi()
     {
@@ -88,8 +86,10 @@ class ApiCtrl extends Controller
             'system_load' => $system_load,
         ], 200);
     }
-    public function login()
-    {
+
+
+    //Auth
+    public function login(){
         try {
             if (Auth::attempt(['username' => request('username'), 'password' => request('password')])) {
                 $user = Auth::user();
@@ -124,15 +124,9 @@ class ApiCtrl extends Controller
         $user = User::create($input);
         $success['token'] = $user->createToken('MyApp')->accessToken;
         $success['name'] = $user->name;
-        return response()->json(['success' => $success], $this->successStatus);
+        return response()->json(['status'=>true,'data' => $success], $this->successStatus);
     }
-    /**
-     * details api
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function details()
-    {
+    public function details(){
         $user = Auth::guard('api')->user();
         if ($user) {
             return response()->json(['success' => true, 'data' => $user], $this->successStatus);
@@ -140,14 +134,7 @@ class ApiCtrl extends Controller
         return response()->json(['error' => true, 'message' => 'Data Tidak ada'], $this->successStatus);
 
     }
-    public function getUser()
-    {
-        $user = User::orderBy('id');
-        $countuser = $user->count();
-        return response()->json(['user' => $user, 'countuser' => $countuser], 200);
-    }
-
-
+    
     function multiKeyExists(array $arr, $key)
     {
         // is in base array?
@@ -202,11 +189,11 @@ class ApiCtrl extends Controller
 
     public function userUpdateLocation(Request $request){
         $user = Auth::guard('api');
-        $this->moderatorrepo($user->id,$request);
+        $this->moderatorrepo->updateUserLocation($user->id,$request);
         return response()->json($user,200);
     }
 
-    public function booking_taxi(Request $request){
+    public function PostBooking(Request $request){
         DB::beginTransaction();
         try {
             $trip = new Trip();
@@ -244,17 +231,32 @@ class ApiCtrl extends Controller
         
     }
 
-    public function get_type_car()
-    {
+    public function GetTypeCar(){
         $type = new \App\Mobil\Models\Type();
         $data = $type->active()->get();
         return response()->json(['status'=>true,'data'=>$data]);
     }
 
-    public function userGetLocation()
-    {
+    public function GetUserLocation(){
         $ul = DB::table('user_location')->get();
         return response()->json(['status'=>true,'data'=>$ul],200);
+    }
+
+    public function GetPromo(){
+        $response = [];
+        $promo = Promo::where('tgl_mulai','>=',date('Y-m-d'))->orderBy('tgl_mulai','DESC')->select()->get();
+        $p = new Promo();
+        foreach($promo as $key => $v){
+            $v->foto = url($p->getPermalink().$v->foto);
+        }
+        $response['status'] = true;
+        $response['data'] = $promo;
+        return response()->json($response,$this->successStatus);
+    }
+
+    public function GetSettings(){
+        $setting = Setting::pluck('value', 'key');
+        return response()->json(['status'=>true,'data'=>$setting],200);
     }
 
 }
