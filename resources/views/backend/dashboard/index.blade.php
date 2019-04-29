@@ -110,7 +110,7 @@
 	<script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
 	<script src="{{ asset('/plugins/dx/js/jszip.min.js')}}"></script>
 	<script src="{{ asset('/plugins/dx/js/dx.all.js')}}"></script>
-
+	
 	<!-- <script src="{{ asset('assets/limitless/js/demo_pages/charts/echarts/pies_donuts.js')}}"></script> -->
 
 
@@ -121,12 +121,13 @@
 		$(function () {
 			worker = new Worker('webworker.js');
 			worker.addEventListener('error', function(a) {
-							console.error('Error: Line ' + a.lineno + ' in ' + a.filename + ': ' + a.message);
+					console.log(a);
+					// console.error('Error: Line ' + a.lineno + ' in ' + a.filename + ': ' + a.message);
 			}, false);
 
 			worker.addEventListener('message', function(a) {
 				if (a.data.cmd === 'resLastPosition') { resLastPosition(a.data.val); }
-			}
+			});
 			vectorSource = new ol.source.Vector();
       vectorLayer = new ol.layer.Vector({
             source: vectorSource,
