@@ -74,6 +74,15 @@
                                 <label for="kode_promo">Deskripsi</label>
                                 <textarea name="description" id="description" class="form-control"></textarea>
                             </div>
+
+                            <div class="form-group">
+                                <label for="kode_promo">Service Type</label>
+                                <select name="service_type" class="form-control">
+                                    @foreach ($st as $k => $v)
+                                <option value="{{$v->id}}">{{$v->service_type}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             
 
                         </div>

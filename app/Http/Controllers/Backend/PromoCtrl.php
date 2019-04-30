@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Event;
 use Laracasts\Flash\Flash;
 use Carbon\Carbon;
 use App\Promo;
+use App\ServiceType;
 
 class PromoCtrl extends BackendCtrl
 {
@@ -21,8 +22,9 @@ class PromoCtrl extends BackendCtrl
         $promo = new Promo();
         $path = $promo->getPath();
         $permanentlink = $promo->getPermalink();
+        $st = ServiceType::get();
         return view('backend.promo.form')->withPromo($promo)
-        ->withPath($path)->with('permanentlink',$permanentlink);
+        ->withPath($path)->with('permanentlink',$permanentlink)->withSt($st);
     }
     public function edit($id){
         session(['aksi'=>'edit']);
@@ -30,7 +32,7 @@ class PromoCtrl extends BackendCtrl
         $path = $promo->getPath();
         $permanentlink = $promo->getPermalink();
         return view('backend.promo.form')->withPromo($promo)
-        ->withPath($path)->with('permanentlink',$permanentlink);
+        ->withPath($path)->with('permanentlink',$permanentlink)->withSt($st);
     }
     
     public function destroy($id){

@@ -119,10 +119,10 @@
 		let vectorSource =null;
 		let vectorLayer = null;
 		$(function () {
-			worker = new Worker('webworker.js');
+			worker = new Worker(`${Laravel.serverUrl}/js/webworker.js`);
 			worker.addEventListener('error', function(a) {
-					console.log(a);
-					// console.error('Error: Line ' + a.lineno + ' in ' + a.filename + ': ' + a.message);
+					// console.log(a);
+					console.error('Error: Line ' + a.lineno + ' in ' + a.filename + ': ' + a.message);
 			}, false);
 
 			worker.addEventListener('message', function(a) {
@@ -146,7 +146,9 @@
           zoom: 12
         })
 			});
-			worker.postMessage({ cmd: 'reqLastPosition', val: 'api/user/location'});
+			
+			
+			
 			$.ajax({
 				type: 'GET',
 				url: `${Laravel.serverUrl}/api/driver/jumlah`,
@@ -193,16 +195,26 @@
 			}
 
 			function resLastPosition(a) {
-				if(a.code === 200){
-					var b = a.message;
-					b.map((v,i)=>{
+			
+					a.map((v,i)=>{
+						var transform = ol.proj.getTransform('EPSG:4326', 'EPSG:3857');
+						var coordinate = transform([parseFloat(v.longitude), parseFloat(v.latitude)]);
 						var feature = new ol.Feature({
-							geometry: new ol.geom.Point([v.longitude, v.latitude]),
+							geometry: new ol.geom.Point(coordinate),
 							name: v.user_id,
 						});
+						var iconStyle = new ol.style.Style({
+								image: new ol.style.Icon(({
+										anchor: [0.2, 32],
+										anchorXUnits: 'fraction',
+										anchorYUnits: 'pixels',
+										src: `${Laravel.serverUrl}/images/pins/${icon}`
+								}))
+						});
+						feature.setStyle(iconStyle);
 						vectorSource.addFeature(feature);
 					});
-				}
+				
 			}
 
 			$.ajax({
@@ -218,6 +230,7 @@
 
 				}
 			});
+			worker.postMessage({ cmd: 'reqLastPosition', val: `${Laravel.serverUrl}/api/user/location`});
 		});
 			
 	</script>
