@@ -203,15 +203,15 @@
 							geometry: new ol.geom.Point(coordinate),
 							name: v.user_id,
 						});
-						var iconStyle = new ol.style.Style({
-								image: new ol.style.Icon(({
-										anchor: [0.2, 32],
-										anchorXUnits: 'fraction',
-										anchorYUnits: 'pixels',
-										src: `${Laravel.serverUrl}/images/pins/${icon}`
-								}))
-						});
-						feature.setStyle(iconStyle);
+						// var iconStyle = new ol.style.Style({
+						// 		image: new ol.style.Icon(({
+						// 				anchor: [0.2, 32],
+						// 				anchorXUnits: 'fraction',
+						// 				anchorYUnits: 'pixels',
+						// 				src: `${Laravel.serverUrl}/images/pins/${icon}`
+						// 		}))
+						// });
+						// feature.setStyle(iconStyle);
 						vectorSource.addFeature(feature);
 					});
 				

@@ -29,7 +29,7 @@ Route::post('user/update_position', 'ApiCtrl@userUpdateLocation');
 Route::post('booking','ApiCtrl@PostBooking');
 Route::get('user/location','ApiCtrl@GetUserLocation');
 Route::get('type_car','ApiCtrl@GetTypeCar');
-Route::get('rent_package','ApiCtrl@GetRentPackage');
+Route::get('rent_package/{id?}','ApiCtrl@GetRentPackage');
 Route::get('get_promo','ApiCtrl@GetPromo');
 Route::get('get_settings','ApiCtrl@GetSettings');
 

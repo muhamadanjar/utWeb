@@ -241,9 +241,9 @@ class ApiCtrl extends Controller
         return response()->json(['status'=>true,'data'=>$data]);
     }
 
-    public function GetRentPackage(){
+    public function GetRentPackage($id){
         $rent = new \App\Mobil\Models\RentPackage();
-        $data = $rent->active()->get();
+        $data = $rent->active()->where('rp_car_type',$id)->get();
         return response()->json(['status'=>true,'data'=>$data]);
     }
 
