@@ -13,7 +13,8 @@ class TripCtrl extends BackendCtrl
      */
     public function index()
     {
-        return view('backend.trip.index');
+        $trip = \App\Trip::get();
+        return view('backend.trip.index')->withTrip($trip);
     }
 
     /**
