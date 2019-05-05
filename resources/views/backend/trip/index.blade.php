@@ -46,7 +46,7 @@
     </div>
 
 @endsection
-@section('title','Promo')
+@section('title','Data Transaksi')
 @section('style-head')
 @parent
 <link rel="stylesheet" href="{{ url('/plugins/datatables/datatables.min.css')}}">
@@ -56,7 +56,7 @@
 @parent
 
 <script type="text/javascript" src="{{ url('/plugins/jquery-ui/js/jquery-ui.js')}}"></script>
-
+<script type="text/javascript" src="{{ url('/plugins/bootbox/js/bootbox.js') }}"></script>
 <script type="text/javascript" src="{{ url('/plugins/datatables/datatables.min.js')}}"></script>
 <script src="{{ asset('/js/rm.js') }}"></script>
 

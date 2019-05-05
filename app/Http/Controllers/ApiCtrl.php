@@ -208,7 +208,7 @@ class ApiCtrl extends Controller
             $trip->trip_address_origin = $request->trip_address_origin;
             $trip->trip_address_destination = $request->trip_address_destination;
             $trip->trip_date = date('Y-m-d');
-            $trip->trip_type = 1;
+            $trip->trip_type = 2;
             $trip->trip_status = 0;
             $trip->trip_total = $request->trip_total;
             $trip->save();
@@ -235,6 +235,43 @@ class ApiCtrl extends Controller
         }
         
     }
+    public function postReguler(Request $request){
+        DB::beginTransaction();
+        try {
+            $trip = new Trip();
+            $trip->trip_code = base64_encode(rand());
+            $trip->trip_job = $request->job;
+            $trip->trip_bookby = $request->trip_bookby;
+            $trip->trip_address_origin = $request->trip_address_origin;
+            $trip->trip_address_destination = $request->trip_address_destination;
+            $trip->trip_date = date('Y-m-d H:i:s');
+            $trip->trip_type = 2;
+            $trip->trip_status = 0;
+            $trip->trip_total = $request->trip_total;
+            $trip->save();
+                $td = [
+                    'trip_id'=>$trip->getKey(),
+                    'trip_or_latitude'=>$request->trip_or_latitude,
+                    'trip_or_longitude'=>$request->trip_or_longitude,
+                    'trip_des_latitude'=>$request->trip_des_latitude,
+                    'trip_des_longitude'=>$request->trip_des_longitude,
+                    'duration' => $request->duration,
+                    'distance' => $request->distance,
+                    'rp'=> $request->rent_package
+                ];
+                DB::table('trip_detail')->insert(
+                    $td
+                );
+            
+            DB::commit();    
+            return response()->json(['status'=>true,'data'=>$trip],200);
+        } catch (ValidationException $e) {
+            DB::rollback();
+        } catch(\Exception $e){
+            DB::rollback();
+            throw $e;
+        }
+    }
     public function getDriverNearby(Request $request){
         $latitude = $request->get('latitude');
         $longitude = $request->get('longitude');
@@ -259,10 +296,27 @@ class ApiCtrl extends Controller
         }
         return response()->json(['status'=>true,'data'=>$location]);
     }
-
+    public function getHistory($type = 1){
+        try {
+            $auth = Auth::guard('api');
+            $user = $auth->user();
+            $trip = Trip::where('trip_bookby',$user->id)->orderBy('trip_date','DESC')->get();
+            $trip_count = Trip::where('trip_bookby',$user->id)->where('trip_type',$type)->orderBy('trip_date','DESC')->count();
+            $message;
+            if ($trip_count<=0) {
+                $message = 'Anda Belum Memiliki Transaksi';
+            }
+            return response()->json(['status'=>true,'data'=>$trip,'message'=>$message]);
+        } catch (\Exception $e) {
+            return response()->json(['status'=>false,'message'=>$e->getMessage()]);
+        }
+    }
     public function GetTypeCar(){
         $type = new \App\Mobil\Models\Type();
         $data = $type->active()->get();
+        foreach($data as $k =>$v){
+            $data[$k]->path_url = $v->imagePath;
+        }
         return response()->json(['status'=>true,'data'=>$data]);
     }
 
@@ -282,7 +336,7 @@ class ApiCtrl extends Controller
         $promo = Promo::where('tgl_mulai','>=',date('Y-m-d'))->orderBy('tgl_mulai','DESC')->select()->get();
         $p = new Promo();
         foreach($promo as $key => $v){
-            $v->foto = url($p->getPermalink().$v->foto);
+            $v->image_path = $v->imagepath;
         }
         $response['status'] = true;
         $response['data'] = $promo;

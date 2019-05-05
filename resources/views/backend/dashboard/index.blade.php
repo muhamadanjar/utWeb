@@ -91,7 +91,8 @@
 @endsection
 @section('style-head')
 	@parent
-	<link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css">	
+	<link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css">
+	<link rel="stylesheet" href="https://unpkg.com/ol-popup@4.0.0/src/ol-popup.css" />	
 	<link href="{{ asset('/plugins/dx/css/dx.common.css')}}" rel="stylesheet" type="text/css" />
 	<link href="{{ asset('/plugins/dx/css/dx.greenmist.css')}}" rel="stylesheet" type="text/css" />
 	<link href="{{ asset('/plugins/dx/css/dx.light.css')}}" rel="stylesheet" type="text/css" />
@@ -108,6 +109,7 @@
 	@section('script-end')
 	@parent
 	<script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+	<script src="https://unpkg.com/ol-popup@4.0.0"></script>
 	<script src="{{ asset('/plugins/dx/js/jszip.min.js')}}"></script>
 	<script src="{{ asset('/plugins/dx/js/dx.all.js')}}"></script>
 	
@@ -146,6 +148,9 @@
           zoom: 12
         })
 			});
+
+			var popup = new Popup();
+			map.addOverlay(popup);
 			
 			
 			

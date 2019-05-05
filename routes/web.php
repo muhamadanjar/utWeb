@@ -38,7 +38,8 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	});
 
 	Route::resource('trip_job','TripCtrl');
-	
+	Route::get('trip_job_data','TripCtrl@get_data');
+	Route::get('trip_job/{trip_id}/detail','TripCtrl@get_detail');
 
 	Route::resource('reviews','ReviewCtrl');
 	Route::resource('driver','DriverCtrl');
