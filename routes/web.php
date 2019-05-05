@@ -38,6 +38,8 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	});
 
 	Route::resource('trip_job','TripCtrl');
+	
+
 	Route::resource('reviews','ReviewCtrl');
 	Route::resource('driver','DriverCtrl');
 	Route::resource('services','ServiceCtrl');

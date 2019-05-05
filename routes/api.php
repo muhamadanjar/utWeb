@@ -22,6 +22,9 @@ Route::get('/getkabupaten/{id}', 'ApiCtrl@getkabupaten');
 Route::get('/getkecamatan/{id?}', 'ApiCtrl@getkecamatan');
 Route::get('/getdesa/{id}', 'ApiCtrl@getdesa');
 
+Route::get('trip/history','ApiCtrl@getHistory');
+Route::get('driver/nearbylocation','APiCtrl@getDriverNearby');
+
 Route::post('login', 'ApiCtrl@login');
 Route::post('register', 'ApiCtrl@register');
 Route::post('user/details', 'ApiCtrl@details');

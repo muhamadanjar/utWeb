@@ -16,6 +16,7 @@ use App\User;
 use App\Trip;
 use App\Promo;
 use App\Setting;
+use App\UserLocation;
 class ApiCtrl extends Controller
 {
     use ServerInformasi;
@@ -233,6 +234,30 @@ class ApiCtrl extends Controller
             throw $e;
         }
         
+    }
+    public function getDriverNearby(Request $request){
+        $latitude = $request->get('latitude');
+        $longitude = $request->get('longitude');
+        $errors = [];
+        
+        if ($latitude != null && $longitude != null) {
+            $location = UserLocation::select(DB::raw('id, ( 6367 * acos( cos( radians('.$latitude.') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians('.$longitude.') ) + sin( radians('.$latitude.') ) * sin( radians( latitude ) ) ) ) AS distance'))
+            ->having('distance', '<', 25)
+            ->orderBy('distance')
+            ->get();
+        }else{
+            if ($latitude == null) {
+                $errors['latitude'] = 'Latitude is Required';
+            }
+            if ($longitude == null) {
+                $errors['longitude'] = 'Longitude is Required';
+            }
+        }
+        
+        if ($errors) {
+            return response()->json(['status'=>false,'message'=>implode($errors,',')]);
+        }
+        return response()->json(['status'=>true,'data'=>$location]);
     }
 
     public function GetTypeCar(){
