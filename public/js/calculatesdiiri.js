@@ -1,1 +1,204 @@
-!function(n){var e={};function a(i){if(e[i])return e[i].exports;var t=e[i]={i:i,l:!1,exports:{}};return n[i].call(t.exports,t,t.exports,a),t.l=!0,t.exports}a.m=n,a.c=e,a.d=function(n,e,i){a.o(n,e)||Object.defineProperty(n,e,{enumerable:!0,get:i})},a.r=function(n){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(n,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(n,"__esModule",{value:!0})},a.t=function(n,e){if(1&e&&(n=a(n)),8&e)return n;if(4&e&&"object"==typeof n&&n&&n.__esModule)return n;var i=Object.create(null);if(a.r(i),Object.defineProperty(i,"default",{enumerable:!0,value:n}),2&e&&"string"!=typeof n)for(var t in n)a.d(i,t,function(e){return n[e]}.bind(null,t));return i},a.n=function(n){var e=n&&n.__esModule?function(){return n.default}:function(){return n};return a.d(e,"a",e),e},a.o=function(n,e){return Object.prototype.hasOwnProperty.call(n,e)},a.p="/",a(a.s=267)}({267:function(n,e,a){n.exports=a(268)},268:function(n,e){window.getjson=function(n){var e=null;return $.ajax({url:n,type:"get",dataType:"json",async:!1,success:function(n){e=n}}),e},window.getSdiIri=function(n,e,a,i){var t,r,u,o;a=parseInt(a);var l=getjson("/api/formskj/sdiiri/?sampai_km="+n+"&dari_km="+e+"&nilai_iri="+i+"&nilai_sdi="+a);t=l.baik,r=l.sedang,u=l.rusakringan,o=l.rusakberat,console.log(t,r,u,o),$("input.k_baik").val(l.baik),$("input.k_sedang").val(l.sedang),$("input.k_rusakringan").val(l.rusakringan),$("input.k_rusakberat").val(l.rusakberat)},window.getSdi=function(){var n=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0,e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0,a=arguments.length>2&&void 0!==arguments[2]?arguments[2]:0,i=arguments.length>3&&void 0!==arguments[3]?arguments[3]:0;console.log(n,e,a,i);var t,r,u=0;u=1==n?0:2==n?5:3==n?20:4==n?40:0,t=0==(r=4==e?2*u:0)?u:r,sdi_jumlahlubang=1==a?t:2==a?t+15:3==a?t+75:4==a?t+255:0,sdi_bekasroda=1==i?sdi_jumlahlubang:2==i?sdi_jumlahlubang+2.5:3==i?sdi_jumlahlubang+10:4==i?sdi_jumlahlubang+20:0,nilai_sdi=sdi_bekasroda>0?sdi_bekasroda:0,$("p.p_retaklebar").text(r),$("p.p_jumlahlubang").text(sdi_jumlahlubang),$("p.p_bekas_roda").text(sdi_bekasroda),$("input#nilai_sdi").val(nilai_sdi),$("p.p_nilaisdi").text(nilai_sdi)}}});
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./resources/assets/js/calculatesdiiri.js":
+/*!************************************************!*\
+  !*** ./resources/assets/js/calculatesdiiri.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+window.getjson = function (url) {
+  var result = null;
+  $.ajax({
+    url: url,
+    type: 'get',
+    dataType: 'json',
+    async: false,
+    success: function success(data) {
+      result = data;
+    }
+  });
+  return result;
+};
+
+window.getSdiIri = function (sampai_km, dari_km, nilai_sdi, nilai_iri) {
+  var panjang_km = sampai_km - dari_km;
+  var baik = 0,
+      sedang = 0,
+      rusakringan = 0,
+      rusakberat = 0;
+  var mantap = 0,
+      tdkmantap = 0;
+  nilai_sdi = parseInt(nilai_sdi);
+  var datasdiiri = getjson('/api/formskj/sdiiri/?sampai_km=' + sampai_km + '&dari_km=' + dari_km + '&nilai_iri=' + nilai_iri + '&nilai_sdi=' + nilai_sdi);
+  baik = datasdiiri.baik;
+  sedang = datasdiiri.sedang;
+  rusakringan = datasdiiri.rusakringan;
+  rusakberat = datasdiiri.rusakberat;
+  mantap = baik + sedang;
+  tdkmantap = rusakringan + rusakberat;
+  console.log(baik, sedang, rusakringan, rusakberat);
+  $('input.k_baik').val(datasdiiri.baik);
+  $('input.k_sedang').val(datasdiiri.sedang);
+  $('input.k_rusakringan').val(datasdiiri.rusakringan);
+  $('input.k_rusakberat').val(datasdiiri.rusakberat);
+};
+
+window.getSdi = function () {
+  var retak_luas = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+  var retak_lebar = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  var jumlah_lubang = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+  var bekasroda = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+  console.log(retak_luas, retak_lebar, jumlah_lubang, bekasroda);
+  var bantu = 0;
+  var sdi_retaklebar = 0,
+      sdi_retakluas = 0;
+
+  if (retak_luas == 1) {
+    sdi_retakluas = 0;
+  } else if (retak_luas == 2) {
+    sdi_retakluas = 5;
+  } else if (retak_luas == 3) {
+    sdi_retakluas = 20;
+  } else if (retak_luas == 4) {
+    sdi_retakluas = 40;
+  } else {
+    sdi_retakluas = 0;
+  }
+
+  sdi_retaklebar = retak_lebar == 4 ? sdi_retakluas * 2 : 0;
+  bantu = sdi_retaklebar == 0 ? sdi_retakluas : sdi_retaklebar;
+
+  if (jumlah_lubang == 1) {
+    sdi_jumlahlubang = bantu;
+  } else if (jumlah_lubang == 2) {
+    sdi_jumlahlubang = bantu + 15;
+  } else if (jumlah_lubang == 3) {
+    sdi_jumlahlubang = bantu + 75;
+  } else if (jumlah_lubang == 4) {
+    sdi_jumlahlubang = bantu + 255;
+  } else {
+    sdi_jumlahlubang = 0;
+  }
+
+  if (bekasroda == 1) {
+    sdi_bekasroda = sdi_jumlahlubang;
+  } else if (bekasroda == 2) {
+    sdi_bekasroda = sdi_jumlahlubang + 5 * 0.5;
+  } else if (bekasroda == 3) {
+    sdi_bekasroda = sdi_jumlahlubang + 5 * 2;
+  } else if (bekasroda == 4) {
+    sdi_bekasroda = sdi_jumlahlubang + 5 * 4;
+  } else {
+    sdi_bekasroda = 0;
+  }
+
+  nilai_sdi = sdi_bekasroda > 0 ? sdi_bekasroda : 0;
+  $('p.p_retaklebar').text(sdi_retaklebar);
+  $('p.p_jumlahlubang').text(sdi_jumlahlubang);
+  $('p.p_bekas_roda').text(sdi_bekasroda);
+  $('input#nilai_sdi').val(nilai_sdi);
+  $('p.p_nilaisdi').text(nilai_sdi);
+};
+
+/***/ }),
+
+/***/ 1:
+/*!******************************************************!*\
+  !*** multi ./resources/assets/js/calculatesdiiri.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /Users/muhamadanjar/Sites/rental/resources/assets/js/calculatesdiiri.js */"./resources/assets/js/calculatesdiiri.js");
+
+
+/***/ })
+
+/******/ });

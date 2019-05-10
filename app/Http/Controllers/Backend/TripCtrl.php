@@ -97,9 +97,10 @@ class TripCtrl extends BackendCtrl
             [
                 DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'trip.trip_id',
+                'trip.trip_type',
+                'trip.trip_bookby',
                 'trip_code',
                 'trip_address_origin',
-                'trip_address_destination',
                 'trip_date',
                 'trip_driver',
                 \DB::raw("CONCAT('Rp.',FORMAT(trip_total,2)) as trip_total"),
@@ -130,12 +131,13 @@ class TripCtrl extends BackendCtrl
             return url('backend/trip_job/'.$user->trip_id);
         })
         ->setRowClass(function ($data) {
-            return $data->trip_type == 'rental' ? 'alert-default' : 'alert-info';
+            return $data->trip_type == '1' ? 'alert-default' : 'alert-info';
         })
         ->editColumn('trip_status', function($transaksi){
-            $class = $transaksi->status == 'pending' ? 'bg-orange' : 'label-success';
+            $class = $transaksi->trip_status == '0' ? 'bg-orange' : 'label-success';
             return '<span class="label '.$class.'">'.$transaksi->status.'</span>';
         })
+        ->rawColumns(['rownum', 'action','trip_status','trip_total'])
         ->filter(function ($query) use ($request) {
             if ($request->has('status')) {
                 $query->where('trip_status', 'like', "%{$request->get('status')}%");

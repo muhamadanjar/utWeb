@@ -10,6 +10,8 @@ class User extends UserModerator
 {
     use Notifiable, HasApiTokens;
 
+    protected $hidden = ['password','api_token','remember_token'];
+
     protected function hasTooManyLoginAttempts(Request $request){
         $maxLoginAttempts = 3;
     

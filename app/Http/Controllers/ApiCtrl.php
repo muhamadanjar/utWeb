@@ -45,8 +45,7 @@ class ApiCtrl extends Controller
         return response()->json(['data' => $kecamatan], 200);
     }
 
-    public function getdesa($id='')
-    {
+    public function getdesa($id=''){
         if (strpos($id,',')) {
             $ex = explode(',',$id);
             $l = [];$t = [];
@@ -90,8 +89,9 @@ class ApiCtrl extends Controller
 
 
     //Auth
-    public function login(){
+    public function login(Request $request){
         try {
+
             $r_user = request('username');
             $user_email = (filter_var($r_user,FILTER_VALIDATE_EMAIL)) ? 'email' : 'username' ;
             if (Auth::attempt([$user_email => $r_user, 'password' => request('password')])) {
@@ -106,8 +106,9 @@ class ApiCtrl extends Controller
             } else {
                 return response()->json(['error' => true, 'message' => 'Unauthorised'], 401);
             }
+            
         } catch (\Exception $th) {
-            echo $th->getMessage();
+            return response()->json(['error' => true, 'message' => $th->getMessage()]);
         }
         
     }
@@ -193,7 +194,7 @@ class ApiCtrl extends Controller
     }
 
     public function userUpdateLocation(Request $request){
-        $user = Auth::guard('api');
+        $user = Auth::guard('api')->user();
         $this->moderatorrepo->updateUserLocation($user->id,$request);
         return response()->json($user,200);
     }

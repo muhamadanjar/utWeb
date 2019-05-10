@@ -13,7 +13,7 @@
         </div>
             <!-- /.box-header -->
         <div class="box-body">
-        	<table class="display table" cellspacing="0" width="100%" id="table_promo">
+        	<table class="display table" cellspacing="0" width="100%" id="table_reservation">
                 <thead>
                     <tr>
                         <th></th>
@@ -24,21 +24,13 @@
                         <th>Trip Date</th>
                         <th>Driver</th>
                         <th>Fare</th>
-                        <th>Type</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 
                 <tbody>
-                    @foreach($trip as $k => $v)
-                    <tr>
-                        <td></td>
-                        <td>{{ $v->trip_type}}</td>
-                        <td>{{ $v->book_by}}</td>
-                        <td>{{ $v->book_code}}</td>
-                        <td>{{ $v->alamat}}</td>
-                    </tr>
-                    @endforeach
+                    
                 </tbody>
                 
             </table>
