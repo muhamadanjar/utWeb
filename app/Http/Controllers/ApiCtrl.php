@@ -97,7 +97,10 @@ class ApiCtrl extends Controller
             if (Auth::attempt([$user_email => $r_user, 'password' => request('password')])) {
                 $user = Auth::user();
                 $response['status'] = true;
+                $response['error'] = false;
                 $response['data']['token'] = $user->createToken('MyApp')->accessToken;
+                $response['data']['user'] = $r_user;
+                $response['data']['password'] = $request->password;
                 $response['token'] = $user->createToken('MyApp')->accessToken;
                 $user->api_token = $response['token'];
                 $user->latestlogin = Carbon::now();
@@ -108,7 +111,7 @@ class ApiCtrl extends Controller
             }
             
         } catch (\Exception $th) {
-            return response()->json(['error' => true, 'message' => $th->getMessage()]);
+            return response()->json(['error' => true, 'message' => $th->getMessage()],400);
         }
         
     }
@@ -328,7 +331,7 @@ class ApiCtrl extends Controller
     }
 
     public function GetUserLocation(){
-        $ul = DB::table('user_location')->get();
+        $ul = DB::table('user_location')->join('users','user_location.user_id','users.id')->select('users.*','user_location.latitude','user_location.longitude')->get();
         return response()->json(['status'=>true,'data'=>$ul],200);
     }
 

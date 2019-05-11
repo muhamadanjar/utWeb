@@ -151,53 +151,24 @@
 
 			var popup = new Popup();
 			map.addOverlay(popup);
-			
-			
-			
-			$.ajax({
-				type: 'GET',
-				url: `${Laravel.serverUrl}/api/driver/jumlah`,
-				dataType: "json",
-				success: function (data) {
-					$("#pie").dxPieChart({
-						size: {
-							width: 500
-						},
-						palette: "Soft Pastel",
-						dataSource: data,
-						series: [{
-							argumentField: "nama",
-							valueField: "total",
-							label: {
-								visible: true,
-								// format:'percent'
-							}
-						}],
-						title: "Data Jumlah Rambu",
-						"export": {
-							enabled: true
-						},
-						onPointClick: function (e) {
-							var point = e.target;
 
-							toggleVisibility(point);
-						},
-						onLegendClick: function (e) {
-							var arg = e.target;
-
-							toggleVisibility(this.getAllSeries()[0].getPointsByArg(arg)[0]);
-						}
-					});
-				}
+			map.on('click', function(event) {
+				var coordinate = event.coordinate;
+				var pixel = map.getPixelFromCoordinate(coordinate);
+				map.forEachFeatureAtPixel(pixel, function(f) {
+					var geometry = f.getGeometry();
+					var coord = geometry.getCoordinates();
+					console.log(f);
+					content = `<br>${f.get('name')}`;
+          // el.innerHTML += feature.get('name') + '<br>';
+					popup.show(coord, content);
+        });
+				
+				
+				
 			});
-
-			function toggleVisibility(item) {
-				if (item.isVisible()) {
-					item.hide();
-				} else {
-					item.show();
-				}
-			}
+			
+			
 
 			function resLastPosition(a) {
 			
@@ -206,17 +177,19 @@
 						var coordinate = transform([parseFloat(v.longitude), parseFloat(v.latitude)]);
 						var feature = new ol.Feature({
 							geometry: new ol.geom.Point(coordinate),
-							name: v.user_id,
+							name: v.name,
 						});
-						// var iconStyle = new ol.style.Style({
-						// 		image: new ol.style.Icon(({
-						// 				anchor: [0.2, 32],
-						// 				anchorXUnits: 'fraction',
-						// 				anchorYUnits: 'pixels',
-						// 				src: `${Laravel.serverUrl}/images/pins/${icon}`
-						// 		}))
-						// });
-						// feature.setStyle(iconStyle);
+						var iconStyle = new ol.style.Style({
+								image: new ol.style.Icon(({
+										anchor: [0.2, 32],
+										
+										scale: 0.3,
+										anchorXUnits: 'fraction',
+										anchorYUnits: 'pixels',
+										src: `${Laravel.serverUrl}/images/carMarker.png`
+								}))
+						});
+						feature.setStyle(iconStyle);
 						vectorSource.addFeature(feature);
 					});
 				
