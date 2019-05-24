@@ -202,6 +202,12 @@ class ApiCtrl extends Controller
         return response()->json($user,200);
     }
 
+    public function userTopUpWallet(Request $request){
+        $user = Auth::guard('api')->user();
+        $profile = DB::table('users')->join('user_profile','user_profile.user_id','users.id')->select('users.*','user_profile.wallet')->get();
+        return response()->json(['status'=>true,'message'=>'Anda Berhasil Menambah Dana']);
+    }
+
     public function PostBooking(Request $request){
         DB::beginTransaction();
         try {

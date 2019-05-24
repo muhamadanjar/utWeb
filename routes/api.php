@@ -29,8 +29,12 @@ Route::post('login', 'ApiCtrl@login');
 Route::post('register', 'ApiCtrl@register');
 Route::post('user/details', 'ApiCtrl@details');
 Route::post('user/update_position', 'ApiCtrl@userUpdateLocation');
+Route::post('user/topup','ApiCtrl@userTopUpWallet');
+
 Route::post('booking','ApiCtrl@PostBooking');
 Route::post('reguler','ApiCtrl@postReguler');
+
+
 
 Route::get('user/location','ApiCtrl@GetUserLocation');
 Route::get('type_car','ApiCtrl@GetTypeCar');

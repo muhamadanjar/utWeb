@@ -34,7 +34,7 @@
 			<div class="inner">
 				<h3>53<sup style="font-size: 20px">%</sup></h3>
 
-				<p>Bounce Rate</p>
+				<p>Driver aktif</p>
 			</div>
 			<div class="icon">
 				<i class="ion ion-stats-bars"></i>
@@ -83,8 +83,35 @@
 	
 	</section>
 	<section class="col-lg-5 connectedSortable">
-
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">Driver</h3>
+			</div>
+			<div class="box-body"></div>
+		</div>
 	</section>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+			<div class="box">
+
+			
+			<table class="table table-bordered">
+					<thead>
+						<tr>
+							<td>No Transaksi</td>
+							<td>Type Transaksi</td>
+							<td>Di pesan</td>
+							<td>Tanggal</td>
+							<td>Status</td>
+							<td></td>
+						</tr>
+					</thead>
+			</table>
+		</div>
+	</div>
+	
 </div>
 
 
@@ -167,7 +194,6 @@
 				
 				
 			});
-			
 			
 
 			function resLastPosition(a) {
