@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\Models\User as UserModerator;
 use File;
+use App\UserProfile;
 class User extends UserModerator
 {
     use Notifiable, HasApiTokens;
@@ -101,5 +102,8 @@ class User extends UserModerator
         return $this->hasMany(Comment::class, 'author_id');
     }
 
+    public function profile(){
+        return $this->hasOne(UserProfile::class,'user_id');
+    }
     
 }

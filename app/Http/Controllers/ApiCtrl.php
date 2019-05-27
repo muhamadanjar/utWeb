@@ -17,6 +17,7 @@ use App\Trip;
 use App\Promo;
 use App\Setting;
 use App\UserLocation;
+use App\UserProfile;
 class ApiCtrl extends Controller
 {
     use ServerInformasi;
@@ -131,14 +132,21 @@ class ApiCtrl extends Controller
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
+        $profile = new UserProfile(['user_id'=>$user->id,'wallet'=>0,'rate'=>0,'no_telepon']);
+        $user->profile()->save($profile);
         $success['token'] = $user->createToken('MyApp')->accessToken;
         $success['name'] = $user->name;
+
         return response()->json(['status'=>true,'data' => $success], $this->successStatus);
     }
     public function details(){
         $user = Auth::guard('api')->user();
         if ($user) {
-            return response()->json(['success' => true, 'data' => $user], $this->successStatus);
+            $profile = $user->profile;
+            dd($profile);
+            $ar_user = $user->toArray();
+            $ar = array_merge($ar_user,$profile);
+            return response()->json(['success' => true, 'data' => $ar], $this->successStatus);
         }
         return response()->json(['error' => true, 'message' => 'Data Tidak ada'], $this->successStatus);
 
@@ -206,6 +214,27 @@ class ApiCtrl extends Controller
         $user = Auth::guard('api')->user();
         $profile = DB::table('users')->join('user_profile','user_profile.user_id','users.id')->select('users.*','user_profile.wallet')->get();
         return response()->json(['status'=>true,'message'=>'Anda Berhasil Menambah Dana']);
+    }
+    public function userChangeOnline(){
+        try {
+            $user = Auth::guard('api')->user();
+            $profile = UserProfile::where('user_id',$user->id)->first();
+            if($profile !== null){
+                $isonline = $user->profile;
+                $profile = DB::table('user_profile')
+                ->where('user_id',$user->id)
+                ->update(['isonline'=>!$isonline]);    
+            }else{
+                $p = new UserProfile();
+                $p->user_id = $user->id;
+                $p->isonline = 1;
+                $p->save();
+            }
+            
+            return response()->json(['status'=>true,'data'=>$profile,'message'=>'Data Online Berhasil di ubah']);
+        } catch (\Exception $e) {
+            return response()->json(['status'=>false,'message'=>$e]);
+        }
     }
 
     public function PostBooking(Request $request){

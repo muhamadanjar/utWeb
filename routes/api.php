@@ -30,6 +30,7 @@ Route::post('register', 'ApiCtrl@register');
 Route::post('user/details', 'ApiCtrl@details');
 Route::post('user/update_position', 'ApiCtrl@userUpdateLocation');
 Route::post('user/topup','ApiCtrl@userTopUpWallet');
+Route::post('user/changeonline','ApiCtrl@userChangeOnline');
 
 Route::post('booking','ApiCtrl@PostBooking');
 Route::post('reguler','ApiCtrl@postReguler');
