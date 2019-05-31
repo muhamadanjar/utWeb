@@ -92,6 +92,7 @@ class TripCtrl extends BackendCtrl
 
         \DB::statement(DB::raw('set @rownum=0'));
             $sewa = Trip::join('trip_detail','trip.trip_id','=','trip_detail.trip_id')
+    
             ->orderBy('trip.created_at','DESC')
             ->select(
             [

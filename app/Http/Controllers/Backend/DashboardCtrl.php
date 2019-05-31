@@ -7,9 +7,9 @@ use Carbon\Carbon;
 use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\RepositoryInterface as ModeratorInterface;
 use MulutBusuk\Workspaces\Repositories\Eloquent\Post\RepositoryInterface as PostInterface;
 use MulutBusuk\Workspaces\Repositories\Eloquent\AuditTrail\Activity\RepositoryInterface as ActivityInterface;
-use App\Mobil\Models\Jalan;
 use App\Mobil\Contracts\RepositoryInterface as MobilInterface;
-
+use App\Trip;
+use App\Role;
 use DB;
 class DashboardCtrl extends BackendCtrl{
     public $muser;
@@ -30,14 +30,21 @@ class DashboardCtrl extends BackendCtrl{
         $datastatistik = $this->activity->statistikPengunjung();
         $totalpengunjung = $this->activity->totalpengunjung();
         $totaluser = $this->muser->countUser();
+        $totalpemesanan = Trip::count();
         //$chartstatistik = $this->getChartStatistik();
         // $totaldriver = $this->driver->count();
+
+        $driver = Role::where('name','driver')->first()->users;
+        $trip = Trip::orderBy('date','DESC')->limit(10);
+        
     
         return view('backend.dashboard.index')->with([
             'datastatistik'=>$datastatistik,
             'totalpengunjung'=>$totalpengunjung,
             'totaluser'=>$totaluser,
-            'totalmobil' => 0,
+            'totalpemesanan' => $totalpemesanan,
+            'driver' => $driver,
+            'listtransaksi'=>$trip
         ]);
         
     }

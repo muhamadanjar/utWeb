@@ -24,8 +24,8 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        // return view('home');
-        return redirect()->route('map.index');
+        return view('home');
+        // return redirect()->route('map.index');
     }
 
     public function hubungi($value='')

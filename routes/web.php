@@ -40,10 +40,14 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::resource('trip_job','TripCtrl');
 	Route::get('trip_job_data','TripCtrl@get_data');
 	Route::get('trip_job/{trip_id}/detail','TripCtrl@get_detail');
-
+	Route::resource('statistik','StatistikCtrl');
 	Route::resource('reviews','ReviewCtrl');
 	Route::resource('driver','DriverCtrl');
 	Route::resource('services','ServiceCtrl');
+	Route::resource('packages','PackageCtrl');
+	Route::resource('typevehicle','VehicleTypeCtrl',['only'=>['index']]);
+	
+	
 
 	
     //Link

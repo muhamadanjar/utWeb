@@ -211,9 +211,23 @@ class ApiCtrl extends Controller
     }
 
     public function userTopUpWallet(Request $request){
-        $user = Auth::guard('api')->user();
-        $profile = DB::table('users')->join('user_profile','user_profile.user_id','users.id')->select('users.*','user_profile.wallet')->get();
-        return response()->json(['status'=>true,'message'=>'Anda Berhasil Menambah Dana']);
+        try {
+            $user = Auth::guard('api')->user();
+            $up = UserProfile::where('user_id',$user->id)->first();
+            if($up != null){
+                $up->wallet = $request->wallet;
+                $up->save();
+            }else{
+                $up =  new UserProfile();
+                $up->user_id = $user->id;
+                $up->wallet = $request->wallet;
+                $up->save();
+            }
+            return response()->json(['status'=>true,'message'=>'Anda Berhasil Menambah Dana']);    
+        } catch (\Exception $e) {
+            return response()->json(['status'=>false,'message'=>$e->getMessage()]);    
+        }
+        
     }
     public function userChangeOnline(){
         try {

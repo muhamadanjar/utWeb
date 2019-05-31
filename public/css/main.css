@@ -1,0 +1,33 @@
+/*
+Copyright (c) 2016 Functionthemes. 
+------------------------------------------------------------------
+[Master Main Stylesheet]
+
+Template Name: Micky mobile app showcase template
+Version: 1.0.0
+Author: Functionthemes
+
+------------------------------------------------------------------- */
+
+@import url("style.css");
+@import url("../plugins/bootstrap/dist/css/bootstrap.min.css");
+@import url("responsive.css");
+@import url("fonts.css");
+@import url("font-awesome.css");
+@import url("simple-line-icons.css");
+/* Bootstrap select css */
+@import url("bootstrape-select.css");
+/* Bootstrap select css */
+/* animation css */
+@import url("animation.css");
+/* animation css */
+/* revolution slider css */
+@import url("../plugins/revolution/css/layers.css");
+@import url("../plugins/revolution/css/settings.css");
+/* revolution slider css */
+/* owl-crousel css */
+@import url("../plugins/crousel/css/owl.carousel.css");
+/* owl-crousel css */
+/* video-popup css */
+@import url("../plugins/video/magnific-popup.css");
+/* video-popup css */

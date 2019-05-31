@@ -23,7 +23,8 @@
                         <th>Alamat</th>
                         <th>Trip Date</th>
                         <th>Driver</th>
-                        <th>Fare</th>
+                        <th>Customer</th>
+                        <th>Fare</th>   
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
