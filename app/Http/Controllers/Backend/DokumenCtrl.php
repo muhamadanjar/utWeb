@@ -17,7 +17,7 @@ class DokumenCtrl extends BackendCtrl
         $this->_dokumen = $dokumen;
     }
     public function getIndex(){
-        $dokumen = Dokumen::where('update_by',auth()->user()->id)->get();
+        $dokumen = Dokumen::orderBy('id','DESC')->get();
         if(auth()->user()->hasRole('admin') || auth()->user()->isSuper()){
             $dokumen = Dokumen::orderBy('id','DESC')->get();
         }

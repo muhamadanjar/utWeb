@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 use App\Mobil\Models\RentPackage;
+use App\Mobil\Models\Type;
 class PackageCtrl extends BackendCtrl{
     public function __construct(){
         parent::__construct();
     }
     public function index(){
         $p = RentPackage::get();
-        return view('backend.package.index')->with(['package'=>$p]);
+        $type = Type::get();
+        return view('backend.package.index')->with(['package'=>$p,'type'=>$type]);
     }
     public function edit($id){
         session(['status'=>'edit']);

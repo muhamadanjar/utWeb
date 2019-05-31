@@ -9,7 +9,7 @@ class VehicleTypeCtrl extends BackendCtrl{
          parent::__construct();
      }
      public function index(Type $var = null){
-         $type = Type::get();
-         return view('backend.driver.type');
+        $type = Type::get();
+        return view('backend.driver.type')->with(['type'=>$type]);
      }
 }

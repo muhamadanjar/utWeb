@@ -1,9 +1,9 @@
-@extends('layouts.limitless.main')
+@extends($ctemplates.'.main')
 @section('content-admin')
-    <div class="card card-default">
-        <div class="card-header with-border">
-            <h3 class="card-title">DAFTAR UPLOAD DOKUMEN</h3>
-            <div class="card-tools pull-right">
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title">DOKUMEN</h3>
+            <div class="box-tools pull-right">
                 <div class="btn-group">
                     <?php if(\Gate::check('create.dokumen')){ ?>
                     <a href="{{ route('backend.dokumen.tambah') }}" class="btn btn-sm btn-primary"><span class="fa fa-plus"></span> Tambah</a>
@@ -12,14 +12,14 @@
             </div>
             
         </div>
-            <!-- /.card-header -->
-        <div class="card-body">
+            <!-- /.box-header -->
+        <div class="box-body">
         	<table class="display table" cellspacing="0" width="100%" id="table_dom">
                 <thead>
                     <tr>
                         <th></th>
                         <th>Judul Dokumen</th>
-                        <th>Kategori</th>
+                        <th>Dokumen</th>
                         <th>Tanggal</th>
                     </tr>
                 </thead>
@@ -46,13 +46,13 @@
                                             {{ csrf_field() }}
                                             <input name="_method" type="hidden" value="DELETE">    
                                         </form>
-                                    <li><a href="{{ route('backend.dokumen.download',array($p->id)) }}"><i class="fa fa-download"></i> Download</a></li>                                            
+                                    
                                 </ul>
                             </div>
                         </td>
-                        <td>{{ $p->judul }}</td>
-                        <td>{{ $p->kategori }}</td>
-                        <td>{{ date('M d, Y', strtotime($p->tanggal)) }}</td>        
+                        <td>{{ $p->doc_name }}</td>
+                        <td>{{ $p->doc_for }}</td>
+                        <td>{{ date('M d, Y', strtotime($p->created_at)) }}</td>        
                     </tr>
                     @endforeach
                 </tbody>

@@ -4,10 +4,18 @@ namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 use App\User;
-class DriverCtrl extends BackendCtrl
-{
+use App\Role;
+use DB;
+class DriverCtrl extends BackendCtrl{
+    private $roleName;
+    public function __construct(){
+        $this->roleName = 'driver';
+    }
     public function index(){
-        return view('backend.driver.index');
+        $role = Role::where('name',$this->roleName)->first();
+        // $driver = $role->users;
+        $driver = DB::table('tm_driver')->get();
+        return view('backend.driver.index')->with(['driver'=>$driver]);
     }
 
     public function driver_mobil(){
