@@ -14,6 +14,7 @@
     $valid = '';
     $tgl_mulai='';
     $tgl_akhir='';
+    $description = '';
     if(session('aksi') == 'edit'){
         $id = $promo->id;
         $kode_promo =$promo->kode_promo;
@@ -26,6 +27,7 @@
         $image=$promo->foto;
         $tgl_mulai=$promo->tgl_mulai;
         $tgl_akhir=$promo->tgl_akhir;
+        $description =$promo->description;
     }
   ?>
 <form role="form" method="post" action="{{ route('backend.promo.post')}}" enctype='multipart/form-data'>
@@ -49,7 +51,7 @@
                                 <div class="input-group">
                                     <input type="text" name="kode_promo" class="form-control" id="kode_promo" value="{{$kode_promo}}">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-primary">Generate</button>
+                                        <button type="button" id="btn-generate" class="btn btn-primary">Generate</button>
                                     </div>
                                 </div>
                                 
@@ -72,7 +74,7 @@
                                 </div>
                             <div class="form-group">
                                 <label for="kode_promo">Deskripsi</label>
-                                <textarea name="description" id="description" class="form-control"></textarea>
+                            <textarea name="description" id="description" class="form-control">{{$description}}</textarea>
                             </div>
 
                             <div class="form-group">
@@ -119,6 +121,7 @@
                                         <span class="input-group-btn">
                                             <input type="file" name="users_file" class="hidden file fileupload" 
                                             data-url="{{ route('backend.promo.upload')}}" 
+                                            data-type="single"
                                             data-path="{{ asset('/images/uploads/promo/')}}">
                                             <button type="button" class="btn btn-info btn-flat formUpload">Foto!</button>
                                         </span>
@@ -165,6 +168,10 @@
         $('#tgl_akhir').datepicker({
             autoclose: true
         });
+        $('#btn-generate').on('click',function(e){
+            e.preventDefault();
+            $('#kode_promo').val('<?php echo date('YmdHis') ?>');
+        })
     });
 </script>
 <script type="text/javascript" src="{{ url('js/rm.js')}}"></script>

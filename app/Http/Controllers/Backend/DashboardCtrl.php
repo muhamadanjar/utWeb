@@ -51,6 +51,10 @@ class DashboardCtrl extends BackendCtrl{
         
     }
 
+    public function getStatistikView(){
+        return view('backend.dashboard.statistik');
+    }
+
     
     
     public function getChartStatistik(){

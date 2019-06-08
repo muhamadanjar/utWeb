@@ -31,6 +31,7 @@ class PromoCtrl extends BackendCtrl
         $promo = Promo::find($id);
         $path = $promo->getPath();
         $permanentlink = $promo->getPermalink();
+        $st = ServiceType::get();
         return view('backend.promo.form')->withPromo($promo)
         ->withPath($path)->with('permanentlink',$permanentlink)->withSt($st);
     }

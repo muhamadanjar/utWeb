@@ -25,6 +25,7 @@ Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend', 'middleware' => 'auth'], function () {
 	Route::get('/', 'DashboardCtrl@getIndex')->name('index');
 	Route::get('dashboard/index', ['as' => 'dashboard.index', 'uses' => 'DashboardCtrl@getIndex']);
+	Route::get('dashboard/statistik','DashboardCtrl@getStatistikView');
 	Route::get('notifikasi', ['as' => 'notifikasi', 'uses' => 'DashboardCtrl@getNotifikasi']);
 	Route::group(['prefix' => 'dokumen', 'as' => 'dokumen.'], function () {
 		Route::get('/', 'DokumenCtrl@getIndex')->name('index');
@@ -40,7 +41,7 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::resource('trip_job','TripCtrl');
 	Route::get('trip_job_data','TripCtrl@get_data');
 	Route::get('trip_job/{trip_id}/detail','TripCtrl@get_detail');
-	Route::resource('statistik','StatistikCtrl');
+	
 	Route::resource('reviews','ReviewCtrl');
 	Route::resource('driver','DriverCtrl');
 	Route::resource('services','ServiceCtrl');
@@ -50,7 +51,7 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::post('packages-post/{type?}','PackageCtrl@post')->name('packages.post');
 	Route::post('packages/{type?}/na','PackageCtrl@na')->name('packages.na');
 	Route::get('packages-list/{type?}','PackageCtrl@list')->name('packages.list');
-	Route::resource('typevehicle','VehicleTypeCtrl',['only'=>['index']]);
+	Route::resource('typevehicle','VehicleTypeCtrl',['only'=>['index','edit','destroy']]);
 	
 	
 
