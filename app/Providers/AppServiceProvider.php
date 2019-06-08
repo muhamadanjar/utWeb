@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 use MulutBusuk\Workspaces\Repositories\Eloquent\AuditTrail\Activity\RepositoryInterface as ActivityRepository;
 use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\Models\Setting;
-use MulutBusuk\Workspaces\Repositories\Eloquent\Menu\Menu;
+// use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\Models\Menu;
 use Carbon\Carbon;
 
 
@@ -27,9 +27,9 @@ class AppServiceProvider extends ServiceProvider
         View::share('site_settings', $site_settings);
         Carbon::setLocale('id');
 
-        $Menu = new Menu();
-        $allCategories = $Menu->tree();
-        View::share('allmenu', $allCategories);
+        // $Menu = new Menu();
+        // $allCategories = $Menu->tree();
+        // View::share('allmenu', $allCategories);
         View::share('ctemplates', \Config::get('mulutbusuk.template'));
 
     }

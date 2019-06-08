@@ -134,6 +134,7 @@ class ApiCtrl extends Controller
         $user = User::create($input);
         $profile = new UserProfile(['user_id'=>$user->id,'wallet'=>0,'rate'=>0,'no_telepon']);
         $user->profile()->save($profile);
+        $user->assignRole('customer');
         $success['token'] = $user->createToken('MyApp')->accessToken;
         $success['name'] = $user->name;
 
@@ -255,7 +256,7 @@ class ApiCtrl extends Controller
         DB::beginTransaction();
         try {
             $trip = new Trip();
-            $trip->trip_code = base64_encode(rand());
+            $trip->trip_code = date('YmdHis');
             $trip->trip_job = $request->job;
             $trip->trip_bookby = $request->trip_bookby;
             $trip->trip_address_origin = $request->trip_address_origin;
@@ -292,7 +293,7 @@ class ApiCtrl extends Controller
         DB::beginTransaction();
         try {
             $trip = new Trip();
-            $trip->trip_code = base64_encode(rand());
+            $trip->trip_code = date('YmdHis');
             $trip->trip_job = $request->job;
             $trip->trip_bookby = $request->trip_bookby;
             $trip->trip_address_origin = $request->trip_address_origin;

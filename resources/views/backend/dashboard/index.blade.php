@@ -23,7 +23,7 @@
 			<span class="info-box-icon bg-aqua"><i class="fa fa-users"></i></span>
 			<div class="info-box-content">
 				<span class="info-box-text">Costumer</span>
-				<span class="info-box-number">{{$totaluser}}<small></small></span>
+				<span class="info-box-number">{{$totalcustomer}}<small></small></span>
 			</div>
 		</div>
 	
@@ -36,7 +36,7 @@
 				<span class="info-box-icon bg-green"><i class="fa fa-user"></i></span>
 				<div class="info-box-content">
 					<span class="info-box-text">Driver</span>
-					<span class="info-box-number">{{$totaluser}}<small></small></span>
+					<span class="info-box-number">{{$totaldriver}}<small></small></span>
 				</div>
 		</div>
 	</div>

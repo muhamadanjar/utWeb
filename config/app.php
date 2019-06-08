@@ -176,6 +176,7 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         MulutBusuk\Workspaces\Providers\ModeratorProvider::class,
         MulutBusuk\Workspaces\Providers\PostProvider::class,
+        MulutBusuk\Workspaces\Providers\MenuProvider::class,
 
         /*
          * Application Service Providers...

@@ -21,8 +21,8 @@
                             <tr>
                                 <td>{{$item->type}}</td>
                                 <td>{{$item->description}}</td>
-                                <td>{{$item->status}}</td>
-                                <td></td>
+                                <td>{!!($item->status == 1 ? "<i class='fa fa-check text-green'></i>":"<i class='fa fa-cross text-red'></i>")!!}</td>
+                                <td><a href="{{ route('backend.packages.list',array($item->id)) }}" class="btn btn-xs btn-primary">Tambah Paket</a></td>
                             </tr>
                             @endforeach
                         </tbody>

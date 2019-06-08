@@ -44,7 +44,11 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::resource('reviews','ReviewCtrl');
 	Route::resource('driver','DriverCtrl');
 	Route::resource('services','ServiceCtrl');
-	Route::resource('packages','PackageCtrl');
+	Route::resource('packages','PackageCtrl',['only'=>['index','edit']]);
+	Route::get('packages/create/{type?}','PackageCtrl@create')->name('packages.create');
+	Route::post('packages-post/{type?}','PackageCtrl@post')->name('packages.post');
+	Route::post('packages/{type?}/na','PackageCtrl@na')->name('packages.na');
+	Route::get('packages-list/{type?}','PackageCtrl@list')->name('packages.list');
 	Route::resource('typevehicle','VehicleTypeCtrl',['only'=>['index']]);
 	
 	

@@ -31,17 +31,19 @@ class DashboardCtrl extends BackendCtrl{
         $totalpengunjung = $this->activity->totalpengunjung();
         $totaluser = $this->muser->countUser();
         $totalpemesanan = Trip::count();
-        //$chartstatistik = $this->getChartStatistik();
-        // $totaldriver = $this->driver->count();
-
+        
         $driver = Role::where('name','driver')->first()->users;
         $trip = Trip::orderBy('date','DESC')->limit(10);
+        $totaldriver = DB::table('tm_driver')->count();
+        $totalcustomer = DB::table('tm_customer')->count();
         
     
         return view('backend.dashboard.index')->with([
             'datastatistik'=>$datastatistik,
             'totalpengunjung'=>$totalpengunjung,
             'totaluser'=>$totaluser,
+            'totaldriver'=>$totaldriver,
+            'totalcustomer'=>$totalcustomer,
             'totalpemesanan' => $totalpemesanan,
             'driver' => $driver,
             'listtransaksi'=>$trip

@@ -48,10 +48,13 @@ class TripCtrl extends BackendCtrl
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($trip_job)
-    {   
-        $trip = Trip::join('trip_detail','trip.trip_id','trip_detail.trip_id')->where('trip.trip_id',$trip_job)->orderBy('trip_date','DESC')->first();
-        return view('backend.trip.show')->with(['trip'=>$trip]);
+    public function show($trip_job){   
+        
+        $trip = Trip::join('trip_detail','trip.trip_id','trip_detail.trip_id')
+        ->where('trip.trip_id',$trip_job)
+        ->orderBy('trip_date','DESC')->first();
+        if($trip !== NULL) return view('backend.trip.show')->with(['trip'=>$trip]);
+        else return dd('Data tidak ada,Silahkan kembali ke halaman sebelumnya');
     }
 
     /**

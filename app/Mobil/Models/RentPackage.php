@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class RentPackage extends Model
 {
     protected $table = 'rent_package';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'rp_id';
     protected $fillable = ['rp_name', 'rp_total_price', 'rp_miles_km','rp_hour'];
-    // protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at'];
+    public $timestamps = false;
 
     public static $rules = array(
         'rp_name' => 'required|min:1',
@@ -24,9 +25,7 @@ class RentPackage extends Model
         'rp_miles_km.required' => 'Harga Per Km harus di isi',
     ];
 
-
-    public function scopeActive($query)
-    {  
+    public function scopeActive($query){  
         return $query->where('status', '=', '1');
     }
 

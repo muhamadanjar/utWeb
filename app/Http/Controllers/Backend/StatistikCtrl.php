@@ -10,6 +10,7 @@ class StatistikCtrl extends BackendCtrl{
         $this->activity=$activity;
     }
     public function index(){
+        // $this->activity->;
         return view('backend.dashboard.statistik');
     }
 }

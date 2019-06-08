@@ -35,7 +35,7 @@
                         <td>{{ $item->email}}</th>
                         <td class="text-center">{{ (isset($item->created_at) !== NULL ? date('D m Y H:i',strtotime($item->created_at)):'-')}}</th>
                         <td>{{ $item->no_telepon}}</th>
-                        <td>{{ $item->wallet}}</th>
+                        <td><span class="badge bg-success">{{ $item->wallet}}</span></th>
                         <td><button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat Dokumen</button></th>
                         <td class="text-center">{!! ($item->isactived==1 ? '<i class="fa fa-check text-green"></i>':'<i class="fa fa-close text-red"></i>') !!}</td>
                         <td>
