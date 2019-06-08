@@ -10,7 +10,7 @@
 <?php
 
 if (session('aksi') == 'edit') {
-	$id = $paket->id;
+	$id = $paket->rp_id;
     $rp_name = $paket->rp_name;
     $rp_total_price = $paket->rp_total_price;
     $rp_miles_km = $paket->rp_miles_km;
@@ -20,7 +20,6 @@ if (session('aksi') == 'edit') {
     $status = $paket->status;
 } else {
 	$id = $id_rent;
-	$id = "";
     $rp_name = "";
     $rp_total_price = "";
     $rp_miles_km = "";

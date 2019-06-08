@@ -40,14 +40,13 @@
                         <td class="text-center">{!! ($item->isactived==1 ? '<i class="fa fa-check text-green"></i>':'<i class="fa fa-close text-red"></i>') !!}</td>
                         <td>
                             <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-gear"></i>
-                        <span class="fa fa-caret-down"></span></button>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a href="#">Edit</a></li>
-                            <li><a href="#">Hapus</a></li>
-                        </ul>
-                        </div>                            
-                    
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-gear"></i>
+                                <span class="fa fa-caret-down"></span></button>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="#">Edit</a></li>
+                                    <li><a href="#">Hapus</a></li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                     @endforeach

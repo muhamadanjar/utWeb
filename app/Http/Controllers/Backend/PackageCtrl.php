@@ -7,6 +7,7 @@ use App\Mobil\Models\RentPackage;
 use App\Mobil\Models\Type;
 use DB; 
 use Validator;
+use Laracasts\Flash\Flash;
 class PackageCtrl extends BackendCtrl{
     public function __construct(){
         parent::__construct();
@@ -26,7 +27,7 @@ class PackageCtrl extends BackendCtrl{
         $paket = new RentPackage();
         $id = RentPackage::select(DB::raw('MAX(rp_id) as max'))->first()->toArray();
         $id_paket = $id['max']+1;
-        return view('backend.package.form')->with(['paket'=>$paket,'type'=>$type,'id_paket'=>$id_paket]);
+        return view('backend.package.form')->with(['paket'=>$paket,'type'=>$type,'id_rent'=>$id_paket]);
     }
     public function destroy($id){
         $p = RentPackage::find($id);
@@ -44,16 +45,22 @@ class PackageCtrl extends BackendCtrl{
 
     public function post($type=null,Request $request){
         try {
-            $rent = (session('status')=='edit') ? RentPackage::find($request->id) : new RentPackage();
-            $rent->rp_name = $request->rp_name;
-            $rent->rp_total_price = $request->rp_total_price;
-            $rent->rp_miles_km = $request->rp_miles_km;
-            $rent->rp_hour = $request->rp_hour;
-            $rent->rp_add_mile_km = $request->rp_add_mile_km;
-            $rent->rp_add_min = $request->rp_add_min;
-            $rent->rp_car_type = $type;
-            $rent->status = $request->status;
-            $rent->save();
+            if ($type != null) {
+                $rent = (session('status')=='edit') ? RentPackage::find($request->id) : new RentPackage();
+                $rent->rp_name = $request->rp_name;
+                $rent->rp_total_price = $request->rp_total_price;
+                $rent->rp_miles_km = $request->rp_miles_km;
+                $rent->rp_hour = $request->rp_hour;
+                $rent->rp_add_mile_km = $request->rp_add_mile_km;
+                $rent->rp_add_min = $request->rp_add_min;
+                $rent->rp_car_type = $type;
+                $rent->status = $request->status;
+                $rent->save();
+                Flash::success('Data berhasil');
+            }else{
+                Flash::error('Tipe Mobil tidak ada');
+            }
+            
             return redirect()->route('backend.packages.index');
         } catch (\Exception $e) {
             return $e->getMessage();
