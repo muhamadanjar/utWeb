@@ -45,11 +45,11 @@ class Type extends Model
     }
 
     public function getPermalink(){
-        return url('images').DIRECTORY_SEPARATOR;
+        return url('files/uploads/type').DIRECTORY_SEPARATOR;
     }
 
     public function getPath(){
-        return public_path('images').DIRECTORY_SEPARATOR;
+        return public_path('files/uploads/type').DIRECTORY_SEPARATOR;
     }
 
 

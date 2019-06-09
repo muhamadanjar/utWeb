@@ -5,6 +5,9 @@
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">Type Mobil</h3>
+                    <div class="text-right">
+                    <a href="{{ route('backend.typevehicle.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah</a>
+                    </div>
                 </div>
                 <div class="box-body">
                     <table class="display table table-bordered">

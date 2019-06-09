@@ -122,7 +122,7 @@
                                             <input type="file" name="users_file" class="hidden file fileupload" 
                                             data-url="{{ route('backend.promo.upload')}}" 
                                             data-type="single"
-                                            data-path="{{ asset('/images/uploads/promo/')}}">
+                                            data-path="{{ asset('/files/uploads/promo/')}}">
                                             <button type="button" class="btn btn-info btn-flat formUpload">Foto!</button>
                                         </span>
                                     </div>
