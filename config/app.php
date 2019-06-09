@@ -177,6 +177,7 @@ return [
         MulutBusuk\Workspaces\Providers\ModeratorProvider::class,
         MulutBusuk\Workspaces\Providers\PostProvider::class,
         MulutBusuk\Workspaces\Providers\MenuProvider::class,
+        MulutBusuk\Workspaces\Providers\DekorProvider::class,
 
         /*
          * Application Service Providers...

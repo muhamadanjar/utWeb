@@ -1,9 +1,9 @@
 @extends($ctemplates.'.main')
 @section('content-admin')
-    <div class="box box-default">
-        <div class="box-header with-border">
-            <h3 class="box-title">Mobil</h3>
-            <div class="box-tools text-right">
+    <div class="{{$div_box}} {{$div_box}}-default">
+        <div class="{{$div_box}}-header with-border">
+            <h3 class="{{$div_box}}-title">Mobil</h3>
+            <div class="{{$div_box}}-tools text-right">
                 <div class="btn-group">
                     
                     
@@ -12,7 +12,7 @@
             
         </div>
             <!-- /.box-header -->
-        <div class="box-body">
+        <div class="{{$div_box}}-body">
         	<table class="display table" cellspacing="0" width="100%" id="table_mobil">
                 <thead>
                     <tr>

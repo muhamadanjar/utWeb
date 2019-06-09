@@ -11,7 +11,7 @@ use MulutBusuk\Workspaces\Repositories\Eloquent\AuditTrail\Activity\RepositoryIn
 use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\Models\Setting;
 // use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\Models\Menu;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Config;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,10 +26,9 @@ class AppServiceProvider extends ServiceProvider
         $site_settings = Setting::pluck('value', 'key');
         View::share('site_settings', $site_settings);
         Carbon::setLocale('id');
-
-        // $Menu = new Menu();
-        // $allCategories = $Menu->tree();
-        // View::share('allmenu', $allCategories);
+        $_tbox = Config::get('mulutbusuk.box');
+        $box = ($_tbox == 'bs3') ? Config::get('mulutbusuk.bs3_box') : Config::get('mulutbusuk.bs4_box');
+        View::share('div_box', $box);
         View::share('ctemplates', \Config::get('mulutbusuk.template'));
 
     }

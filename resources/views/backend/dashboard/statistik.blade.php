@@ -3,6 +3,9 @@
     <div class="row">
         <div class="col-md-6">
             <div class="box">
+                <div class="box-header">
+                    <h4 class="header-title">Driver</h4>
+                </div>
                 <div class="box-body">
                     <div id="driver_active"></div>
                 </div>
@@ -10,6 +13,9 @@
         </div>
         <div class="col-md-6">
             <div class="box">
+                <div class="box-header">
+                    <h4 class="header-title">Rides</h4>
+                </div>
                 <div class="box-body">
                     <div id="ride"></div>
                 </div>

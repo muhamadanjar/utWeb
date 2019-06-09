@@ -4,10 +4,10 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-body">
-                    <table class="table display">
+                    <table class="table display table_reviews">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th>Ride Number</th>
                                 <th>Driver</th>
                                 <th>User</th>
                                 <th>Tanggal</th>
@@ -16,14 +16,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td>Driver</td>
-                                <td>User</td>
-                                <td>Tanggal</td>
-                                <td>Rating</td>
-                                <td>Komentar</td>
-                            </tr>
+                            @forelse ($review as $item)
+                                <tr>
+                                    <td>{{$item->trip_code}}</td>
+                                    <td>{{$item->driver->name }}</td>
+                                    <td>{{$item->rider->name }}</td>
+                                    <td>{{$item->date}}</td>
+                                    <td>{{$item->rating}}</td>
+                                    <td>{{$item->description}}</td>
+                                </tr>    
+                            @empty
+                                <tr >
+                                    <td class="text-center" colspan="6">Data tidak ada</td>
+                                </tr>    
+                            @endforelse
+                            
+                            
                         </tbody>
                         
                     </table>
