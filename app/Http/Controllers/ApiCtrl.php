@@ -143,8 +143,7 @@ class ApiCtrl extends Controller
     public function details(){
         $user = Auth::guard('api')->user();
         if ($user) {
-            $profile = $user->profile;
-            dd($profile);
+            $profile = $user->profile->toArray();
             $ar_user = $user->toArray();
             $ar = array_merge($ar_user,$profile);
             return response()->json(['success' => true, 'data' => $ar], $this->successStatus);
@@ -381,7 +380,7 @@ class ApiCtrl extends Controller
     }
 
     public function GetUserLocation(){
-        $ul = DB::table('user_location')->join('users','user_location.user_id','users.id')->select('users.*','user_location.latitude','user_location.longitude')->get();
+        $ul = UserLocation::join('users','user_location.user_id','users.id')->select('users.*','user_location.latitude','user_location.longitude')->get();
         return response()->json(['status'=>true,'data'=>$ul],200);
     }
 
@@ -400,6 +399,33 @@ class ApiCtrl extends Controller
     public function GetSettings(){
         $setting = Setting::pluck('value', 'key');
         return response()->json(['status'=>true,'data'=>$setting],200);
+    }
+
+    public function check_job(Request $request){
+        $res = array();
+        try {
+            $auth = Auth::guard('api')->user();
+            $profile = $auth->profile;
+            if ($profile->job !== NULL) {
+                $cp = Trip::where('trip_code',$profile->job)->first();
+                $res['data'] = $cp;
+                $message = 'Perjalanan dengan code '.$profile->job;
+            }else{
+                $message = 'Tidak ada Transaksi Perjalanan';
+                $res['data'] = $profile;
+            }
+            $res['message'] = $message;
+            $res['status'] = true;
+            
+            $status = $this->successStatus;
+        } catch (\Exception $e) {
+            $status = 400;
+            $res['error'] = true;
+            $res['message'] = $e->getMessage();
+        }
+        return response()->json($res,$status);
+
+        
     }
 
 }

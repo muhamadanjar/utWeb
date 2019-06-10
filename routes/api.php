@@ -33,9 +33,18 @@ Route::post('user/topup','ApiCtrl@userTopUpWallet');
 Route::post('user/changeonline','ApiCtrl@userChangeOnline');
 
 Route::post('booking','ApiCtrl@PostBooking');
+Route::post('booking_details','ApiCtrl@PostBooking');
+
+Route::post('rider/find_rider_by_number','ApiCtrl@findRiderByNumber');
+Route::post('get_available_driver_list','ApiCtrl@get_available_driver');
+Route::post('ajax_get_user_balance','ApiCtrl@get_user_balance');
+Route::post('get_map_drivers_list','ApiCtrl@get_map_drivers_list');
+Route::post('checkForRestriction','ApiCtrl@checkForRestriction');
+Route::post('ajax_estimate_by_vehicle_type','ApiCtrl@ajax_estimate_by_vehicle_type');
+Route::post('ajax_checkBooking_email','ApiCtrl@ajax_checkBooking_email');
+Route::post('driver/check_job','ApiCtrl@check_job');
+
 Route::post('reguler','ApiCtrl@postReguler');
-
-
 
 Route::get('user/location','ApiCtrl@GetUserLocation');
 Route::get('type_car','ApiCtrl@GetTypeCar');
