@@ -16,7 +16,7 @@
         	<table class="display table" cellspacing="0" width="100%" id="table_reservation">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>No</th>
                         <th>Trip Type</th>
                         <th>Book By</th>
                         <th>Book No</th>
@@ -43,15 +43,29 @@
 @section('style-head')
 @parent
 <link rel="stylesheet" href="{{ url('/plugins/datatables/datatables.min.css')}}">
+<link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css">
 
+<style>
+	
+    .map_transaksi {
+    height: 300px;
+    width: 100%;
+  }
+
+</style>
 @endsection
 @section('script-end')
 @parent
-
+<script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
 <script type="text/javascript" src="{{ url('/plugins/jquery-ui/js/jquery-ui.js')}}"></script>
 <script type="text/javascript" src="{{ url('/plugins/bootbox/js/bootbox.js') }}"></script>
 <script type="text/javascript" src="{{ url('/plugins/datatables/datatables.min.js')}}"></script>
 <script src="{{ asset('/js/rm.js') }}"></script>
 
+<script>
 
+$(function(){
+    
+});
+</script>
 @endsection

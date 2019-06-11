@@ -417,6 +417,8 @@ function loadGoogleMaps() {
 //Table
 
 (function ($, window, document) {
+    let vectorSource =null;
+    let vectorLayer = null;
     var template_transaksi = Handlebars.compile($("#details-transaksi-template").html());
     var table_reservation = $('#table_reservation').DataTable({
         processing: true,
@@ -437,7 +439,8 @@ function loadGoogleMaps() {
             {data: 'trip_code'},
             {data: 'trip_address_origin'},
             {data: 'trip_date'},
-            {data: 'trip_driver'},
+            {data: 'driverName'},
+            {data: 'customerName'},
             {data: 'trip_total'},
             {data: 'trip_status'},
             {data: 'action',name:'action', orderable: false, searchable: false,width: "100px"},
@@ -453,7 +456,6 @@ function loadGoogleMaps() {
         var id = data.id;
         
         if($(this).hasClass('btn-detail')){
-            
             e.preventDefault();
             var el = $(this).parent();
             var title = el.attr('data-title');
@@ -467,7 +469,8 @@ function loadGoogleMaps() {
             .end().find('#frm_title').html('Info')
             .end().modal('show');
             initTableSubTransaksi(tableId,data);
-            $(window).bind('gMapsLoaded', initializeMap('map_canvas_'+data.id));
+            initMapTransaksi();
+            // $(window).bind('gMapsLoaded', initializeMap('map_canvas_'+data.id));
         }
     });
     function initTableSubTransaksi(tableId, data) {
@@ -484,6 +487,27 @@ function loadGoogleMaps() {
                 { data: 'driverTelp', name: 'driverTelp' },
             ]
         })
+    }
+    function initMapTransaksi(){
+        vectorSource = new ol.source.Vector();
+        vectorLayer = new ol.layer.Vector({
+            source: vectorSource,
+            id:'layer_vector'
+        });
+
+        var map = new ol.Map({
+            target: 'map_transaksi',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                }),
+                vectorLayer
+            ],
+            view: new ol.View({
+            center: ol.proj.fromLonLat([98.669689, 3.590003]),
+            zoom: 12
+            })
+        });
     }
 }(jQuery, window, document));
 //Form

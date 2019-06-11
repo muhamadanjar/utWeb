@@ -13,6 +13,7 @@
 
 <script id="details-transaksi-template" type="text/x-handlebars-template">
     <div class="label label-info">Transaksi <b>{{ no_transaksi }}</b></div>
+        <div class="map_transaksi" id="map_transaksi"></div>
         <table class="table details-table" id="transaksi-{{id}}">
             <thead>
             <tr>

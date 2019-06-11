@@ -63,9 +63,10 @@ class TripCtrl extends BackendCtrl
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id){
+        session(['aksi'=>'edit']);
+        $t = Trip::find($id);
+        return view('backend.trip.form')->with(['trip'=>$t]);
     }
 
     /**
@@ -95,7 +96,9 @@ class TripCtrl extends BackendCtrl
 
         \DB::statement(DB::raw('set @rownum=0'));
             $sewa = Trip::join('trip_detail','trip.trip_id','=','trip_detail.trip_id')
-    
+            ->leftjoin('tm_driver','trip.trip_driver','=','tm_driver.id')
+            ->leftjoin('tm_customer','trip_bookby','=','tm_customer.id')
+
             ->orderBy('trip.created_at','DESC')
             ->select(
             [
@@ -106,7 +109,8 @@ class TripCtrl extends BackendCtrl
                 'trip_code',
                 'trip_address_origin',
                 'trip_date',
-                'trip_driver',
+                'tm_driver.name as driverName',
+                'tm_customer.name as customerName',
                 \DB::raw("CONCAT('Rp.',FORMAT(trip_total,2)) as trip_total"),
                 'trip_status',
             ]
@@ -116,7 +120,7 @@ class TripCtrl extends BackendCtrl
         return Datatables::of($sewa)
         ->addColumn('action', function ($user) {
             $content = '<div class="btn-group">';
-            $content .= '<a href="'.route('backend.trip_job.edit',[$user->id]).'" class="btn btn-xs btn-primary btn-edit"><i class="fa fa-edit"></i> Edit</a>';
+            $content .= '<a href="'.route('backend.trip_job.edit',[$user->trip_id]).'" class="btn btn-xs btn-primary btn-edit"><i class="fa fa-edit"></i> Edit</a>';
             $content .= '<a href="#" class="btn btn-xs btn-primary btn-detail"><i class="fa fa-more"></i> Detail</a>';
             $content .= '</div>';
             return $content;

@@ -537,6 +537,8 @@ function loadGoogleMaps() {
 
 
 (function ($, window, document) {
+  var vectorSource = null;
+  var vectorLayer = null;
   var template_transaksi = Handlebars.compile($("#details-transaksi-template").html());
   var table_reservation = $('#table_reservation').DataTable({
     processing: true,
@@ -566,7 +568,9 @@ function loadGoogleMaps() {
     }, {
       data: 'trip_date'
     }, {
-      data: 'trip_driver'
+      data: 'driverName'
+    }, {
+      data: 'customerName'
     }, {
       data: 'trip_total'
     }, {
@@ -598,7 +602,7 @@ function loadGoogleMaps() {
       console.log(data);
       $('#formInfo').find('#frm_body').html('').append(template_transaksi(data)).end().find('#frm_title').html('Info').end().modal('show');
       initTableSubTransaksi(tableId, data);
-      $(window).bind('gMapsLoaded', initializeMap('map_canvas_' + data.id));
+      initMapTransaksi(); // $(window).bind('gMapsLoaded', initializeMap('map_canvas_'+data.id));
     }
   });
 
@@ -624,6 +628,24 @@ function loadGoogleMaps() {
         data: 'driverTelp',
         name: 'driverTelp'
       }]
+    });
+  }
+
+  function initMapTransaksi() {
+    vectorSource = new ol.source.Vector();
+    vectorLayer = new ol.layer.Vector({
+      source: vectorSource,
+      id: 'layer_vector'
+    });
+    var map = new ol.Map({
+      target: 'map_transaksi',
+      layers: [new ol.layer.Tile({
+        source: new ol.source.OSM()
+      }), vectorLayer],
+      view: new ol.View({
+        center: ol.proj.fromLonLat([98.669689, 3.590003]),
+        zoom: 12
+      })
     });
   }
 })(jQuery, window, document); //Form

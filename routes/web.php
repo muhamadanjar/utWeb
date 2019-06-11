@@ -39,6 +39,7 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	});
 
 	Route::resource('trip_job','TripCtrl');
+	Route::post('trip_job/post','TripCtrl@post')->name('trip_job.post');
 	Route::get('trip_job_data','TripCtrl@get_data');
 	Route::get('trip_job/{trip_id}/detail','TripCtrl@get_detail');
 	
