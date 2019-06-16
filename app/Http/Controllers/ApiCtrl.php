@@ -92,7 +92,6 @@ class ApiCtrl extends Controller
     //Auth
     public function login(Request $request){
         try {
-
             $r_user = request('username');
             $user_email = (filter_var($r_user,FILTER_VALIDATE_EMAIL)) ? 'email' : 'username' ;
             if (Auth::attempt([$user_email => $r_user, 'password' => request('password')])) {
@@ -101,7 +100,7 @@ class ApiCtrl extends Controller
                 $response['error'] = false;
                 $response['data']['token'] = $user->createToken('MyApp')->accessToken;
                 $response['data']['user'] = $r_user;
-                $response['data']['password'] = $request->password;
+                $response['data']['roles'] = $user->roles;
                 $response['token'] = $user->createToken('MyApp')->accessToken;
                 $user->api_token = $response['token'];
                 $user->latestlogin = Carbon::now();
@@ -328,11 +327,12 @@ class ApiCtrl extends Controller
     public function getDriverNearby(Request $request){
         $latitude = $request->get('latitude');
         $longitude = $request->get('longitude');
+        $radius  = ($request->get('radius') == NULL ? 25: $request->get('radius') );
         $errors = [];
         
         if ($latitude != null && $longitude != null) {
             $location = UserLocation::select(DB::raw('id, ( 6367 * acos( cos( radians('.$latitude.') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians('.$longitude.') ) + sin( radians('.$latitude.') ) * sin( radians( latitude ) ) ) ) AS distance'))
-            ->having('distance', '<', 25)
+            ->having('distance', '<', $radius)
             ->orderBy('distance')
             ->get();
         }else{

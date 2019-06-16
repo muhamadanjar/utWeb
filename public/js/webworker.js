@@ -12,7 +12,7 @@ self.addEventListener('message', function(a) {
 	let x = 1;
 	switch (b.cmd) {
 		case 'endLastPosition':
-				clearTimeout(timeReqLastCoord);
+				clearTimeout(timeReqLastPosition);
 		break;                
 		case 'reqLastPosition':
 				reqLastPosition(b.val);
