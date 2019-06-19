@@ -9,7 +9,8 @@
 @section('content-admin')
 <?php
 
-if (session('aksi') == 'edit') {
+if (session('status') == 'edit') {
+	echo 'ini edit';
 	$id = $paket->rp_id;
     $rp_name = $paket->rp_name;
     $rp_total_price = $paket->rp_total_price;
@@ -19,7 +20,8 @@ if (session('aksi') == 'edit') {
     $rp_add_min = $paket->rp_add_min;
     $status = $paket->status;
 } else {
-	$id = $id_rent;
+	echo 'ini form';
+	$id = "";
     $rp_name = "";
     $rp_total_price = "";
     $rp_miles_km = "";
@@ -33,7 +35,7 @@ if (session('aksi') == 'edit') {
 
 <form role="form" method="POST" enctype="multipart/form-data" action="{{ route('backend.packages.post',array('type'=>$type)) }}">
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-8 col-md-offset-2">
 			<div class="box box-default">
 				<div class="box-header with-border">
 					<h6 class="box-title"><i class="fa fa-road"></i> Form Paket ({{$type}})</h6>
@@ -50,7 +52,7 @@ if (session('aksi') == 'edit') {
 				<div class="box-body">
 					
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					<input type="hidden" name="id" value="{{ $id }}">
+					<input type="hidden" name="id" value="{{$id}}">
 					
 						
 					<div class="form-group {{ $errors->has('rp_name') ? ' has-error' : '' }}">
@@ -90,9 +92,9 @@ if (session('aksi') == 'edit') {
 						</div>	
 					</div>
 					
-					<div class="form-group {{ $errors->has('status') ? ' has-error' : '' }}">
-						<label for="no_ruas_pangkal">Status</label>
-                        <input type="checkbox" id="status" name="status" {{ ($status == 1 ? "checked":"")}} value="1" required>
+					<div class="form-inline {{ $errors->has('status') ? ' has-error' : '' }}">
+						<label for="no_ruas_pangkal" class="">Status</label>
+                        <input type="checkbox" id="status" name="status" {{ ($status == 1 ? "checked":"")}} value="1" required class="checkbox">
                         
 					</div>
 					
