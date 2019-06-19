@@ -10,7 +10,6 @@
 <?php
 
 if (session('status') == 'edit') {
-	echo 'ini edit';
 	$id = $paket->rp_id;
     $rp_name = $paket->rp_name;
     $rp_total_price = $paket->rp_total_price;
@@ -20,7 +19,6 @@ if (session('status') == 'edit') {
     $rp_add_min = $paket->rp_add_min;
     $status = $paket->status;
 } else {
-	echo 'ini form';
 	$id = "";
     $rp_name = "";
     $rp_total_price = "";

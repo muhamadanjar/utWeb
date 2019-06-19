@@ -19,10 +19,11 @@
                         <tbody>
                             @foreach ($type as $item)
                             <tr>
-                                <td>{{$item->type}}</td>
+                                <td>{{$item->type}}&nbsp;<span class="label label-success">{{$item->count}}</span></td>
                                 <td>{{$item->description}}</td>
                                 <td>{!!($item->status == 1 ? "<i class='fa fa-check text-green'></i>":"<i class='fa fa-cross text-red'></i>")!!}</td>
-                                <td><a href="{{ route('backend.packages.list',array($item->id)) }}" class="btn btn-xs btn-primary">Tambah Paket</a></td>
+                                <td><a href="{{ route('backend.packages.list',array($item->typeid)) }}" class="btn btn-xs btn-primary">Tambah Paket</a>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
