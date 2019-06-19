@@ -20,6 +20,7 @@ class PackageCtrl extends BackendCtrl{
     public function edit($id,$type=null){
         session(['status'=>'edit']);
         $p = RentPackage::find($id);
+        //dd($p);
         return view('backend.package.form')->with(['paket'=>$p,'type'=>$type]);
     }
     public function create($type){
@@ -31,10 +32,9 @@ class PackageCtrl extends BackendCtrl{
     }
     public function destroy($id){
         $p = RentPackage::find($id);
-        if($p == null){
-            $p->delete();
-        }
-        return redirect()->route('backend.package.index');
+        $p->delete();
+        Flash::success('data berhasil dihapus');
+        return redirect()->route('backend.packages.index');
     }
 
     public function list($type = null){
