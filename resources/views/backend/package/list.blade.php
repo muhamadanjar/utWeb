@@ -32,7 +32,7 @@
                             <?php $active_class = ($item->status == 1 ? "fa-check":"fa-close") ?>
                             <tr>
                                 <td>{{$item->rp_name}}</td>
-                                <td>{{$item->rp_total_price}}</td>
+                                <td>{{number_format($item->rp_total_price)}}</td>
                                 <td>{{$item->rp_miles_km}}</td>
                                 <td>{{$item->rp_hour}}</td>
                                 <td width="50" class="text-center">{!!($item->status == 1 ? "<i class='fa fa-check text-green'></i>":"<i class='fa fa-close text-red'></i>")!!}</td>
@@ -47,6 +47,7 @@
                                                     data-message="Apa anda yakin mengaktifkan/menonaktifkan {{ $item->rp_name }} ?">
                                                     <a class= "dropdown-item formConfirm" href="#"><i class="fa {{$active_class}}"></i> Aktif / Non Aktif</a>
                                                 </li>
+                                                <li><a href="{{route('backend.packages.destroy', ['id' => $item->rp_id, 'type' =>$type])}}" class="dropdown-item" onclick="return confirm('apakah anda yakin menghapus data paket {{$item->rp_name}}')"><i class="fa fa-trash"></i>Hapus</a></li>
                                                 <form action="{{ route('backend.packages.na', array($item->rp_id) ) }}" method="post" style="display:none" id="frmaktif-{{$item->rp_id}}">
                                                     {{ @csrf_field() }}
                                                 </form>
