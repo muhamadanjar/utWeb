@@ -28,7 +28,7 @@ class DashboardCtrl extends BackendCtrl{
     public function getIndex(){
         session(['link_web'=>'dashboard']);
         $datastatistik = $this->activity->statistikPengunjung();
-        $totalpengunjung = $this->activity->totalpengunjung();
+        $totalpengunjung = $this->activity->totalhits();
         $totaluser = $this->muser->countUser();
         $totalpemesanan = Trip::count();
         
