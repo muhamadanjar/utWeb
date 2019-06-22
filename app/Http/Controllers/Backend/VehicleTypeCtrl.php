@@ -16,7 +16,8 @@ class VehicleTypeCtrl extends BackendCtrl{
      }
     public function create(Request $request){
         session(['aksi'=>'add']);
-        return view('backend.driver.type-form');
+        $t = new Type();
+        return view('backend.driver.type-form')->with(['type'=>$t]);
     }
     public function edit($id){
         session(['aksi'=>'edit']);

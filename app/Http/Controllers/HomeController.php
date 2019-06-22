@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Laracasts\Flash\Flash;
 use App\Hubungi;
+use MulutBusuk\Workspaces\Repositories\Eloquent\AuditTrail\Activity\RepositoryInterface as ActivityRepository;
 class HomeController extends Controller
 {
     /**
@@ -13,8 +14,9 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct(){
+    public function __construct(ActivityRepository $activityRepository){
         // $this->middleware('auth');
+        $activityRepository->UpdateStatistik();
     }
 
     /**
