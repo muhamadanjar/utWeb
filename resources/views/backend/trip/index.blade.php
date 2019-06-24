@@ -20,7 +20,7 @@
                         <th>Trip Type</th>
                         <th>Book By</th>
                         <th>Book No</th>
-                        <th>Alamat</th>
+                        <th>Alamat Awal / Tujuan</th>
                         <th>Trip Date</th>
                         <th>Driver</th>
                         <th>Customer</th>
