@@ -98,16 +98,16 @@ class TripCtrl extends BackendCtrl
             $sewa = Trip::join('trip_detail','trip.trip_id','=','trip_detail.trip_id')
             ->leftjoin('tm_driver','trip.trip_driver','=','tm_driver.id')
             ->leftjoin('tm_customer','trip_bookby','=','tm_customer.id')
-
+            ->join('service_type','trip_type','service_type.id')
             ->orderBy('trip.created_at','DESC')
             ->select(
             [
                 DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'trip.trip_id',
-                'trip.trip_type',
+                DB::raw('service_type as trip_type'),
                 'trip.trip_bookby',
                 'trip_code',
-                'trip_address_origin',
+                DB::raw("CONCAT(trip_address_origin,' -> ',trip_address_destination) as trip_address_origin"),
                 'trip_date',
                 'tm_driver.name as driverName',
                 'tm_customer.name as customerName',
@@ -139,7 +139,7 @@ class TripCtrl extends BackendCtrl
             return url('backend/trip_job/'.$user->trip_id);
         })
         ->setRowClass(function ($data) {
-            return $data->trip_type == '1' ? 'alert-default' : 'alert-info';
+            return $data->trip_type == 'Reguler' ? 'alert-default' : 'alert-info';
         })
         ->editColumn('trip_status', function($transaksi){
             $class = $transaksi->trip_status == '0' ? 'bg-orange' : 'label-success';

@@ -27,7 +27,7 @@ class BackendCtrl extends Controller
         $this->r = new Request();
         $s = new EloquentRepository();
         $this->m = new MenuRepository();
-        $s->UpdateStatistik();
+        // $s->UpdateStatistik();
         $_uri = url()->current();
         $user = request()->user();
         
