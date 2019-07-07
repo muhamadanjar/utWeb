@@ -4,6 +4,7 @@ namespace App\Mobil\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use File;
 class RentPackage extends Model
 {
     protected $table = 'rent_package';

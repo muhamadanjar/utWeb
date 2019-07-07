@@ -52,6 +52,7 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::post('packages-post/{type?}','PackageCtrl@post')->name('packages.post');
 	Route::post('packages/{type?}/na','PackageCtrl@na')->name('packages.na');
 	Route::get('packages-list/{type?}','PackageCtrl@list')->name('packages.list');
+	Route::post('packages-upload','PackageCtrl@upload')->name('packages.upload');
 	Route::delete('packages/{id}','PackageCtrl@destroy')->name('packages.destroy');
 	Route::resource('typevehicle','VehicleTypeCtrl',['only'=>['index','create','edit','destroy']]);
 	Route::post('typevehicle/post','VehicleTypeCtrl@post')->name('typevehicle.post');

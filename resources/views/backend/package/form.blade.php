@@ -17,7 +17,9 @@ if (session('status') == 'edit') {
     $rp_hour = $paket->rp_hour;
     $rp_add_mile_km = $paket->rp_add_mile_km;
     $rp_add_min = $paket->rp_add_min;
-    $status = $paket->status;
+	$status = $paket->status;
+	$image = $paket->image;
+	$imagePath = $paket->imagePath;
 } else {
 	$id = "";
     $rp_name = "";
@@ -26,7 +28,9 @@ if (session('status') == 'edit') {
     $rp_hour = "";
     $rp_add_mile_km = "";
     $rp_add_min = "";
-    $status ="";
+	$status ="";
+	$image = "";
+	$imagePath = "";
 
 }
 ?>
@@ -94,6 +98,24 @@ if (session('status') == 'edit') {
 						<label for="no_ruas_pangkal" class="">Status</label>
                         <input type="checkbox" id="status" name="status" {{ ($status == 1 ? "checked":"")}} value="1" required class="checkbox">
                         
+					</div>
+
+
+					<div class="col-md-12">
+						
+						<div class="foto">
+							<img src="{{ $imagePath}}"" alt="{{$rp_name}}" class="img-responsive imgfoto" width="100%">
+						</div>
+						<div class="input-group margin controlupload">
+							<input type="text" class="form-control txtfoto" readonly="readonly" name="foto" value="{{ $image }}">
+							<span class="input-group-btn">
+								<input type="file" name="users_file" class="hidden file fileupload" 
+								data-url="{{ route('backend.packages.upload')}}" 
+								data-type="single"
+								data-path="{{ asset('/files/uploads/packages/')}}">
+								<button type="button" class="btn btn-info btn-flat formUpload">Foto!</button>
+							</span>
+						</div>
 					</div>
 					
 					
