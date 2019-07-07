@@ -69,9 +69,13 @@
                                 <input type="text" name="tgl_akhir" class="form-control" id="tgl_akhir" value="{{$tgl_akhir}}">
                             </div>
                             <div class="form-group">
-                                    <label for="kode_promo">Batas Pemakaian</label>
-                                    <input type="text" name="usage_limit" class="form-control" id="usage_limit" value="{{$usage_limit}}">
-                                </div>
+                                <label for="kode_promo">Batas Pemakaian</label>
+                                <input type="text" name="usage_limit" class="form-control" id="usage_limit" value="{{$usage_limit}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="kode_promo">Discount (%)</label>
+                                <input type="text" name="discount" class="form-control" id="discount" value="{{$discount}}">
+                            </div>
                             <div class="form-group">
                                 <label for="kode_promo">Deskripsi</label>
                             <textarea name="description" id="description" class="form-control">{{$description}}</textarea>

@@ -99,7 +99,7 @@ class ApiCtrl extends Controller
                 $response['status'] = true;
                 $response['error'] = false;
                 $response['data']['token'] = $user->createToken('MyApp')->accessToken;
-                $response['data']['user'] = $r_user;
+                $response['data']['user'] = $user;
                 $response['data']['roles'] = $user->roles;
                 $response['token'] = $user->createToken('MyApp')->accessToken;
                 $user->api_token = $response['token'];
@@ -126,7 +126,7 @@ class ApiCtrl extends Controller
             'c_password' => 'required|same:password',
         ]);
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
+            return response()->json(['status'=>false,'error' => $validator->errors()], 200);
         }
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
@@ -373,9 +373,16 @@ class ApiCtrl extends Controller
         return response()->json(['status'=>true,'data'=>$data]);
     }
 
-    public function GetRentPackage($id){
+    public function GetRentPackage($id = null){
         $rent = new \App\Mobil\Models\RentPackage();
-        $data = $rent->active()->where('rp_car_type',$id)->get();
+        if ($id == NULL) {
+            $data = $rent->active()->get();
+        }else{
+            $data = $rent->active()->where('rp_car_type',$id)->get();
+        }
+        foreach($data as $k =>$v){
+            $data[$k]->path_url = $v->imagePath;
+        }
         return response()->json(['status'=>true,'data'=>$data]);
     }
 
@@ -386,10 +393,11 @@ class ApiCtrl extends Controller
 
     public function GetPromo(){
         $response = [];
-        $promo = Promo::where('tgl_mulai','>=',date('Y-m-d'))->orderBy('tgl_mulai','DESC')->select()->get();
+        $promo = Promo::where('tgl_mulai','>=',date('Y-m-d'))->orWhere('tgl_akhir','<=',date('Y-m-d'))->orderBy('tgl_mulai','DESC')->select()->get();
         $p = new Promo();
         foreach($promo as $key => $v){
             $v->image_path = $v->imagepath;
+            $v->discount = ($v->discount === NULL) ?  0:$v->discount;
         }
         $response['status'] = true;
         $response['data'] = $promo;
