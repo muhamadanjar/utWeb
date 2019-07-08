@@ -103,7 +103,7 @@ class User extends UserModerator
     }
 
     public function profile(){
-        return $this->hasOne(UserProfile::class,'user_id');
+        return $this->hasMany(UserProfile::class,'user_id');
     }
     
 }

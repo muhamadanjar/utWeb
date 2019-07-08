@@ -51,4 +51,6 @@ Route::get('type_car','ApiCtrl@GetTypeCar');
 Route::get('rent_package/{id?}','ApiCtrl@GetRentPackage');
 Route::get('get_promo','ApiCtrl@GetPromo');
 Route::get('get_settings','ApiCtrl@GetSettings');
+Route::get('get_servicetype','ApiCtrl@get_servicetype');
+
 
