@@ -57,6 +57,12 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::resource('typevehicle','VehicleTypeCtrl',['only'=>['index','create','edit','destroy']]);
 	Route::post('typevehicle/post','VehicleTypeCtrl@post')->name('typevehicle.post');
 	Route::post('typevehicle/upload','VehicleTypeCtrl@upload')->name('typevehicle.upload');
+
+	//route customer
+	Route::resource('customer', 'CustomerCtrl', ['only' => ['index', 'create', 'edit', 'destroy']]);
+	Route::post('customer/post','CustomerCtrl@post')->name('customer.post');
+	Route::get('customer/{id}/edit', 'CustomerCtrl@edit')->name('customer.edit');
+	Route::post('customer/{id}/update','CustomerCtrl@update')->name('customer.update');
 	
 	
 
