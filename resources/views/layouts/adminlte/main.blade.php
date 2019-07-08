@@ -36,6 +36,9 @@
 <link href="{{ asset('/plugins/dx/css/dx.common.css')}}" rel="stylesheet" type="text/css"/>
 <link href="{{ asset('/plugins/dx/css/dx.greenmist.css')}}" rel="stylesheet" type="text/css"/>
 <link href="{{ asset('/plugins/dx/css/dx.light.css')}}" rel="stylesheet" type="text/css"/>
+<!-- Add fancyBox -->
+<link rel="stylesheet" href="{{asset('/plugins/fancybox/source/jquery.fancybox.css?v=2.1.7')}}" type="text/css" media="screen" />
+
 <!-- <link href="{{ asset('/plugins/dx/css/dx.spa.css')}}" rel="stylesheet" type="text/css"/> -->
 
 @endsection
@@ -75,6 +78,9 @@
 @section('script-end')
 @parent
 <script src="{{ asset('/js/app.js') }}"></script>
+<script type="text/javascript" src="{{asset('plugins/fancybox/lib/jquery.mousewheel.pack.js')}}"></script>
+<script type="text/javascript" src="{{asset('/plugins/fancybox/source/jquery.fancybox.pack.js?v=2.1.7')}}"></script>
+<script type="text/javascript" src="{{asset('/plugins/fancybox/lib/jquery-1.10.2.min.js')}}"></script>
 <script type="text/javascript" src="{{ url('/plugins/jquery-ui/js/jquery-ui.js')}}"></script>
 <script src="{{asset('/plugins/lightbox/js/lightbox.min.js')}}"></script>
 <!-- AdminLTE App -->
