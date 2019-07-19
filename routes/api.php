@@ -52,5 +52,7 @@ Route::get('rent_package/{id?}','ApiCtrl@GetRentPackage');
 Route::get('get_promo','ApiCtrl@GetPromo');
 Route::get('get_settings','ApiCtrl@GetSettings');
 Route::get('get_servicetype','ApiCtrl@get_servicetype');
+Route::get('get_bank','ApiCtrl@get_bank');
+Route::post('post_request_saldo','ApiCtrl@post_request_saldo');
 
 

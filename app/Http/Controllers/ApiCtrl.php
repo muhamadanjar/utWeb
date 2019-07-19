@@ -458,8 +458,28 @@ class ApiCtrl extends Controller
             $res['message'] = "Gagal Mengambil Service Type";
             return response()->json($res,500);
         }
-        
+    }
 
+    public function get_bank($id=NULL){
+        $t = DB::table('tm_bank');
+        if ($id !== NULL) {
+            $t->where('bank_code',$id);
+        }
+        $a = $t->get();
+        return response()->json(['status'=>true,'data'=>$a]);
+    }
+
+    public function post_request_saldo(Request $request){
+        $auth = Auth::guard('api')->user();
+        if($auth){
+            $data = DB::table('request_saldo')->insert(
+                ['req_saldo' => $request->req_saldo, 'req_user_id' => $auth->id]
+            );
+            return response()->json(['status'=>true,'data'=>$data]);
+        }else{
+            return response()->json(['status'=>false]);
+        }
+        
     }
 
 }
