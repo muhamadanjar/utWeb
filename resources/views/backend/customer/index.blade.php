@@ -19,7 +19,8 @@
                         <th>Nama</th>
                         <th>Email</th>
                         <th>No Telp</th>
-                        <th>Alamat</th>
+                        
+                        <th>Saldo</th>
                         <th>Tanggal Lahir</th>
                         <th>Status</th>
                     </tr>
@@ -31,11 +32,15 @@
                         <td></td>
                         <td>{{ $v->name}}</td>
                         <td>{{ $v->email}}</td>
-                        <td>{{ $v->no_telp}}</td>
-                        <td>{{ $v->address}}</td>
-                        <td>{{ date('d-m-Y', strtotime($v->tgl_akhir))}}</td>
+                        <td>{{ $v->no_telepon}}</td>
+                        
+                    <td>Rp.{{ number_format($v->wallet) }} <button data-form="#frm_saldo-{{$v->id}}" data-userid="{{ $v->id }}"  class="btn btn-sm btn-success btn-xs formConfirmSaldo">Tambah Saldo</button></td>
+                        
+                            
+                        
+                        <td>{{ date('d-m-Y', strtotime($v->tgl_lahir))}}</td>
                         <td class="text-center">
-                        	@if($v->status == 1)
+                        	@if($v->isverified == 1)
                         		<span><i class="fa fa-check text-green"></i></span>
                         	@else
                         		<span><i class="fa fa-close text-red"></i></span>
@@ -90,6 +95,23 @@
     $(document).ready(function() {
         $(".fancybox").fancybox();
         $(".desctooltips").tooltip();
+        $('.formConfirmSaldo').on('click', function (e) {
+            e.preventDefault();
+            if ($(this).hasClass('disabled')) return;
+            var el = $(this);
+            var userId = el.attr('data-userId');
+            $('#formSaldo').find('#iRiderId').val(userId);
+            $('#formSaldo')
+            .find('form').attr('action',"<?php echo url('backend/customer/addsaldo')?>");
+            $('#formSaldo').modal('show');
+
+        });
+
+        $('#formSaldo').on('click', '#frm_submit', function (e) {
+            var id = $(this).attr('data-form');
+            //console.log(id);
+            $(id).submit();
+        });
     });
 </script>
 @endsection

@@ -32,6 +32,45 @@
   </div>
 </div>
 
+<div id="formSaldo" class="modal fade" tabindex="-1">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="frm_title">Tamabah Saldo</h5>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <div class="modal-body" id="frm_body">
+            <form action="" method="post" id="frm_saldo">
+                {{ @csrf_field() }}
+            <div class="col-md-12">
+                <input type="hidden" id="action" name="action" value="addmoney">
+								<input type="hidden"  name="eTransRequest" id="eTransRequest" value="">
+								<input type="hidden"  name="eType" id="eType" value="Credit">
+								<input type="hidden"  name="eFor" id="eFor" value="Deposit">
+								<input type="hidden"  name="user_id" id="iRiderId" value="">							
+								<input type="hidden"  name="eUserType" id="eUserType" value="Rider">	
+									<div class="input-group input-append">
+                      <h5>Entered Amount Will Be Added Directly To Rider's Account.</h5>
+                      <div class="ddtt">
+                        <h4>Enter Amount</h4>
+                        <input type="text" name="wallet" id="saldo" class="form-control iBalance add-ibalance" onkeyup="checkzero(this.value);">
+                      </div>
+                      <div id="iLimitmsg"></div>										
+                    </div>
+                  
+            </div>
+            </form>
+            
+          </div>
+                
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+              
+          </div>
+      </div>
+  </div>
+</div>
 
 <div id="formInfo" class="modal fade" tabindex="-1">
     <div class="modal-dialog">

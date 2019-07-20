@@ -63,6 +63,7 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::post('customer/post','CustomerCtrl@post')->name('customer.post');
 	Route::get('customer/{id}/edit', 'CustomerCtrl@edit')->name('customer.edit');
 	Route::post('customer/{id}/update','CustomerCtrl@update')->name('customer.update');
+	Route::post('customer/addsaldo','CustomerCtrl@add_saldo')->name('customer.addsaldo');
 	
 	
 

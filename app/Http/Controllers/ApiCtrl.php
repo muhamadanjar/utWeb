@@ -97,12 +97,13 @@ class ApiCtrl extends Controller
             $user_email = (filter_var($r_user,FILTER_VALIDATE_EMAIL)) ? 'email' : 'username' ;
             if (Auth::attempt([$user_email => $r_user, 'password' => request('password')])) {
                 $user = Auth::user();
+                $token = $user->createToken('MyApp')->accessToken;
                 $response['status'] = true;
                 $response['error'] = false;
-                $response['data']['token'] = $user->createToken('MyApp')->accessToken;
+                $response['data']['token'] = $token;
                 $response['data']['user'] = $user;
                 $response['data']['roles'] = $user->roles;
-                $response['token'] = $user->createToken('MyApp')->accessToken;
+                $response['token'] = $token;
                 $user->api_token = $response['token'];
                 $user->latestlogin = Carbon::now();
                 $user->save();
@@ -470,14 +471,54 @@ class ApiCtrl extends Controller
     }
 
     public function post_request_saldo(Request $request){
-        $auth = Auth::guard('api')->user();
-        if($auth){
-            $data = DB::table('request_saldo')->insert(
-                ['req_saldo' => $request->req_saldo, 'req_user_id' => $auth->id]
+        try {
+            $auth = Auth::guard('api')->user();
+            if($auth){
+                $kode = DB::table('request_saldo')->max('id');
+                $noUrut = (int) substr($kode, 6, 3);
+                $noUrut++;
+                $char = "SLD";
+                $kode = $char .date('His'). sprintf("%06s", $noUrut);
+                DB::table('request_saldo')->insert(
+                    ['req_from'=>$request->req_from,'req_code' => $kode, 'req_saldo' => $request->req_saldo, 'req_user_id' => $auth->id]
+                );
+                $data = DB::table('request_saldo')->where('req_code',$kode)->first();
+                return response()->json(['status'=>true,'data'=>$data]);
+            }else{
+                return response()->json(['status'=>false]);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['status'=>false,'message'=>$th->getMessage()]);
+        }
+        
+        
+    }
+
+    public function post_upload_bukti(Request $request){
+        try {
+            $auth = Auth::guard('api')->user();
+
+            $kode = DB::table('request_saldo')->max('id');
+            $noUrut = (int) substr($kode, 6, 3);
+            $noUrut++;
+            $char = "SLD";
+            $kode = $char .date('His'). sprintf("%06s", $noUrut);
+            
+            $image = $request->image;
+            $name = md5($request->name.date('His'));
+            $realImage = base64_decode($image);
+            $f = finfo_open();
+            $mime_type = finfo_buffer($f, $realImage, FILEINFO_MIME_TYPE);
+            $filename = $name.'.jpg';
+
+            DB::table('request_saldo')->insert(
+                ['req_from'=>$request->req_from,'req_code' => $kode, 'req_saldo' => $request->req_saldo, 'req_user_id' => $auth->id]
             );
-            return response()->json(['status'=>true,'data'=>$data]);
-        }else{
-            return response()->json(['status'=>false]);
+
+            file_put_contents(public_path('files/uploads/bukti').DIRECTORY_SEPARATOR.$filename, $realImage);
+            return response()->json(['status'=>true,'message'=>'Image Uploaded Successfully.']);    
+        } catch (\Throwable $th) {
+            return response()->json(['status'=>false,'message'=>$th->getMessage()]);
         }
         
     }
