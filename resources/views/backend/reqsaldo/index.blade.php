@@ -2,7 +2,7 @@
 @section('content-admin')
     <div class="box box-default">
         <div class="box-header with-border">
-            <h3 class="box-title">Customer</h3>
+            <h3 class="box-title">Request Saldo</h3>
             <div class="box-tools text-right">
                 <div class="btn-group">
                     
