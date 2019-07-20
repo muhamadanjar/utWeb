@@ -5,11 +5,15 @@ namespace App\Http\Controllers\Backend;
 use Illuminate\Http\Request;
 use App\Customer;
 use App\Kabupaten;
-class CustomerCtrl extends BackendCtrl
-{
+use App\UserProfile;
+use DB;
+use App\User;
+use Laracasts\Flash\Flash;
+class CustomerCtrl extends BackendCtrl{
 	public function index()
 	{
-		$data = Customer::all();
+		// $data = Customer::all();
+		$data = DB::table('tm_customer')->get();
 		return view('backend.customer.index',compact('data'));
 	}
 
@@ -36,7 +40,15 @@ class CustomerCtrl extends BackendCtrl
 	public function update(Request $request, $id)
 	{
 		$data = Customer::findOrFail($id);
-		$data->update($request->all());
+		$user = User::find($id);
+		$user->isactived = $request->status;
+		$c = UserProfile::where('user_id',$request->id)->first();
+		$user->name = $request->name;
+		$c->tgl_lahir = $request->tgl_lahir;
+		$c->no_telepon = $request->no_telepon;
+		$c->address = $request->address;
+		$c->save();
+		$user->save();
 
 		return redirect()->route('backend.customer.index')->with('flash.success','berhasil');
 	}
@@ -46,5 +58,15 @@ class CustomerCtrl extends BackendCtrl
     	Customer::findOrFail($id)->delete();
     	return redirect()->route('backend.customer.index');
 
-    }
+	}
+	
+	public function add_saldo(Request $request){
+		$c = UserProfile::where('user_id',$request->user_id)->first();
+		$c->wallet =$request->wallet;
+		$c->save();
+		
+		Flash::success('Saldo Berhasil di tambahkan');
+		return redirect()->route('backend.customer.index');
+
+	}
 }

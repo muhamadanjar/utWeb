@@ -14,9 +14,10 @@ class PackageCtrl extends BackendCtrl{
     }
     public function index(){
         $type = DB::table('rent_package')
-                ->join('type','rent_package.rp_car_type','=','type.id')
+                ->rightjoin('type','rent_package.rp_car_type','=','type.id')
                 ->select('type.id as typeid','type.type','type.type','type.description','type.status',DB::raw('count(rent_package.rp_car_type) as count'))
                 ->groupby('rent_package.rp_car_type','type.type','type.description','type.status','type.id')
+                ->orderBy('type.id','ASC')
                 //->paginate(2);
                 ->get();
         return view('backend.package.index')->with(['package'=>[],'type'=>$type]);

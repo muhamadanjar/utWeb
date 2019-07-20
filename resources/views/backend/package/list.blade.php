@@ -47,8 +47,18 @@
                                                     data-message="Apa anda yakin mengaktifkan/menonaktifkan {{ $item->rp_name }} ?">
                                                     <a class= "dropdown-item formConfirm" href="#"><i class="fa {{$active_class}}"></i> Aktif / Non Aktif</a>
                                                 </li>
-                                                <li><a href="{{route('backend.packages.destroy', ['id' => $item->rp_id, 'type' =>$type])}}" class="dropdown-item" onclick="return confirm('apakah anda yakin menghapus data paket {{$item->rp_name}}')"><i class="fa fa-trash"></i>Hapus</a></li>
+                                                <li class=""
+                                                    data-form="#frmdelete-{{$item->rp_id}}" 
+                                                    data-title="Aktif {{ $item->rp_id }}" 
+                                                    data-message="Apa anda yakin menghapus {{ $item->rp_name }} ?">
+                                                    <a class= "dropdown-item formConfirm" href="#"><i class="fa fa-trash"></i> Hapus</a>
+                                                </li>
+                                                <form action="{{ route('backend.packages.destroy', array($item->rp_id) ) }}" method="post" style="display:none" id="frmdelete-{{$item->rp_id}}">
+                                                    <input type="hidden" name="_method" value="delete">
+                                                        {{ @csrf_field() }}
+                                                </form>
                                                 <form action="{{ route('backend.packages.na', array($item->rp_id) ) }}" method="post" style="display:none" id="frmaktif-{{$item->rp_id}}">
+                                                    
                                                     {{ @csrf_field() }}
                                                 </form>
                                             </ul>
