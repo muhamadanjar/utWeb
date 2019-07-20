@@ -16,11 +16,10 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>No Telp</th>
-                        <th>Alamat</th>
-                        <th>Tanggal Lahir</th>
+                        <th>User ID</th>
+                        <th>Request Saldo</th>
+                        <th>Request Code</th>
+                        <th>Bukti TF</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -29,11 +28,12 @@
                     @foreach($data as $k => $v)
                     <tr>
                         <td></td>
-                        <td>{{ $v->name}}</td>
-                        <td>{{ $v->email}}</td>
-                        <td>{{ $v->no_telp}}</td>
-                        <td>{{ $v->address}}</td>
-                        <td>{{ date('d-m-Y', strtotime($v->tgl_akhir))}}</td>
+                        <td>{{ $v->req_user_id}}</td>
+                        <td>{{ $v->req_saldo}}</td>
+                        <td>{{ $v->req_code}}</td>
+                        <td>
+                            <a class="fancybox" data-fancybox="fancybox" href="{{asset('files/uploads/bukti/'.$v->req_file)}}"><img src="{{asset('files/uploads/bukti/'.$v->req_file)}}" height="50px" width="50px" title="klik gambar untuk memperbesar" /></a>
+                        </td>
                         <td class="text-center">
                         	@if($v->status == 1)
                         		<span><i class="fa fa-check text-green"></i></span>
@@ -43,21 +43,17 @@
                         	</td>
                         <td>
                             <div class="btn-group">
-                                <button data-toggle="dropdown" class="btn btn-xs btn-icon dropdown-toggle" type="button"><i class="icon-cog4"></i><span class="caret"></span></button>
-                                    <ul class="dropdown-menu icons-right dropdown-menu-right">
-                                        <li><a class="dropdown-item" href="{{url('/backend/customer/'.$v->id.'/edit')}}"><i class="fa fa-edit"></i> Ubah</a>
-                                        </li>
-                                        <li class=""
-                                            data-form="#frmaktif-{{$v->id}}" 
-                                            data-title="Aktif {{ $v->id }}" 
-                                            data-message="Apa anda yakin mengaktifkan/menonaktifkan {{ $v->name }} ?">
-                                            <a class= "dropdown-item formConfirm" href="#"><i class="fa fa-trash"></i> Hapus</a>
-                                        </li>
-                                        <form action="{{ route('backend.customer.konfirmasi', array($v->id) ) }}" method="post" style="display:none" id="frmaktif-{{$v->id}}">
-                                            <input type="hidden" name="_method" value="delete">
-                                            {{ @csrf_field() }}
-                                        </form>
-                                    </ul>
+                                @if($v->status == 1) 
+                                    <form action="{{url('/backend/reqsaldo/'.$v->id.'/konfirmasi')}}" method="POST">
+                                        {{ csrf_field() }}                          
+                                        <button type="submit" class="btn btn-success btn-sm" name="changeStatus" value="0" disabled="">Konfirmasi</button>
+                                    </form>                    
+                                @else
+                                    <form action="{{url('/backend/reqsaldo/'.$v->id.'/konfirmasi')}}" method="POST">
+                                        {{ csrf_field() }}                              
+                                        <button type="submit" class="btn btn-success btn-disable btn-sm" name="changeStatus" value="1" onclick="return confirm('Apakah Anda Yakin ingin mengkonfirmasi {{$v->req_user_id}} dengan saldo {{$v->req_saldo}} ?')">Konfirmasi</button>
+                                    </form>                                                 
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -69,7 +65,7 @@
     </div>
 
 @endsection
-@section('title','Customer')
+@section('title','Request Saldo')
 @section('style-head')
 @parent
 <link rel="stylesheet" href="{{ url('/plugins/datatables/datatables.min.css')}}">
