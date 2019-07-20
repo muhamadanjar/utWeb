@@ -53,7 +53,7 @@
                                             data-message="Apa anda yakin mengaktifkan/menonaktifkan {{ $v->name }} ?">
                                             <a class= "dropdown-item formConfirm" href="#"><i class="fa fa-trash"></i> Hapus</a>
                                         </li>
-                                        <form action="{{ route('backend.customer.konfirmasi', array($v->id) ) }}" method="post" style="display:none" id="frmaktif-{{$v->id}}">
+                                        <form action="{{ route('backend.customer.destroy', array($v->id) ) }}" method="post" style="display:none" id="frmaktif-{{$v->id}}">
                                             <input type="hidden" name="_method" value="delete">
                                             {{ @csrf_field() }}
                                         </form>
