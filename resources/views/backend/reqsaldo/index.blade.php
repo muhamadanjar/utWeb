@@ -5,7 +5,7 @@
             <h3 class="box-title">Customer</h3>
             <div class="box-tools text-right">
                 <div class="btn-group">
-                    <a href="{{ route('backend.customer.create') }}" class="btn btn-sm btn-primary"><span class="fa fa-plus"></span> Tambah</a>
+                    
                 </div>
             </div>
             
@@ -31,8 +31,11 @@
                         <td>{{ $v->req_user_id}}</td>
                         <td>{{ $v->req_saldo}}</td>
                         <td>{{ $v->req_code}}</td>
-                        <td>
+                        <td>@if($v->req_file != 0)
                             <a class="fancybox" data-fancybox="fancybox" href="{{asset('files/uploads/bukti/'.$v->req_file)}}"><img src="{{asset('files/uploads/bukti/'.$v->req_file)}}" height="50px" width="50px" title="klik gambar untuk memperbesar" /></a>
+                            @else
+                            <span>&nbsp;</span>
+                            @endif
                         </td>
                         <td class="text-center">
                         	@if($v->status == 1)
