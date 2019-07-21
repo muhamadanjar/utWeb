@@ -72,7 +72,6 @@ class CustomerCtrl extends BackendCtrl{
     
     public function destroy($id)
     {
-		
     	User::findOrFail($id)->delete();
     	return redirect()->route('backend.customer.index');
 
