@@ -18,6 +18,7 @@ use App\Promo;
 use App\Setting;
 use App\UserLocation;
 use App\UserProfile;
+use App\ServiceType;
 class ApiCtrl extends Controller
 {
     use ServerInformasi;
@@ -96,12 +97,13 @@ class ApiCtrl extends Controller
             $user_email = (filter_var($r_user,FILTER_VALIDATE_EMAIL)) ? 'email' : 'username' ;
             if (Auth::attempt([$user_email => $r_user, 'password' => request('password')])) {
                 $user = Auth::user();
+                $token = $user->createToken('MyApp')->accessToken;
                 $response['status'] = true;
                 $response['error'] = false;
-                $response['data']['token'] = $user->createToken('MyApp')->accessToken;
+                $response['data']['token'] = $token;
                 $response['data']['user'] = $user;
                 $response['data']['roles'] = $user->roles;
-                $response['token'] = $user->createToken('MyApp')->accessToken;
+                $response['token'] = $token;
                 $user->api_token = $response['token'];
                 $user->latestlogin = Carbon::now();
                 $user->save();
@@ -117,27 +119,35 @@ class ApiCtrl extends Controller
     }
 
     public function register(Request $request){
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'username' => 'required',
-            'no_telepon' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-            'c_password' => 'required|same:password',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['status'=>false,'error' => $validator->errors()], 200);
+        try{
+            DB::beginTransaction();
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+                'username' => 'required',
+                'no_telepon' => 'required',
+                'email' => 'required|email',
+                'password' => 'required',
+                'c_password' => 'required|same:password',
+            ]);
+            if ($validator->fails()) {
+                DB::rollback();
+                return response()->json(['status'=>false,'error' => $validator->errors()], 200);
+            }
+            $input = $request->all();
+            $input['password'] = bcrypt($input['password']);
+            $user = User::create($input);
+            $profile = new UserProfile(['user_id'=>$user->id,'wallet'=>0,'rate'=>0,'no_telepon'=>0]);
+            $profile->user()->associate($user)->save();
+            $user->assignRole('customer');
+            $success['token'] = $user->createToken('MyApp')->accessToken;
+            $success['name'] = $user->name;
+            DB::commit();
+            return response()->json(['status'=>true,'data' => $success], $this->successStatus);
+        }catch(\Exception $e){
+            DB::rollback();
+            return response()->json(['status'=>false,'message' => $e->getMessage()], 500);
         }
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
-        $profile = new UserProfile(['user_id'=>$user->id,'wallet'=>0,'rate'=>0,'no_telepon']);
-        $user->profile()->save($profile);
-        $user->assignRole('customer');
-        $success['token'] = $user->createToken('MyApp')->accessToken;
-        $success['name'] = $user->name;
-
-        return response()->json(['status'=>true,'data' => $success], $this->successStatus);
+        
     }
     public function details(){
         $user = Auth::guard('api')->user();
@@ -433,6 +443,83 @@ class ApiCtrl extends Controller
         }
         return response()->json($res,$status);
 
+        
+    }
+
+    public function get_servicetype(){
+        $res = array();
+        try {
+            $st = ServiceType::orderBy('id')->get();
+            $res['status'] = true;
+            $res['data'] = $st;
+            $res['message'] = "Mengambil data Service Type";
+            return response()->json($res,200);
+        } catch (\Throwable $th) {
+            $res['status'] = false;
+            $res['message'] = "Gagal Mengambil Service Type";
+            return response()->json($res,500);
+        }
+    }
+
+    public function get_bank($id=NULL){
+        $t = DB::table('tm_bank');
+        if ($id !== NULL) {
+            $t->where('bank_code',$id);
+        }
+        $a = $t->get();
+        return response()->json(['status'=>true,'data'=>$a]);
+    }
+
+    public function post_request_saldo(Request $request){
+        try {
+            $auth = Auth::guard('api')->user();
+            if($auth){
+                $kode = DB::table('request_saldo')->max('id');
+                $noUrut = (int) substr($kode, 6, 3);
+                $noUrut++;
+                $char = "SLD";
+                $kode = $char .date('His'). sprintf("%06s", $noUrut);
+                DB::table('request_saldo')->insert(
+                    ['req_from'=>$request->req_from,'req_code' => $kode, 'req_saldo' => $request->req_saldo, 'req_user_id' => $auth->id]
+                );
+                $data = DB::table('request_saldo')->where('req_code',$kode)->first();
+                return response()->json(['status'=>true,'data'=>$data]);
+            }else{
+                return response()->json(['status'=>false]);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['status'=>false,'message'=>$th->getMessage()]);
+        }
+        
+        
+    }
+
+    public function post_upload_bukti(Request $request){
+        try {
+            $auth = Auth::guard('api')->user();
+
+            $kode = DB::table('request_saldo')->max('id');
+            $noUrut = (int) substr($kode, 6, 3);
+            $noUrut++;
+            $char = "SLD";
+            $kode = $char .date('His'). sprintf("%06s", $noUrut);
+            
+            $image = $request->image;
+            $name = md5($request->name.date('His'));
+            $realImage = base64_decode($image);
+            $f = finfo_open();
+            $mime_type = finfo_buffer($f, $realImage, FILEINFO_MIME_TYPE);
+            $filename = $name.'.jpg';
+
+            DB::table('request_saldo')->insert(
+                ['req_from'=>$request->req_from,'req_code' => $kode, 'req_saldo' => $request->req_saldo, 'req_user_id' => $auth->id]
+            );
+
+            file_put_contents(public_path('files/uploads/bukti').DIRECTORY_SEPARATOR.$filename, $realImage);
+            return response()->json(['status'=>true,'message'=>'Image Uploaded Successfully.']);    
+        } catch (\Throwable $th) {
+            return response()->json(['status'=>false,'message'=>$th->getMessage()]);
+        }
         
     }
 
