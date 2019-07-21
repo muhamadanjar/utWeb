@@ -8,7 +8,7 @@ class UserProfile extends Model
 {
     protected $table = 'user_profile';
     protected $primaryKey = 'user_id';
-    protected $fillable = ['user_id','wallet'];
+    protected $fillable = ['user_id','wallet','no_telepon'];
     public $timestamps = false;
 
     public function user(){

@@ -97,11 +97,13 @@ class ApiCtrl extends Controller
             $user_email = (filter_var($r_user,FILTER_VALIDATE_EMAIL)) ? 'email' : 'username' ;
             if (Auth::attempt([$user_email => $r_user, 'password' => request('password')])) {
                 $user = Auth::user();
+                $du = User::join('user_profile','user_profile.user_id','users.id')
+                    ->select('users.*','user_profile.wallet')->first();
                 $token = $user->createToken('MyApp')->accessToken;
                 $response['status'] = true;
                 $response['error'] = false;
                 $response['data']['token'] = $token;
-                $response['data']['user'] = $user;
+                $response['data']['user'] = $du;
                 $response['data']['roles'] = $user->roles;
                 $response['token'] = $token;
                 $user->api_token = $response['token'];
@@ -133,14 +135,18 @@ class ApiCtrl extends Controller
                 DB::rollback();
                 return response()->json(['status'=>false,'error' => $validator->errors()], 200);
             }
+            
             $input = $request->all();
             $input['password'] = bcrypt($input['password']);
             $user = User::create($input);
-            $profile = new UserProfile(['user_id'=>$user->id,'wallet'=>0,'rate'=>0,'no_telepon'=>0]);
+            $_user = User::find($user->id);
+                
+            $profile = new UserProfile(['user_id'=>$user->id,'wallet'=>0,'rate'=>0,'no_telepon'=>$request->no_telepon]);
             $profile->user()->associate($user)->save();
             $user->assignRole('customer');
             $success['token'] = $user->createToken('MyApp')->accessToken;
             $success['name'] = $user->name;
+            $success['user'] = $_user;
             DB::commit();
             return response()->json(['status'=>true,'data' => $success], $this->successStatus);
         }catch(\Exception $e){
@@ -374,9 +380,15 @@ class ApiCtrl extends Controller
             return response()->json(['status'=>false,'message'=>$e->getMessage()]);
         }
     }
-    public function GetTypeCar(){
+    public function GetTypeCar(Request $request){
         $type = new \App\Mobil\Models\Type();
-        $data = $type->active()->get();
+        if ($request->get('id') != null) {
+            $id = $request->get('id');
+            $data = $type->active()->where('id',$id)->get();
+        }else{
+            $data = $type->active()->get();
+        }
+        
         foreach($data as $k =>$v){
             $data[$k]->path_url = $v->imagePath;
         }
@@ -497,26 +509,29 @@ class ApiCtrl extends Controller
     public function post_upload_bukti(Request $request){
         try {
             $auth = Auth::guard('api')->user();
+            if($auth){
+                $kode = DB::table('request_saldo')->max('id');
+                $noUrut = (int) substr($kode, 6, 3);
+                $noUrut++;
+                $char = "SLD";
+                $kode = $char .date('His'). sprintf("%06s", $noUrut);
+                
+                $image = $request->image;
+                $name = md5($request->name.date('His'));
+                $realImage = base64_decode($image);
+                $f = finfo_open();
+                $mime_type = finfo_buffer($f, $realImage, FILEINFO_MIME_TYPE);
+                $filename = $name.'.jpg';
 
-            $kode = DB::table('request_saldo')->max('id');
-            $noUrut = (int) substr($kode, 6, 3);
-            $noUrut++;
-            $char = "SLD";
-            $kode = $char .date('His'). sprintf("%06s", $noUrut);
+                DB::table('request_saldo')->insert(
+                    ['req_file'=>$filename,'req_from'=>$request->req_from,'req_code' => $kode, 'req_saldo' => $request->req_saldo, 'req_user_id' => $auth->id,'status'=>0,'req_norek'=>$request->req_norek]
+                );
+
+                file_put_contents(public_path('files/uploads/bukti').DIRECTORY_SEPARATOR.$filename, $realImage);
+                return response()->json(['status'=>true,'message'=>'Image Uploaded Successfully.']);    
+            }
+
             
-            $image = $request->image;
-            $name = md5($request->name.date('His'));
-            $realImage = base64_decode($image);
-            $f = finfo_open();
-            $mime_type = finfo_buffer($f, $realImage, FILEINFO_MIME_TYPE);
-            $filename = $name.'.jpg';
-
-            DB::table('request_saldo')->insert(
-                ['req_from'=>$request->req_from,'req_code' => $kode, 'req_saldo' => $request->req_saldo, 'req_user_id' => $auth->id]
-            );
-
-            file_put_contents(public_path('files/uploads/bukti').DIRECTORY_SEPARATOR.$filename, $realImage);
-            return response()->json(['status'=>true,'message'=>'Image Uploaded Successfully.']);    
         } catch (\Throwable $th) {
             return response()->json(['status'=>false,'message'=>$th->getMessage()]);
         }

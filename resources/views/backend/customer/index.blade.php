@@ -5,7 +5,7 @@
             <h3 class="box-title">Customer</h3>
             <div class="box-tools text-right">
                 <div class="btn-group">
-                    <a href="{{ route('backend.customer.create') }}" class="btn btn-sm btn-primary"><span class="fa fa-plus"></span> Tambah</a>
+                    {{-- <a href="{{ route('backend.customer.create') }}" class="btn btn-sm btn-primary"><span class="fa fa-plus"></span> Tambah</a> --}}
                 </div>
             </div>
             
@@ -21,7 +21,7 @@
                         <th>No Telp</th>
                         
                         <th>Saldo</th>
-                        <th>Tanggal Lahir</th>
+                        
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -34,13 +34,10 @@
                         <td>{{ $v->email}}</td>
                         <td>{{ $v->no_telepon}}</td>
                         
-                    <td>Rp.{{ number_format($v->wallet) }} <button data-form="#frm_saldo-{{$v->id}}" data-userid="{{ $v->id }}"  class="btn btn-sm btn-success btn-xs formConfirmSaldo">Tambah Saldo</button></td>
+                        <td>Rp.{{ number_format($v->wallet) }} <button data-form="#frm_saldo-{{$v->id}}" data-userid="{{ $v->id }}"  class="btn btn-sm btn-success btn-xs formConfirmSaldo">Tambah Saldo</button></td>
                         
-                            
-                        
-                        <td>{{ date('d-m-Y', strtotime($v->tgl_lahir))}}</td>
                         <td class="text-center">
-                        	@if($v->isverified == 1)
+                        	@if($v->isactived == 1)
                         		<span><i class="fa fa-check text-green"></i></span>
                         	@else
                         		<span><i class="fa fa-close text-red"></i></span>

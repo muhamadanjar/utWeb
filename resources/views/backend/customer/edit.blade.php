@@ -25,8 +25,8 @@
 							<div class="form-group">
 								<label>Status</label>
 								<select name="status" class="form-control">
-									<option value="1" @if($data->status == 1) selected @endif>Aktif</option>
-									<option value="0" @if($data->status == 0) selected @endif>Non Aktif</option>
+									<option value="1" @if($data->isactived == 1) selected @endif>Aktif</option>
+									<option value="0" @if($data->isactived == 0) selected @endif>Non Aktif</option>
 								</select>
 							</div>
 						</div>
@@ -42,7 +42,7 @@
 						<div class="col-md-6"></div>
 					</div>
 					<div class="row">
-						<div class="col-md-2">
+						{{-- <div class="col-md-2">
 							<div class="form-group">
 								<label>JK</label>
 								<select name="sex" class="form-control">
@@ -50,8 +50,8 @@
 									<option value="Perempuan" @if($data->Perempuan)=="Perempuan" selected @endif>P</option>
 								</select>	
 							</div>
-						</div>
-						<div class="col-md-3">
+						</div> --}}
+						{{-- <div class="col-md-3">
 							<div class="form-group">
 								<label>Agama</label>
 								<select name="religion" class="form-control">
@@ -63,22 +63,29 @@
 									<option value="konghucu" @if($data->religion == 'konghucu') selected @endif>konghucu</option>
 								</select>	
 							</div>
-						</div>
+						</div> --}}
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>No Telp</label>
-								<input type="text" class="form-control" name="no_telp" value="{{$data->no_telp}}" required>
+								<input type="text" class="form-control" name="no_telepon" value="{{$data->no_telepon}}" required>
 								
 							</div>
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">
+								<label for="password">Password</label>
+								<input type="password" id="password" class="form-control" name="password" value="{{$data->password}}">
+								<input type="hidden" class="form-control" name="oldpassword" value="{{ $data->password }}">
+							</div>
+						</div>
+						{{-- <div class="col-md-4">
+							<div class="form-group">
 								<label>Tanggal Lahir</label>
 								<input type="date" class="form-control" name="tgl_lahir" value="{{$data->tgl_lahir}}" required>
 							</div>
-						</div>
+						</div> --}}
 					</div>
-					<div class="form-group">
+					{{-- <div class="form-group">
 						<label>Alamat</label>
 							<textarea class="form-control" rows="4" name="address">{{$data->address}}</textarea>
 					</div>
@@ -99,7 +106,7 @@
 								<label>Pendidikan</label>
 								<input type="text" class="form-control" name="education" value="{{$data->education}}" required>	
 							</div>
-						</div>
+						</div> --}}
 					</div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary">

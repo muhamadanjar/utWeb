@@ -64,6 +64,9 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::get('customer/{id}/edit', 'CustomerCtrl@edit')->name('customer.edit');
 	Route::post('customer/{id}/update','CustomerCtrl@update')->name('customer.update');
 	Route::post('customer/addsaldo','CustomerCtrl@add_saldo')->name('customer.addsaldo');
+	Route::get('customer/request_saldo','CustomerCtrl@request_saldo')->name('customer.request_saldo');
+	Route::post('customer/accept_request_saldo','CustomerCtrl@accept_request_saldo')->name('customer.accept_request_saldo');
+	
 	
 	
 

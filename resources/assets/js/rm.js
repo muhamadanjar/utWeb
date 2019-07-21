@@ -420,6 +420,7 @@ function loadGoogleMaps() {
     let vectorSource =null;
     let vectorLayer = null;
     var template_transaksi = Handlebars.compile($("#details-transaksi-template").html());
+    var table_dom = $('#table_dom').DataTable();
     var table_reservation = $('#table_reservation').DataTable({
         processing: true,
         serverSide: true,
