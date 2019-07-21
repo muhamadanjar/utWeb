@@ -63,8 +63,18 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::post('customer/post','CustomerCtrl@post')->name('customer.post');
 	Route::get('customer/{id}/edit', 'CustomerCtrl@edit')->name('customer.edit');
 	Route::post('customer/{id}/update','CustomerCtrl@update')->name('customer.update');
+
+
+	//route req saldo
+	Route::resource('reqsaldo', 'ReqSaldoCtrl', ['only' => ['index', 'create', 'edit', 'destroy','konfirmasi']]);
+	Route::post('reqsaldo/post','ReqSaldoCtrl@post')->name('reqsaldo.post');
+	Route::post('reqsaldo/{id}/konfirmasi','ReqSaldoCtrl@konfirmasi')->name('reqsaldo.konfirmasi');
+	Route::get('reqsaldo/{id}/edit', 'ReqSaldoCtrl@edit')->name('reqsaldo.edit');
+	Route::post('reqsaldo/{id}/update','ReqSaldoCtrl@update')->name('reqsaldo.update');	
+
 	Route::post('customer/addsaldo','CustomerCtrl@add_saldo')->name('customer.addsaldo');
 	
+
 	
 
 	
