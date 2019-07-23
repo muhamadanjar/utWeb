@@ -11,7 +11,7 @@ class User extends UserModerator
 {
     use Notifiable, HasApiTokens;
 
-    protected $hidden = ['password','api_token','remember_token'];
+    protected $hidden = ['password','remember_token'];
 
     protected function hasTooManyLoginAttempts(Request $request){
         $maxLoginAttempts = 3;
@@ -103,7 +103,7 @@ class User extends UserModerator
     }
 
     public function profile(){
-        return $this->hasMany(UserProfile::class,'user_id');
+        return $this->belongsTo(UserProfile::class,'user_id');
     }
     
 }
