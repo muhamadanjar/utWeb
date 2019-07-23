@@ -13,7 +13,7 @@
         </div>
             <!-- /.box-header -->
         <div class="{{$div_box}}-body">
-        	<table class="display table" cellspacing="0" width="100%" id="table_mobil">
+        	<table class="display table" cellspacing="0" width="100%" id="table_dom">
                 <thead>
                     <tr>
                         <th></th>
@@ -43,8 +43,17 @@
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-gear"></i>
                                 <span class="fa fa-caret-down"></span></button>
                                 <ul class="dropdown-menu pull-right">
-                                    <li><a href="#">Edit</a></li>
-                                    <li><a href="#">Hapus</a></li>
+                                    <li><a href="{{ route('backend.driver.edit',array('id'=>$item->id)) }}">Edit</a></li>
+                                    <li class=""
+                                            data-form="#frdelete-{{$item->id}}" 
+                                            data-title="Delete User {{ $item->id }}" 
+                                            data-message="Apa anda yakin Menghapus {{ $item->name }} ?">
+                                            <a class= "dropdown-item formConfirm" href="#"><i class="fa fa-trash"></i> Hapus</a>
+                                        </li>
+                                        <form action="{{ route('backend.driver.destroy', array($item->id) ) }}" method="post" style="display:none" id="frdelete-{{$item->id}}">
+                                            <input type="hidden" name="_method" value="delete">
+                                            {{ @csrf_field() }}
+                                        </form>
                                 </ul>
                             </div>
                         </td>

@@ -45,6 +45,9 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	
 	Route::resource('reviews','ReviewCtrl');
 	Route::resource('driver','DriverCtrl');
+	Route::post('driver','DriverCtrl@post')->name('driver.post');
+	Route::post('driver/change_photo','DriverCtrl@change_photo')->name('driver.change_photo');
+
 	Route::resource('services','ServiceCtrl');
 	Route::resource('packages','PackageCtrl',['only'=>['index']]);
 	Route::get('packages/create/{type?}','PackageCtrl@create')->name('packages.create');
@@ -64,6 +67,10 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::get('customer/{id}/edit', 'CustomerCtrl@edit')->name('customer.edit');
 	Route::post('customer/{id}/update','CustomerCtrl@update')->name('customer.update');
 
+	Route::post('customer/addsaldo','CustomerCtrl@add_saldo')->name('customer.addsaldo');
+	Route::get('customer/request_saldo','CustomerCtrl@request_saldo')->name('customer.request_saldo');
+	Route::post('customer/accept_request_saldo','CustomerCtrl@accept_request_saldo')->name('customer.accept_request_saldo');
+
 
 	//route req saldo
 	Route::resource('reqsaldo', 'ReqSaldoCtrl', ['only' => ['index', 'create', 'edit', 'destroy','konfirmasi']]);
@@ -72,13 +79,6 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::get('reqsaldo/{id}/edit', 'ReqSaldoCtrl@edit')->name('reqsaldo.edit');
 	Route::post('reqsaldo/{id}/update','ReqSaldoCtrl@update')->name('reqsaldo.update');	
 
-	Route::post('customer/addsaldo','CustomerCtrl@add_saldo')->name('customer.addsaldo');
-	Route::get('customer/request_saldo','CustomerCtrl@request_saldo')->name('customer.request_saldo');
-	Route::post('customer/accept_request_saldo','CustomerCtrl@accept_request_saldo')->name('customer.accept_request_saldo');
-	
-	
-
-	
 
 	
     //Link

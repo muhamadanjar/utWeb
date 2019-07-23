@@ -220,9 +220,18 @@ class ApiCtrl extends Controller
     }
 
     public function userUpdateLocation(Request $request){
-        $user = Auth::guard('api')->user();
-        $this->moderatorrepo->updateUserLocation($user->id,$request);
-        return response()->json($user,200);
+        try {
+            $user = Auth::guard('api')->user();
+            if($user){
+                $this->moderatorrepo->updateUserLocation($user->id,$request);
+                return response()->json(['status'=>true,'data'=>$user,'message'=>'driver telah update lokasi'],200);
+            }else{
+                return response()->json(['status'=>false,'message'=>'User tidak di temukan']);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['status'=>false,'message'=>$th->getMessage()]);
+        }
+        
     }
 
     public function userTopUpWallet(Request $request){

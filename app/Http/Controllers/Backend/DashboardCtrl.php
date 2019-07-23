@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\RepositoryInterface as ModeratorInterface;
 use MulutBusuk\Workspaces\Repositories\Eloquent\Post\RepositoryInterface as PostInterface;
 use MulutBusuk\Workspaces\Repositories\Eloquent\AuditTrail\Activity\RepositoryInterface as ActivityInterface;
-use App\Mobil\Contracts\RepositoryInterface as MobilInterface;
 use App\Trip;
 use App\Role;
 use DB;
@@ -16,12 +15,12 @@ class DashboardCtrl extends BackendCtrl{
     public function __construct(
         ModeratorInterface $mi,
         PostInterface $post,
-        MobilInterface $mobil,
+        
         ActivityInterface $activity){
             parent::__construct();
         $this->muser = $mi;
         $this->post = $post;
-        $this->mobil = $mobil;
+        
         $this->activity = $activity;
         
     }
