@@ -51,10 +51,25 @@ class DriverCtrl extends BackendCtrl{
         User::find($id)->delete();
         return redirect()->route('backend.driver.index');
     }
-    public function nonaktif($id)
-    {
-        # code...
+    public function nonaktif($id){
+        $d = User::find($id);
+        $d->isactived = $d->isactived == 1 ? 0:1;
+        $d->save();
+        Flash::success('Driver Berhasil di perbaharui');
+        return redirect()->route('backend.driver.index');
     }
+
+    public function add_saldo(Request $request){
+        $c = UserProfile::where('user_id',$request->user_id)->first();
+        $c = ($c === NULL) ? new UserProfile():$c;
+        $c->user_id = $request->user_id;
+		$c->wallet += $request->wallet;
+		$c->save();
+		
+		Flash::success('Saldo Berhasil di tambahkan');
+		return redirect()->route('backend.driver.index');
+
+	}
 
     public function post(Request $request){
         $validator = Validator::make($request->all(),Mobil::$rules_driver,Mobil::$messages_driver);
@@ -70,6 +85,8 @@ class DriverCtrl extends BackendCtrl{
                 $driver->name = $request->name;
                 $driver->username = $request->username;
                 $driver->email = $request->email;
+                $driver->isactived = $request->status;
+                $driver->isverified = $request->status;
                 if($request->oldpassword == $request->password){
                     $driver->password = $request->oldpassword;        
                 }else{
@@ -80,13 +97,15 @@ class DriverCtrl extends BackendCtrl{
                     $driver->assignRole('driver');
                 }
                 
-
-                $profile = new UserProfile();
+                
+                $profile = session('aksi') == 'edit' ? $driver->profile : new UserProfile();
                 $profile->nip = $request->nip;
                 $profile->address = $request->alamat;;
                 $profile->no_telepon = $request->no_telp;
                 $profile->user_id = $driver->id;
-                $profile->wallet = ($request->deposit == $request->old_deposit) ? $request->old_deposit : $request->old_deposit+$request->deposit ;
+                if(isset($request->deposit)){
+                    $profile->wallet += $request->deposit;
+                }
                 $profile->user()->associate($driver)->save();
 
                 $mobil = $this->mobil->findByField('user_id',$request->id);
@@ -114,5 +133,40 @@ class DriverCtrl extends BackendCtrl{
             report($e);
             Flash::error(trans('flash/mobil.error'));
         }
+    }
+
+    public function change_photo(Request $request){
+        $dir = public_path().DIRECTORY_SEPARATOR.$request->path;
+        $destinationPath = public_path().DIRECTORY_SEPARATOR.$request->path;
+        if (!$this->folder_exist($destinationPath)) {
+            mkdir($destinationPath, 0777);
+        }
+            $ext = pathinfo($_FILES["images"]["name"],PATHINFO_EXTENSION);
+            $filename = time().'_'.urlencode(pathinfo($_FILES["images"]["name"],PATHINFO_FILENAME)).'.'.$ext;
+            if(move_uploaded_file($_FILES["images"]["tmp_name"], $dir.DIRECTORY_SEPARATOR.$filename)){
+                return json_encode(array(
+                    'error'=>false,
+                    'dir'=>$dir,
+                    'url_location' =>$request->path,
+                    'filename'=>$filename,
+                    'data'=>$_FILES["images"]
+                ));
+                exit;
+            }
+        return json_encode(array('error'=>true,'message'=>'Upload process error'));
+        exit;
+    }
+    public function folder_exist($folder){
+        // Get canonicalized absolute pathname
+        $path = realpath($folder);
+
+        // If it exist, check if it's a directory
+        if($path !== false AND is_dir($path)){
+            // Return canonicalized absolute pathname
+            return $path;
+        }
+
+        // Path/folder does not exist
+        return false;
     }
 }

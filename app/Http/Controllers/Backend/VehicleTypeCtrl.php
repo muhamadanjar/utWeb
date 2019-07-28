@@ -39,6 +39,7 @@ class VehicleTypeCtrl extends BackendCtrl{
             $t->type = $request->type;
             $t->description = $request->description;
             $t->status = $request->status;
+            $t->base_harga = $request->base_harga;
             $t->per_min = $request->per_min;
             $t->per_miles = $request->per_miles;
             $t->person_capacity = $request->person_capacity;

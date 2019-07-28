@@ -19,7 +19,7 @@
     $no_telp='';
     $nip='';
     $alamat='';
-
+    $status = 0;
     $mobilName = '';
     $tahun = '';
     
@@ -34,6 +34,7 @@
         $mobilName = $mobil->name;
         $tahun = $mobil->tahun;
         $fotoMobil = $mobil->foto;
+        $status = $driver->isactived;
 
         $driverName = $driver->name;
         $username = $driver->username;
@@ -42,8 +43,8 @@
         
         if (isset($driver->profile)) {
             $nip = $driver->profile->nip;
-            $no_telp = $driver->profile->no_telp;
-            $alamat = $driver->profile->alamat;
+            $no_telp = $driver->profile->no_telepon;
+            $alamat = $driver->profile->address;
             $deposit=$driver->profile->wallet;
         }else{
             $nip = "";
@@ -127,11 +128,11 @@
                                         ?>
                             </div>
                             <div class="input-group margin controlupload">
-                                        <input type="text" class="form-control txtfoto" readonly="readonly" name="foto" value="{{ $fotoMobil }}">
-                                        <span class="input-group-btn">
-                                            <input type="file" name="users_file" class="hidden file fileupload" data-url="{{ route('backend.driver.change_photo',['id'=>$id])}}" data-path="/images/uploads/car/">
-                                            <button type="button" class="btn btn-info btn-flat formUpload">Foto!</button>
-                                        </span>
+                                <input type="text" class="form-control txtfoto" readonly="readonly" name="foto" value="{{ $fotoMobil }}">
+                                <span class="input-group-btn">
+                                <input type="file" name="users_file" class="hidden file fileupload" data-url="{{ route('backend.driver.change_photo',['id'=>$id,'path'=>'files/uploads/mobil'])}}" data-path="{{ auth()->user()->getPermalink('mobil') }}" data-type="single">
+                                    <button type="button" class="btn btn-info btn-flat formUpload">Foto!</button>
+                                </span>
                             </div>
                             @endif
                             <!--<div class="form-group {{ $errors->has('harga') ? ' has-error' : '' }}">
@@ -157,12 +158,20 @@
                         </div>
                         <div class="panel-body">
                             
+                            <div class="form-group has-feedback {{ $errors->has('status') ? ' has-error' : '' }}">
+                                <select name="status" id="status" class="form-control">
+                                    <option value="0" @if($status == '0') selected @endif>Non Aktif</option>
+                                    <option value="1" @if($status == '1') selected @endif>Aktif</option>
+                                </select>
+                                
+                            </div>
+
                             <div class="form-group has-feedback {{ $errors->has('name') ? ' has-error' : '' }}">
                                 <input type="text" class="form-control" placeholder="Full name" name="name" value="{{$driverName}}">
                                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
                             </div>
                             <div class="form-group has-feedback {{ $errors->has('username') ? ' has-error' : '' }}">
-                                <input type="text" class="form-control" placeholder="Username" name="username" readonly value="{{$username}}">
+                                <input type="text" class="form-control" placeholder="Username" name="username" {{ session('aksi') == 'edit' ? 'readonly':'' }} value="{{$username}}">
                                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
                             </div>
                             <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">

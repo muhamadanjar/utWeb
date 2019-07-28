@@ -40,12 +40,12 @@ class User extends UserModerator
         
     }
 
-    public function getPermalink(){
-        return url('files/uploads/users').DIRECTORY_SEPARATOR;
+    public function getPermalink($default ='users'){
+        return url('files/uploads/'.$default).DIRECTORY_SEPARATOR;
     }
 
-    public function getPath(){
-        return public_path('files/uploads/users').DIRECTORY_SEPARATOR;
+    public function getPath($default = 'users'){
+        return public_path('files/uploads/'.$default).DIRECTORY_SEPARATOR;
     }
     
     
@@ -103,7 +103,7 @@ class User extends UserModerator
     }
 
     public function profile(){
-        return $this->belongsTo(UserProfile::class,'user_id');
+        return $this->belongsTo(UserProfile::class,'id','user_id');
     }
     
 }

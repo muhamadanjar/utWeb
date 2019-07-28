@@ -7,6 +7,7 @@
     $images="";
     $description=old('description');
     $status=old('status');
+    $base_harga = old('base_harga');
     $per_min=old('per_min');
     $per_miles=old('per_miles');
     $person_capacity =old('person_capacity');
@@ -18,6 +19,7 @@
         $images=$type->image;
         $description=$type->description;
         $status=$type->status;
+        $base_harga =$type->base_harga;
         $per_min=$type->per_min;;
         $per_miles=$type->per_miles;
         $person_capacity = $type->person_capacity;
@@ -52,6 +54,10 @@
                             <div class="form-group {{ $errors->has('description') ? ' has-error' : '' }}">
                                 <label for="description">Deskripsi</label>
                                 <input type="text" name="description" class="form-control" id="description" value="{{$description}}">
+                            </div>
+                            <div class="form-group {{ $errors->has('base_harga') ? ' has-error' : '' }}">
+                                <label for="per_min">Harga Awal</label>
+                                <input type="text" name="base_harga" class="form-control" id="base_harga" value="{{$base_harga}}">
                             </div>
                             <div class="form-group {{ $errors->has('per_min') ? ' has-error' : '' }}">
                                 <label for="per_min">Harga (Menit)</label>
