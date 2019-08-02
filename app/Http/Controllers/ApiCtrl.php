@@ -366,8 +366,14 @@ class ApiCtrl extends Controller
         try {
             $auth = Auth::guard('api');
             $user = $auth->user();
-            $trip = Trip::where('trip_bookby',$user->id)->orderBy('trip_date','DESC')->get();
-            $trip_count = Trip::where('trip_bookby',$user->id)->where('trip_type',$type)->orderBy('trip_date','DESC')->count();
+            if($user->isRole('customer')){
+                $trip = Trip::where('trip_bookby',$user->id)->orderBy('trip_date','DESC')->get();
+                $trip_count = Trip::where('trip_bookby',$user->id)->where('trip_type',$type)->orderBy('trip_date','DESC')->count();
+            }else if($user->isRole('driver')){
+                $trip = Trip::where('trip_driver',$user->id)->orderBy('trip_date','DESC')->get();
+                $trip_count = Trip::where('trip_driver',$user->id)->where('trip_type',$type)->orderBy('trip_date','DESC')->count();
+            }
+            
             if ($trip_count<=0) {
                 $message = 'Anda Belum Memiliki Transaksi';
             }
