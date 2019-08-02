@@ -64,8 +64,7 @@ class ApiCtrl extends Controller
         
         return response()->json(['status'=>true,'data' => $desa], 200, [], JSON_NUMERIC_CHECK);
     }
-    public function serverinformasi()
-    {
+    public function serverinformasi(){
         $memory = $this->shapeSpace_memory_usage();
         $countproc = $this->shapeSpace_number_processes();
         $server_uptime = $this->shapeSpace_server_uptime();
@@ -119,7 +118,6 @@ class ApiCtrl extends Controller
         }
         
     }
-
     public function register(Request $request){
         try{
             DB::beginTransaction();
@@ -166,9 +164,7 @@ class ApiCtrl extends Controller
         return response()->json(['error' => true, 'message' => 'Data Tidak ada'], $this->successStatus);
 
     }
-    
-    function multiKeyExists(array $arr, $key)
-    {
+    public function multiKeyExists(array $arr, $key){
         // is in base array?
         if (array_key_exists($key, $arr)) {
             return true;
@@ -186,7 +182,6 @@ class ApiCtrl extends Controller
 
         return false;
     }
-
     public function checktahun($tahun){
         $category = array();
         for ($i = 0; $i < 10; $i++) {
@@ -202,8 +197,7 @@ class ApiCtrl extends Controller
 
     }
 
-    function curl_get_contents($url)
-    {
+    public function curl_get_contents($url){
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -213,12 +207,10 @@ class ApiCtrl extends Controller
         curl_close($ch);
         return $data;
     }
-
     public function statistiktahun(){
         $a = $this->statistikrepo->statistikByTahun();
         return response()->json(['Bulan'=>[$a[0]->januari,$a[0]->februari,$a[0]->maret,$a[0]->april,$a[0]->may,$a[0]->juni,$a[0]->juli,$a[0]->agustus,$a[0]->september,$a[0]->oktober,$a[0]->november,$a[0]->desember]]);
     }
-
     public function userUpdateLocation(Request $request){
         try {
             $user = Auth::guard('api')->user();
@@ -233,7 +225,6 @@ class ApiCtrl extends Controller
         }
         
     }
-
     public function userTopUpWallet(Request $request){
         try {
             $user = Auth::guard('api')->user();
@@ -261,20 +252,18 @@ class ApiCtrl extends Controller
                 $isonline = $user->profile;
                 $profile = DB::table('user_profile')
                 ->where('user_id',$user->id)
-                ->update(['isonline'=>!$isonline]);    
+                ->update(['isonline'=>!$isonline->isonline]);    
             }else{
                 $p = new UserProfile();
                 $p->user_id = $user->id;
                 $p->isonline = 1;
                 $p->save();
             }
-            
             return response()->json(['status'=>true,'data'=>$profile,'message'=>'Data Online Berhasil di ubah']);
         } catch (\Exception $e) {
-            return response()->json(['status'=>false,'message'=>$e]);
+            return response()->json(['status'=>false,'message'=>$e->getMessage()]);
         }
     }
-
     public function PostBooking(Request $request){
         DB::beginTransaction();
         try {
@@ -301,7 +290,6 @@ class ApiCtrl extends Controller
                 DB::table('trip_detail')->insert(
                     $td
                 );
-            
             DB::commit();    
             return response()->json(['status'=>true,'data'=>$trip],200);
         } catch (ValidationException $e) {
@@ -378,9 +366,14 @@ class ApiCtrl extends Controller
         try {
             $auth = Auth::guard('api');
             $user = $auth->user();
-            $trip = Trip::where('trip_bookby',$user->id)->orderBy('trip_date','DESC')->get();
-            $trip_count = Trip::where('trip_bookby',$user->id)->where('trip_type',$type)->orderBy('trip_date','DESC')->count();
-            $message;
+            if($user->isRole('customer')){
+                $trip = Trip::where('trip_bookby',$user->id)->orderBy('trip_date','DESC')->get();
+                $trip_count = Trip::where('trip_bookby',$user->id)->where('trip_type',$type)->orderBy('trip_date','DESC')->count();
+            }else if($user->isRole('driver')){
+                $trip = Trip::where('trip_driver',$user->id)->orderBy('trip_date','DESC')->get();
+                $trip_count = Trip::where('trip_driver',$user->id)->where('trip_type',$type)->orderBy('trip_date','DESC')->count();
+            }
+            
             if ($trip_count<=0) {
                 $message = 'Anda Belum Memiliki Transaksi';
             }
@@ -403,7 +396,6 @@ class ApiCtrl extends Controller
         }
         return response()->json(['status'=>true,'data'=>$data]);
     }
-
     public function GetRentPackage($id = null){
         $rent = new \App\Mobil\Models\RentPackage();
         if ($id == NULL) {
@@ -416,12 +408,10 @@ class ApiCtrl extends Controller
         }
         return response()->json(['status'=>true,'data'=>$data]);
     }
-
     public function GetUserLocation(){
         $ul = UserLocation::join('users','user_location.user_id','users.id')->select('users.*','user_location.latitude','user_location.longitude')->get();
         return response()->json(['status'=>true,'data'=>$ul],200);
     }
-
     public function GetPromo(){
         $response = [];
         $promo = Promo::where('tgl_mulai','>=',date('Y-m-d'))->orWhere('tgl_akhir','<=',date('Y-m-d'))->orderBy('tgl_mulai','DESC')->select()->get();
@@ -463,8 +453,6 @@ class ApiCtrl extends Controller
             $res['message'] = $e->getMessage();
         }
         return response()->json($res,$status);
-
-        
     }
 
     public function get_servicetype(){

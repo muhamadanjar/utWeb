@@ -47,6 +47,7 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::resource('driver','DriverCtrl');
 	Route::post('driver','DriverCtrl@post')->name('driver.post');
 	Route::post('driver/change_photo','DriverCtrl@change_photo')->name('driver.change_photo');
+	Route::post('driver/addsaldo','DriverCtrl@add_saldo')->name('driver.addsaldo');
 
 	Route::resource('services','ServiceCtrl');
 	Route::resource('packages','PackageCtrl',['only'=>['index']]);
