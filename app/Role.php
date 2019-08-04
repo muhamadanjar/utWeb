@@ -3,8 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
-class Role extends Model
+use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\Models\Role as RoleModerator;
+class Role extends RoleModerator
 {
     public function permissions()
     {

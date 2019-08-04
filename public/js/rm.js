@@ -606,6 +606,36 @@ function loadGoogleMaps() {
       initMapTransaksi(); // $(window).bind('gMapsLoaded', initializeMap('map_canvas_'+data.id));
     }
   });
+  var table_wallet = $('#table_wallet').DataTable({
+    processing: true,
+    serverSide: true,
+    ajax: {
+      url: window.Laravel.serverUrl + '/backend/dashboard/wallet',
+      type: 'POST',
+      data: function data(d) {
+        d.tgl_mulai = $('input[name=tgl_mulai]').val();
+        d.status = $('select[name=status]').val();
+        d.sq = $('input[name=sq]').val();
+      }
+    },
+    columns: [{
+      data: 'trip_type'
+    }, {
+      data: 'trip_bookby'
+    }, {
+      data: 'trip_code'
+    }, {
+      data: 'trip_address_origin'
+    }, {
+      data: 'trip_total'
+    }, {
+      data: 'trip_status'
+    }]
+  });
+  $('#table_wallet_search_form').on('submit', function (e) {
+    table_wallet.draw();
+    e.preventDefault();
+  });
 
   function initTableSubTransaksi(tableId, data) {
     $('#' + tableId).DataTable({
