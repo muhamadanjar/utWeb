@@ -26,6 +26,9 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::get('/', 'DashboardCtrl@getIndex')->name('index');
 	Route::get('dashboard/index', ['as' => 'dashboard.index', 'uses' => 'DashboardCtrl@getIndex']);
 	Route::get('dashboard/statistik','DashboardCtrl@getStatistikView');
+	Route::get('dashboard/earning','DashboardCtrl@getEarning');
+	Route::get('dashboard/wallet','DashboardCtrl@getWallet');
+	Route::post('dashboard/wallet','DashboardCtrl@getWallet');
 	Route::get('notifikasi', ['as' => 'notifikasi', 'uses' => 'DashboardCtrl@getNotifikasi']);
 	Route::group(['prefix' => 'dokumen', 'as' => 'dokumen.'], function () {
 		Route::get('/', 'DokumenCtrl@getIndex')->name('index');

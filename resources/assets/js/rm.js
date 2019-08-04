@@ -474,6 +474,33 @@ function loadGoogleMaps() {
             // $(window).bind('gMapsLoaded', initializeMap('map_canvas_'+data.id));
         }
     });
+
+    var table_wallet = $('#table_wallet').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url:window.Laravel.serverUrl+'/backend/dashboard/wallet',
+            type:'POST',
+            data: function (d) {
+                d.q = $('input[name=q]').val();
+            }
+        },
+        columns: [
+            {data: 'jurnal_desc'},
+            {data: 'jurnal_amount'},
+            {data: 'jurnal_type'},
+            {data: 'jurnal_create_date'},
+            
+            {data: 'jurnal_type'},
+            {data: 'jurnal_balance'},
+            
+        ]
+    });
+
+    $('#table_wallet_search_form').on('submit', function(e) {
+        table_wallet.draw();
+        e.preventDefault();
+    });
     function initTableSubTransaksi(tableId, data) {
         $('#' + tableId).DataTable({
             processing: true,
