@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\User;
 class Trip extends Model{
     protected $table = 'trip';
     protected $primaryKey = 'trip_id';
@@ -18,10 +18,18 @@ class Trip extends Model{
     const STATUS_DECLINE = 6;
 
     public function driver(){
-        return $this->hasOne(User::class,'trip_driver');
+        return $this->hasOne(User::class,'id','trip_driver');
     }
     public function rider(){
-        return $this->hasOne(User::class,'trip_bookby');
+        return $this->hasOne(User::class,'id','trip_bookby');
+    }
+
+    public function scopeDetail($query){
+        
+        return $query->join('trip_detail', function($join){
+            $join->on('trip.trip_id', '=', 'trip_detail.trip_id');
+    
+        });
     }
     public function getStatusAttribute(){
         $t = $this->attributes['trip_status'];
