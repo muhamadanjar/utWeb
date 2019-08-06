@@ -23,6 +23,12 @@ class Repository extends baseRepository implements RepositoryInterface
         $this->vname = 'lists';
     }
 
+    public function mobilavailable(){
+        $mobil = $this->model->where('status','tersedia')->orderBy('name', 'asc')->get();
+        $new = new Mobil();
+        return $mobil;
+    }
+
     
 
 }

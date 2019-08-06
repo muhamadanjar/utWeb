@@ -438,13 +438,13 @@ function loadGoogleMaps() {
             {data: 'trip_type'},
             {data: 'trip_bookby'},
             {data: 'trip_code'},
-            {data: 'trip_address_origin'},
+            {data: 'trip_address_origin', width: "40%"},
             {data: 'trip_date'},
             {data: 'driverName'},
             {data: 'customerName'},
             {data: 'trip_total'},
             {data: 'trip_status'},
-            {data: 'action',name:'action', orderable: false, searchable: false,width: "100px"},
+            {data: 'action',name:'action', orderable: false, searchable: false,width: "8%"},
         ]
     });
     $('#table_reservation_search_form').on('submit', function(e) {

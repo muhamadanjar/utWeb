@@ -30,6 +30,18 @@ class DriverCtrl extends BackendCtrl{
         # code...
     }
 
+    public function show(Request $request,$id){
+        $a = DB::table('tm_driver')->join('mobil','tm_driver.id','mobil.user_id')->where('tm_driver.id',$id)->first();
+        // $a->foto = auth()->user()->getPermalink().$a->foto;
+        
+        if($request->ajax()){
+            if($a === NULL){ return response()->json(array('message'=>'Driver tidak di temukan'));}
+            return response()->json(array('data'=>$a));
+        }
+        return view('backend.driver.show')->with(['driver'=>$a]);
+        
+    }
+
     public function create(){
         session(['aksi'=>'add']);
         return view('backend.driver.form');

@@ -105,5 +105,9 @@ class User extends UserModerator
     public function profile(){
         return $this->belongsTo(UserProfile::class,'id','user_id');
     }
+
+    public function scopeIsDriver($query){
+        return $query->join('vroles','users.id','vroles.user_id')->select('users.*')->where('vroles.name','driver');
+    }
     
 }

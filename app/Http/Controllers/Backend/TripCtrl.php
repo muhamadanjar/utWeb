@@ -6,15 +6,15 @@ use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
 use DataTables;
 use DB;
+use App\User;
 use App\Trip;
-
+use App\Mobil\Repository as MobilInterface;
 class TripCtrl extends BackendCtrl
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
+    public function __construct(MobilInterface $mobil){
+        $this->mobil = $mobil;
+    }
     public function index()
     {
         $trip = \App\Trip::get();
@@ -48,6 +48,15 @@ class TripCtrl extends BackendCtrl
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function post(Request $request){
+        $d = (session('aksi')=='edit') ? Trip::find($request->id) : new Trip();
+        $d->trip_driver = $request->driver;
+        $d->trip_status = 1;
+        $d->save();
+        Flash::success("Data Berhasil di perbaharui");
+        return redirect()->route('backend.trip_job.index');
+    }
     public function show($trip_job){   
         
         $trip = Trip::join('trip_detail','trip.trip_id','trip_detail.trip_id')
@@ -66,7 +75,10 @@ class TripCtrl extends BackendCtrl
     public function edit($id){
         session(['aksi'=>'edit']);
         $t = Trip::find($id);
-        return view('backend.trip.form')->with(['trip'=>$t]);
+        $sewa_detail = $t->detail()->first();
+        $driver = User::isDriver()->get();
+        // dd($driver);
+        return view('backend.trip.form')->with(['trip'=>$t,'sewaDetail'=>$sewa_detail,'driver'=>$driver]);
     }
 
     /**
@@ -97,7 +109,7 @@ class TripCtrl extends BackendCtrl
         \DB::statement(DB::raw('set @rownum=0'));
             $sewa = Trip::join('trip_detail','trip.trip_id','=','trip_detail.trip_id')
             ->leftjoin('tm_driver','trip.trip_driver','=','tm_driver.id')
-            ->leftjoin('tm_customer','trip_bookby','=','tm_customer.id')
+            ->leftjoin('tm_customer','trip.trip_bookby','=','tm_customer.id')
             ->join('service_type','trip_type','service_type.id')
             ->orderBy('trip.created_at','DESC')
             ->select(
@@ -120,14 +132,20 @@ class TripCtrl extends BackendCtrl
         return Datatables::of($sewa)
         ->addColumn('action', function ($user) {
             $content = '<div class="btn-group">';
-            $content .= '<a href="'.route('backend.trip_job.edit',[$user->trip_id]).'" class="btn btn-xs btn-primary btn-edit"><i class="fa fa-edit"></i> Edit</a>';
-            $content .= '<a href="#" class="btn btn-xs btn-primary btn-detail"><i class="fa fa-more"></i> Detail</a>';
+            $content .= '<a href="'.route('backend.trip_job.edit',[$user->trip_id]).'" class="btn btn-xs btn-primary btn-edit"><i class="fa fa-send"></i> </a>';
+            $content .= '<a href="#" class="btn btn-xs btn-primary btn-detail"><i class="fa fa-map"></i></a>';
             $content .= '</div>';
             return $content;
         })
         
         ->editColumn('rownum', function ($tr) {
             return '<b>'.$tr->rownum.'</b>';
+        })
+        ->editColumn('trip_type', function ($tr) {
+            return '<span class="label label-info">'.$tr->trip_type.'</span>';
+        })
+        ->editColumn('trip_date', function ($tr) {
+            return '<b>'.date('d M Y',strtotime($tr->trip_date)).'</b>';
         })
         ->editColumn('trip_total', function ($tr) {
             return '<i>'.$tr->trip_total.'</i>';
@@ -138,14 +156,11 @@ class TripCtrl extends BackendCtrl
         ->addColumn('details_url', function($user) {
             return url('backend/trip_job/'.$user->trip_id);
         })
-        ->setRowClass(function ($data) {
-            return $data->trip_type == 'Reguler' ? 'alert-default' : 'alert-info';
-        })
         ->editColumn('trip_status', function($transaksi){
             $class = $transaksi->trip_status == '0' ? 'bg-orange' : 'label-success';
             return '<span class="label '.$class.'">'.$transaksi->status.'</span>';
         })
-        ->rawColumns(['rownum', 'action','trip_status','trip_total'])
+        ->rawColumns(['rownum', 'action','trip_type','trip_status','trip_total','trip_date'])
         ->filter(function ($query) use ($request) {
             if ($request->has('status')) {
                 $query->where('trip_status', 'like', "%{$request->get('status')}%");
