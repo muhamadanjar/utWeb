@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\Models\User as UserModerator;
 use File;
 use App\UserProfile;
+use App\Mobil\Models\Mobil;
 class User extends UserModerator
 {
     use Notifiable, HasApiTokens;
@@ -105,9 +106,18 @@ class User extends UserModerator
     public function profile(){
         return $this->belongsTo(UserProfile::class,'id','user_id');
     }
+    public function mobil(){
+        return $this->belongsTo(Mobil::class,'id','user_id');
+    }
 
     public function scopeIsDriver($query){
         return $query->join('vroles','users.id','vroles.user_id')->select('users.*')->where('vroles.name','driver');
+    }
+
+    public function scopeGetMobil($query,$val = NULL){
+        $w = array();
+        if ($val !== NULL) {$w['users.id'] = $val;}
+        return $query->join('mobil','users.id','mobil.user_id')->select('mobil.*')->where($w);
     }
     
 }

@@ -92,7 +92,7 @@
         var el = $(this).parent();
         var image = el.attr('data-image');
         $('#formConfirm').find('#frm_body')
-        .html(`<img src='${image}'>`)
+        .html(`<img class='img img-responsive' src='${image}'>`)
         .end().find('#frm_title').html('Bukti Transaksi')
         .end().find('#frm_submit').addClass('hidden')
         .end().find('#frm_cancel').text('Tutup')

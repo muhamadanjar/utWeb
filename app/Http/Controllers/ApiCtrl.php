@@ -96,25 +96,29 @@ class ApiCtrl extends Controller
             $user_email = (filter_var($r_user,FILTER_VALIDATE_EMAIL)) ? 'email' : 'username' ;
             if (Auth::attempt([$user_email => $r_user, 'password' => request('password')])) {
                 $user = Auth::user();
-                $du = User::join('user_profile','user_profile.user_id','users.id')
-                    ->select('users.*','user_profile.wallet')->first();
                 $token = $user->createToken('MyApp')->accessToken;
+                $user->api_token = $token;
+                $user->latestlogin = Carbon::now();
+                $user->save();
+                $du = User::join('user_profile','user_profile.user_id','users.id')
+                ->where('users.id',$user->id)
+                    ->select('users.*','user_profile.wallet')->first();
                 $response['status'] = true;
                 $response['error'] = false;
                 $response['data']['token'] = $token;
                 $response['data']['user'] = $du;
                 $response['data']['roles'] = $user->roles;
                 $response['token'] = $token;
-                $user->api_token = $response['token'];
-                $user->latestlogin = Carbon::now();
-                $user->save();
+                $response['expiresIn'] = 3600;
+                
+                
                 return response()->json($response, $this->successStatus);
             } else {
-                return response()->json(['error' => true, 'message' => 'Unauthorised'], 401);
+                return response()->json(['status' => false,'error'=>true, 'message' => 'Unauthorised'], 401);
             }
             
         } catch (\Exception $th) {
-            return response()->json(['error' => true, 'message' => $th->getMessage()],400);
+            return response()->json(['error' => true,'status'=>false, 'message' => $th->getMessage()],400);
         }
         
     }
@@ -157,31 +161,15 @@ class ApiCtrl extends Controller
         $user = Auth::guard('api')->user();
         if ($user) {
             $profile = $user->profile->toArray();
+            $mobil = $user->mobil->toArray();
             $ar_user = $user->toArray();
-            $ar = array_merge($ar_user,$profile);
-            return response()->json(['success' => true, 'data' => $ar], $this->successStatus);
+            $ar = array_merge($ar_user,$profile,$mobil);
+            return response()->json(['status' => true, 'data' => $ar], $this->successStatus);
         }
         return response()->json(['error' => true, 'message' => 'Data Tidak ada'], $this->successStatus);
 
     }
-    public function multiKeyExists(array $arr, $key){
-        // is in base array?
-        if (array_key_exists($key, $arr)) {
-            return true;
-        }
-
-        // check arrays contained in this array
-        foreach ($arr as $element) {
-            if (is_array($element)) {
-                if ($this->multiKeyExists($element, $key)) {
-                    return true;
-                }
-            }
-
-        }
-
-        return false;
-    }
+    
     public function checktahun($tahun){
         $category = array();
         for ($i = 0; $i < 10; $i++) {
@@ -300,6 +288,18 @@ class ApiCtrl extends Controller
         }
         
     }
+    public function updateTripStatus(Request $request){
+        try {
+            $t = Trip::find($request->trip_id);
+            if ($t == NULL) { return response()->json(['status'=>false,'message'=>'Data Trip tidak di temukan']);}
+            $t->trip_status = $request->status;
+            $t->save();
+            return response()->json(['status'=>true,'message'=>'Status Trip {$t->trip_code}']);
+        } catch (\Throwable $th) {
+            return response()->json(['status'=>false,'message'=>$th->getMessage()]);
+        }
+        
+    }
     public function postReguler(Request $request){
         DB::beginTransaction();
         try {
@@ -311,7 +311,7 @@ class ApiCtrl extends Controller
             $trip->trip_address_destination = $request->trip_address_destination;
             $trip->trip_date = date('Y-m-d H:i:s');
             $trip->trip_type = 2;
-            $trip->trip_status = 0;
+            $trip->trip_status = Trip::STATUS_PENDING;
             $trip->trip_total = $request->trip_total;
             $trip->save();
                 $td = [
@@ -432,21 +432,28 @@ class ApiCtrl extends Controller
 
     public function check_job(Request $request){
         $res = array();
+        $status = 500;
         try {
             $auth = Auth::guard('api')->user();
-            $profile = $auth->profile;
-            if ($profile->job !== NULL) {
-                $cp = Trip::where('trip_code',$profile->job)->first();
+            $message = "User tidak di temukan";
+            if ($auth !== NULL) {
+                $profile = $auth->profile;
+                $w = array();
+                $w['trip_status'] = 0;
+                $message = "";
+                if ($auth->isRole('driver')) {
+                    $w['trip_driver']= $auth->id;
+                }
+                $cp = Trip::where($w)->join('trip_detail','trip.trip_id','trip_detail.trip_id')->orderBy('trip_date','DESC')->first();
+                $message = ($cp===NULL) ? 'Tidak ada Transaksi Perjalanan' : 'Perjalanan dengan code '.$cp->trip_code; ;
                 $res['data'] = $cp;
-                $message = 'Perjalanan dengan code '.$profile->job;
-            }else{
-                $message = 'Tidak ada Transaksi Perjalanan';
-                $res['data'] = $profile;
+                
+                $res['status'] = true;
+                $status = $this->successStatus;
             }
             $res['message'] = $message;
-            $res['status'] = true;
             
-            $status = $this->successStatus;
+            
         } catch (\Exception $e) {
             $status = 400;
             $res['error'] = true;

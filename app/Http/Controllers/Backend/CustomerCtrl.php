@@ -87,7 +87,9 @@ class CustomerCtrl extends BackendCtrl{
 
 	}
 	public function request_saldo(){
-		$data = DB::table('request_saldo')->join('users','users.id','req_user_id')->orderBy('request_saldo.id','DESC')->get();
+		$data = DB::table('request_saldo')->join('users','users.id','req_user_id')
+		->select("request_saldo.*","users.name")
+		->orderBy('request_saldo.id','DESC')->get();
 		return view('backend.customer.requestsaldo')->with(['rs'=>$data]);
 	}
 

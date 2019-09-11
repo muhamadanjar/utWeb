@@ -35,6 +35,8 @@ Route::post('user/changeonline','ApiCtrl@userChangeOnline');
 Route::post('booking','ApiCtrl@PostBooking');
 Route::post('booking_details','ApiCtrl@PostBooking');
 
+Route::post('updateTripStatus','ApiCtrl@updateTripStatus');
+
 Route::post('rider/find_rider_by_number','ApiCtrl@findRiderByNumber');
 Route::post('get_available_driver_list','ApiCtrl@get_available_driver');
 Route::post('ajax_get_user_balance','ApiCtrl@get_user_balance');
