@@ -438,16 +438,22 @@ class ApiCtrl extends Controller
             $message = "User tidak di temukan";
             if ($auth !== NULL) {
                 $profile = $auth->profile;
-                $w = array();
-                $w['trip_status'] = 0;
                 $message = "";
-                if ($auth->isRole('driver')) {
-                    $w['trip_driver']= $auth->id;
-                }
-                $cp = Trip::where($w)->join('trip_detail','trip.trip_id','trip_detail.trip_id')->orderBy('trip_date','DESC')->first();
+                $query = Trip::where(function($q) use ($auth){
+                    if ($auth->isRole('driver')) {
+                        $q->where('trip_driver',$auth->id);
+                    }
+                    $q->where('trip_status','<',Trip::STATUS_DECLINE);
+                })->join('trip_detail','trip.trip_id','trip_detail.trip_id')
+                ->join('tm_customer','trip_bookby','tm_customer.id')
+                ->select('trip.*','tm_customer.name as trip_customer','trip_detail.*')
+                ->orderBy('trip_date','DESC');
+                $sql = $query->toSql();
+                $bindings = $query->getBindings();
+                $cp = $query->first();
+                // dd($bindings);
                 $message = ($cp===NULL) ? 'Tidak ada Transaksi Perjalanan' : 'Perjalanan dengan code '.$cp->trip_code; ;
                 $res['data'] = $cp;
-                
                 $res['status'] = true;
                 $status = $this->successStatus;
             }
