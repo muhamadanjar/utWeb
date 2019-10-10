@@ -158,15 +158,24 @@ class ApiCtrl extends Controller
         
     }
     public function details(){
-        $user = Auth::guard('api')->user();
-        if ($user) {
-            $profile = $user->profile->toArray();
-            $mobil = $user->mobil->toArray();
-            $ar_user = $user->toArray();
-            $ar = array_merge($ar_user,$profile,$mobil);
-            return response()->json(['status' => true, 'data' => $ar], $this->successStatus);
-        }
+        try {
+            $user = Auth::guard('api')->user();
+            if ($user) {
+                $profile = $user->profile->toArray();
+                $ar_user = $user->toArray();
+                if ($user->isRole('driver')) {
+                    $mobil = $user->mobil->toArray();
+                    $ar = array_merge($ar_user,$profile,$mobil);
+                }else{
+                    $ar = array_merge($ar_user,$profile);
+                }
+                return response()->json(['status' => true, 'data' => $ar], $this->successStatus);
+            }
         return response()->json(['error' => true, 'message' => 'Data Tidak ada'], $this->successStatus);
+        } catch (\Throwable $th) {
+            return response()->json(array('message'=>$th->getMessage()));
+        }
+        
 
     }
     
