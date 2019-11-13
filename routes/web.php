@@ -84,6 +84,13 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::post('reqsaldo/{id}/update','ReqSaldoCtrl@update')->name('reqsaldo.update');	
 
 
+	Route::resource('booking','BookingCtrl');
+	Route::resource('report','ReportCtrl');
+	Route::get('report','ReportCtrl@index')->name('report');
+	Route::resource('car','ReportCtrl');
+	Route::get('car','ReportCtrl@index')->name('car');
+	Route::get('setting/fare','BookingCtrl@index')->name('setting.fare');
+
 	
     //Link
 	// Route::resource('link', 'LinkCtrl', ['only' => ['index', 'create', 'edit', 'destroy']]);

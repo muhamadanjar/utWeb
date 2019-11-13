@@ -178,6 +178,7 @@ return [
         MulutBusuk\Workspaces\Providers\PostProvider::class,
         MulutBusuk\Workspaces\Providers\MenuProvider::class,
         MulutBusuk\Workspaces\Providers\DekorProvider::class,
+        Lavary\Menu\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -242,6 +243,8 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         // 'Helper' => App\Helpers\Helper::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Menu'      => Lavary\Menu\Facade::class,
+        
 
 
     ],

@@ -8,6 +8,7 @@ use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\Models\User as UserMod
 use File;
 use App\UserProfile;
 use App\Mobil\Models\Mobil;
+
 class User extends UserModerator
 {
     use Notifiable, HasApiTokens;

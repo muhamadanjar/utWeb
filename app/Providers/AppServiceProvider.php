@@ -50,7 +50,7 @@ class AppServiceProvider extends ServiceProvider
             return realpath(__DIR__ . '/../../public');
         });
         \Config::set('moderator::view_login', 'templates::adminlte.login');
-        \Config::set('moderator::view_profil', 'templates::adminlte.profile');
+        \Config::set('moderator::view_profil', 'backend.profile');
 
         if ($this->app->environment() == 'production') {
             URL::forceScheme('https');
