@@ -264,10 +264,11 @@ class ApiCtrl extends Controller
     public function PostBooking(Request $request){
         DB::beginTransaction();
         try {
+            $auth = auth('api')->user();
             $trip = new Trip();
             $trip->trip_code = date('YmdHis');
             $trip->trip_job = $request->job;
-            $trip->trip_bookby = $request->trip_bookby;
+            $trip->trip_bookby = $auth->id;
             $trip->trip_address_origin = $request->trip_address_origin;
             $trip->trip_address_destination = $request->trip_address_destination;
             $trip->trip_date = date('Y-m-d');
@@ -293,6 +294,7 @@ class ApiCtrl extends Controller
             DB::rollback();
         } catch(\Exception $e){
             DB::rollback();
+            return response()->json(['message'=>$e->getMessage()],$e->getCode());
             throw $e;
         }
         
@@ -312,10 +314,18 @@ class ApiCtrl extends Controller
     public function postReguler(Request $request){
         DB::beginTransaction();
         try {
+            $auth = Auth::guard('api');
+            if ($auth == null) {
+                return response()-json(array('message'=>'data tidak ada'),500);
+            }else{
+                $auth = $auth->user();
+            }
+            
+            
             $trip = new Trip();
             $trip->trip_code = date('YmdHis');
             $trip->trip_job = $request->job;
-            $trip->trip_bookby = $request->trip_bookby;
+            $trip->trip_bookby = $auth->id;
             $trip->trip_address_origin = $request->trip_address_origin;
             $trip->trip_address_destination = $request->trip_address_destination;
             $trip->trip_date = date('Y-m-d H:i:s');
@@ -342,8 +352,9 @@ class ApiCtrl extends Controller
         } catch (ValidationException $e) {
             DB::rollback();
         } catch(\Exception $e){
+            return response()->json(['status'=>false,'message'=>$e->getMessage()],500);
             DB::rollback();
-            throw $e;
+            // throw $e;
         }
     }
     public function getDriverNearby(Request $request){
