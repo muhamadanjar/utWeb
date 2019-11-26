@@ -1,0 +1,31 @@
+<style>
+
+#photosphere {
+  height: 400px;
+  width: 540px;
+  margin: 0 auto;
+}
+
+</style>
+
+
+<div id="photosphere"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r70/three.min.js"></script>
+<script src="https://cdn.rawgit.com/mistic100/Photo-Sphere-Viewer/3.1.0/dist/photo-sphere-viewer.min.js"></script>
+
+<script>
+var PSV = new PhotoSphereViewer({
+    //panorama: 'https://cdn.rawgit.com/mistic100/Photo-Sphere-Viewer/3.1.0/example/Bryce-Canyon-National-Park-Mark-Doliner.jpg',
+    panorama: 'image.jpg',
+	container: 'photosphere',
+    loading_img: 'https://raw.githubusercontent.com/mistic100/Photo-Sphere-Viewer/3.1.0/example/photosphere-logo.gif',
+    navbar: 'autorotate zoom download fullscreen',
+    caption: 'Bryce Canyon National Park <b>&copy; Mark Doliner</b>',
+    default_fov: 65,
+    mousewheel: false,
+    size: {
+      height: 400
+    }
+  });
+
+</script>
