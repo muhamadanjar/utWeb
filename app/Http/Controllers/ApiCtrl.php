@@ -13,6 +13,7 @@ use Config;
 use MulutBusuk\Workspaces\Repositories\Eloquent\AuditTrail\Activity\RepositoryInterface as StatistikRepository;
 use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\RepositoryInterface as ModeratorRepository;
 use App\User;
+use App\UserMeta;
 use App\Trip;
 use App\Promo;
 use App\Setting;
@@ -103,11 +104,13 @@ class ApiCtrl extends Controller
                 $du = User::join('user_profile','user_profile.user_id','users.id')
                 ->where('users.id',$user->id)
                     ->select('users.*','user_profile.wallet')->first();
+                    $meta = UserMeta::where('meta_users')->get();
                 $response['status'] = true;
                 $response['error'] = false;
                 $response['data']['token'] = $token;
                 $response['data']['user'] = $du;
                 $response['data']['roles'] = $user->roles;
+                $response['data']['item'] = $meta;
                 $response['token'] = $token;
                 $response['expiresIn'] = 3600;
                 

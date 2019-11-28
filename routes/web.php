@@ -89,7 +89,7 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::get('report','ReportCtrl@index')->name('report');
 	Route::resource('car','ReportCtrl');
 	Route::get('car','ReportCtrl@index')->name('car');
-	Route::get('setting/fare','BookingCtrl@index')->name('setting.fare');
+	Route::get('setting/fare','SettingCtrl@fare')->name('setting.fare');
 
 	
     //Link
