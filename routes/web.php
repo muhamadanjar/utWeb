@@ -26,6 +26,9 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::get('/', 'DashboardCtrl@getIndex')->name('index');
 	Route::get('dashboard/index', ['as' => 'dashboard.index', 'uses' => 'DashboardCtrl@getIndex']);
 	Route::get('dashboard/statistik','DashboardCtrl@getStatistikView');
+	Route::get('dashboard/earning','DashboardCtrl@getEarning');
+	Route::get('dashboard/wallet','DashboardCtrl@getWallet');
+	Route::post('dashboard/wallet','DashboardCtrl@getWallet');
 	Route::get('notifikasi', ['as' => 'notifikasi', 'uses' => 'DashboardCtrl@getNotifikasi']);
 	Route::group(['prefix' => 'dokumen', 'as' => 'dokumen.'], function () {
 		Route::get('/', 'DokumenCtrl@getIndex')->name('index');
@@ -45,6 +48,10 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	
 	Route::resource('reviews','ReviewCtrl');
 	Route::resource('driver','DriverCtrl');
+	Route::post('driver','DriverCtrl@post')->name('driver.post');
+	Route::post('driver/change_photo','DriverCtrl@change_photo')->name('driver.change_photo');
+	Route::post('driver/addsaldo','DriverCtrl@add_saldo')->name('driver.addsaldo');
+
 	Route::resource('services','ServiceCtrl');
 	Route::resource('packages','PackageCtrl',['only'=>['index']]);
 	Route::get('packages/create/{type?}','PackageCtrl@create')->name('packages.create');
@@ -52,11 +59,37 @@ Route::group(['prefix' => 'backend', 'as' => 'backend.', 'namespace' => 'Backend
 	Route::post('packages-post/{type?}','PackageCtrl@post')->name('packages.post');
 	Route::post('packages/{type?}/na','PackageCtrl@na')->name('packages.na');
 	Route::get('packages-list/{type?}','PackageCtrl@list')->name('packages.list');
+	Route::post('packages-upload','PackageCtrl@upload')->name('packages.upload');
+	Route::delete('packages/{id}','PackageCtrl@destroy')->name('packages.destroy');
 	Route::resource('typevehicle','VehicleTypeCtrl',['only'=>['index','create','edit','destroy']]);
 	Route::post('typevehicle/post','VehicleTypeCtrl@post')->name('typevehicle.post');
 	Route::post('typevehicle/upload','VehicleTypeCtrl@upload')->name('typevehicle.upload');
-	
-	
+
+	//route customer
+	Route::resource('customer', 'CustomerCtrl', ['only' => ['index', 'create', 'edit', 'destroy']]);
+	Route::post('customer/post','CustomerCtrl@post')->name('customer.post');
+	Route::get('customer/{id}/edit', 'CustomerCtrl@edit')->name('customer.edit');
+	Route::post('customer/{id}/update','CustomerCtrl@update')->name('customer.update');
+
+	Route::post('customer/addsaldo','CustomerCtrl@add_saldo')->name('customer.addsaldo');
+	Route::get('customer/request_saldo','CustomerCtrl@request_saldo')->name('customer.request_saldo');
+	Route::post('customer/accept_request_saldo','CustomerCtrl@accept_request_saldo')->name('customer.accept_request_saldo');
+
+
+	//route req saldo
+	Route::resource('reqsaldo', 'ReqSaldoCtrl', ['only' => ['index', 'create', 'edit', 'destroy','konfirmasi']]);
+	Route::post('reqsaldo/post','ReqSaldoCtrl@post')->name('reqsaldo.post');
+	Route::post('reqsaldo/{id}/konfirmasi','ReqSaldoCtrl@konfirmasi')->name('reqsaldo.konfirmasi');
+	Route::get('reqsaldo/{id}/edit', 'ReqSaldoCtrl@edit')->name('reqsaldo.edit');
+	Route::post('reqsaldo/{id}/update','ReqSaldoCtrl@update')->name('reqsaldo.update');	
+
+
+	Route::resource('booking','BookingCtrl');
+	Route::resource('report','ReportCtrl');
+	Route::get('report','ReportCtrl@index')->name('report');
+	Route::resource('car','ReportCtrl');
+	Route::get('car','ReportCtrl@index')->name('car');
+	Route::get('setting/fare','SettingCtrl@fare')->name('setting.fare');
 
 	
     //Link

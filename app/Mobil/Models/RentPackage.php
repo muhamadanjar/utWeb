@@ -4,6 +4,7 @@ namespace App\Mobil\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use File;
 class RentPackage extends Model
 {
     protected $table = 'rent_package';
@@ -27,6 +28,28 @@ class RentPackage extends Model
 
     public function scopeActive($query){  
         return $query->where('status', '=', '1');
+    }
+
+    public function getImagePathAttribute(){
+        
+        if($this->attributes['image'] !== NULL){
+            if(File::exists($this->getPath().$this->attributes['image'])){
+                return $this->getPermalink().$this->attributes['image'];
+            }else{
+                return 'http://placehold.it/320';
+            }
+        }else{
+            return 'http://placehold.it/320';
+        }
+        
+    }
+
+    public function getPermalink(){
+        return url('files/uploads/packages').DIRECTORY_SEPARATOR;
+    }
+
+    public function getPath(){
+        return public_path('files/uploads/packages').DIRECTORY_SEPARATOR;
     }
 
 

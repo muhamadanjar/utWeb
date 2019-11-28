@@ -16,11 +16,15 @@ class VehicleTypeCtrl extends BackendCtrl{
      }
     public function create(Request $request){
         session(['aksi'=>'add']);
-        return view('backend.driver.type-form');
+        $t = new Type();
+        return view('backend.driver.type-form')->with(['type'=>$t]);
     }
     public function edit($id){
         session(['aksi'=>'edit']);
         $t = Type::find($id);
+        if($t == NULL){
+            return redirect()->route('backend.dashboard.index');
+        }
         return view('backend.driver.type-form')->with(['type'=>$t]);
     }
 
@@ -38,15 +42,19 @@ class VehicleTypeCtrl extends BackendCtrl{
             $t->type = $request->type;
             $t->description = $request->description;
             $t->status = $request->status;
+            $t->base_harga = $request->base_harga;
             $t->per_min = $request->per_min;
             $t->per_miles = $request->per_miles;
             $t->person_capacity = $request->person_capacity;
+            $t->com = $request->com;
+            $t->after_min_km = $request->after_min_km;
+            $t->min_km = $request->min_km;
             $t->save();
             Flash::success('Data Tipe Mobil Berhasil di simpan');
         } catch (\Exception $e) {
             Flash::error('Data Tipe mobil gagal di simpan '.$e->getMessage());
         }
-        return redirect()->route('backend.typevehicle.index');
+        return redirect()->route('backend.dashboard.index');
         
     }
     public function upload(){

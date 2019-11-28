@@ -10,8 +10,8 @@
   <title>Utama Trans</title>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <meta name="description" content="micky" />
-  <meta name="keywords" content="Micky, html template, Micky template">
+  <meta name="description" content="Utama Trans" />
+  <meta name="keywords" content="utama-trans.com">
   <meta name="author" content="Functionthemes" />
   <meta name="MobileOptimized" content="320">
   <!--srart theme style -->
@@ -34,7 +34,7 @@
             <div class="full_width header_navigation">
               <div class="col-lg-5 col-md-5 col-sm-5">
                 <div class="mk_logo">
-                  <a href="{{ url('home') }}"> <img src="images/icons/Logo.svg" alt="Utama Trans"> </a>
+                  <!--<a href="{{ url('home') }}"> <img src="images/icons/Logo.svg" alt="Utama Trans"> </a>-->
                 </div>
               </div>
               <div class="col-lg-7 col-md-7 col-sm-7">
@@ -47,9 +47,9 @@
                 <!-- navbar toggle end-->
                 <!-- navigation start -->
 				 <div class="mk_top_navigations home_navigation">
-                      <ul class="menu">
+                      <!--<ul class="menu">
 						  <li class="active_menu"> <a href="javascript:;">Home</a></li>
-						  <li> <a href="#">About</a></li>
+						  <<li> <a href="#">About</a></li>
 						  <li> <a href="#">AppRoach</a></li>
 						  <li> <a href="">work</a></li>
 						  <li> <a href="javascript:;">blog</a>
@@ -60,6 +60,8 @@
 						  </li>
 						  <li> <a href="#">contact</a></li>
 					  </ul>
+          -->
+          
                 </div>
                 <!-- navigation end -->
               </div>
@@ -75,13 +77,14 @@
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
               <div class="header_left_area pad_r">
-                <h1 class="">Being Productive Manage your Life Day to day</h1>
-                <p class="" >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <h1 class="">AKAN HADIR UTAMA TRANS: Dari Pangkalan Susu Sampai Kota Nopan</h1>
+                <p class="" >Siap Mengantar Anda Sampai Tujuan "Rent Car Antar Kota Sumatera Utara".</p>
                 <div class="show_more_section"> 
-				<a href="work.html">show more work</a> </div>
+				<a href="#">Download Aplikasinya "Coming Soon"</a> </div>
+				<br>
                 <div class="brands_icon">
-                  <a href="javascript:;"><img src="images/icons/App-store.svg" alt=""></a>
-                  <a href="javascript:;"><img src="images/icons/Google-play.svg" alt=""></a>
+                  <!--<a href="javascript:;"><img src="images/icons/App-store.svg" alt=""></a>-->
+                  <a href="javascript:;"><img src="images/icons/Google-play.svg" alt="img"></a>
                 </div>
               </div>
 			  

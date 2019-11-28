@@ -7,11 +7,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\Models\User as UserModerator;
 use File;
 use App\UserProfile;
+use App\Mobil\Models\Mobil;
+
 class User extends UserModerator
 {
     use Notifiable, HasApiTokens;
 
-    protected $hidden = ['password','api_token','remember_token'];
+    protected $hidden = ['password','remember_token'];
 
     protected function hasTooManyLoginAttempts(Request $request){
         $maxLoginAttempts = 3;
@@ -40,12 +42,12 @@ class User extends UserModerator
         
     }
 
-    public function getPermalink(){
-        return url('files/uploads/users').DIRECTORY_SEPARATOR;
+    public function getPermalink($default ='users'){
+        return url('files/uploads/'.$default).DIRECTORY_SEPARATOR;
     }
 
-    public function getPath(){
-        return public_path('files/uploads/users').DIRECTORY_SEPARATOR;
+    public function getPath($default = 'users'){
+        return public_path('files/uploads/'.$default).DIRECTORY_SEPARATOR;
     }
     
     
@@ -103,7 +105,20 @@ class User extends UserModerator
     }
 
     public function profile(){
-        return $this->hasOne(UserProfile::class,'user_id');
+        return $this->belongsTo(UserProfile::class,'id','user_id');
+    }
+    public function mobil(){
+        return $this->belongsTo(Mobil::class,'id','user_id');
+    }
+
+    public function scopeIsDriver($query){
+        return $query->join('vroles','users.id','vroles.user_id')->select('users.*')->where('vroles.name','driver');
+    }
+
+    public function scopeGetMobil($query,$val = NULL){
+        $w = array();
+        if ($val !== NULL) {$w['users.id'] = $val;}
+        return $query->join('mobil','users.id','mobil.user_id')->select('mobil.*')->where($w);
     }
     
 }

@@ -6,7 +6,6 @@
             <div class="box-tools text-right">
                 <div class="btn-group">
                     <a href="{{ route('backend.promo.create') }}" class="btn btn-sm btn-primary"><span class="fa fa-plus"></span> Tambah</a>
-                    
                 </div>
             </div>
             
@@ -21,6 +20,8 @@
                         <th>Promo</th>
                         <th>Dari</th>
                         <th>Sampai</th>
+                        <th>Deskripsi</th>
+                        <th>Gambar</th>
                     </tr>
                 </thead>
                 
@@ -30,9 +31,11 @@
                         <td></td>
                         <td>{{ $v->kode_promo}}</td>
                         <td>{{ $v->name}}</td>
-                        <td>{{ $v->tgl_mulai}}</td>
-                        <td>{{ $v->tgl_akhir}}</td>
-                        <td>{{ $v->tgl_akhir}}</td>
+                        <td>{{ date('d-m-Y', strtotime($v->tgl_mulai))}}</td>
+                        <td>{{ date('d-m-Y', strtotime($v->tgl_akhir))}}</td>
+                        <td><span title="{{$v->description}}" class="desctooltips">{{ substr($v->description,0,40)}}...</span>
+                        </td>
+                        <td><a class="fancybox" data-fancybox="fancybox" href="{{asset('files/uploads/promo/'.$v->foto)}}"><img src="{{asset('files/uploads/promo/'.$v->foto)}}" height="50px" width="50px" title="klik gambar untuk memperbesar" /></a></td>
                         <td>
                             <div class="btn-group">
                                 <button data-toggle="dropdown" class="btn btn-xs btn-icon dropdown-toggle" type="button"><i class="icon-cog4"></i><span class="caret"></span></button>
@@ -64,11 +67,12 @@
 @section('style-head')
 @parent
 <link rel="stylesheet" href="{{ url('/plugins/datatables/datatables.min.css')}}">
+<link rel="stylesheet" href="{{url('/plugins/fancybox/source/jquery.fancybox.css?v=2.1.7')}}" type="text/css" media="screen" />
 
 @endsection
 @section('script-end')
 @parent
-
+<script type="text/javascript" src="{{url('/plugins/fancybox/source/jquery.fancybox.pack.js?v=2.1.7')}}"></script>
 <script type="text/javascript" src="{{ url('/plugins/jquery-ui/js/jquery-ui.js')}}"></script>
 
 <script type="text/javascript" src="{{ url('/plugins/datatables/datatables.min.js')}}"></script>
@@ -76,5 +80,10 @@
 
 <script src="{{ asset('/js/rm.js') }}"></script>
 
-
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".fancybox").fancybox();
+        $(".desctooltips").tooltip();
+    });
+</script>
 @endsection

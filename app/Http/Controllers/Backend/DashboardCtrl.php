@@ -7,28 +7,29 @@ use Carbon\Carbon;
 use MulutBusuk\Workspaces\Repositories\Eloquent\Moderator\RepositoryInterface as ModeratorInterface;
 use MulutBusuk\Workspaces\Repositories\Eloquent\Post\RepositoryInterface as PostInterface;
 use MulutBusuk\Workspaces\Repositories\Eloquent\AuditTrail\Activity\RepositoryInterface as ActivityInterface;
-use App\Mobil\Contracts\RepositoryInterface as MobilInterface;
 use App\Trip;
 use App\Role;
+use App\Jurnal;
 use DB;
+use DataTables;
 class DashboardCtrl extends BackendCtrl{
     public $muser;
     public function __construct(
         ModeratorInterface $mi,
         PostInterface $post,
-        MobilInterface $mobil,
+        
         ActivityInterface $activity){
             parent::__construct();
         $this->muser = $mi;
         $this->post = $post;
-        $this->mobil = $mobil;
+        
         $this->activity = $activity;
         
     }
     public function getIndex(){
         session(['link_web'=>'dashboard']);
         $datastatistik = $this->activity->statistikPengunjung();
-        $totalpengunjung = $this->activity->totalpengunjung();
+        $totalpengunjung = $this->activity->totalhits();
         $totaluser = $this->muser->countUser();
         $totalpemesanan = Trip::count();
         
@@ -53,6 +54,49 @@ class DashboardCtrl extends BackendCtrl{
 
     public function getStatistikView(){
         return view('backend.dashboard.statistik');
+    }
+
+    public function getWallet(Request $request){
+        
+            if($request->isMethod('post')){
+                $jurnal = Jurnal::where('jurnal_create_user',auth()->user()->id);
+                return Datatables::of($jurnal)
+                ->editColumn('created_at', function ($user) {
+                    return date('D M, Y',strtotime($user->created_at));
+                })
+                ->addColumn('jurnal_amount', function($d) {
+                    return ($d->jurnal_type == 'D') ? $d->jurnal_credit : $d->jurnal_debet;
+                })
+                ->editColumn('jurnal_type', function($d){
+                    return ($d->jurnal_type == 'D') ? 'Debit' : 'Credit';
+                })
+                ->editColumn('jurnal_balance', function($d){
+                    return number_format($d->jurnal_balance,2,",",".");
+                })
+                ->rawColumns(['jurnal_type','jurnal_amount'])
+                ->filter(function ($query) use ($request) {
+                    if ($request->has('status')) {
+                        $query->where('trip_status', 'like', "%{$request->get('status')}%");
+                    }
+                    if ($request->has('tgl_mulai')) {
+                        $query->whereRaw("DATE_FORMAT(trip_date,'%H:%i:%s') like ?", ["%{$request->get('tgl_mulai')}%"]);
+                    }
+
+                    if ($request->has('sq')) {
+                        $query->whereRaw("DATE_FORMAT(sewa.date,'%H:%i:%s') like ?", ["%{$request->get('sq')}%"])
+                            ->orWhere('trip_address_origin', 'like', "%{$request->get('sq')}%")
+                            ->orWhere('trip_address_destination', 'like', "%{$request->get('sq')}%")
+                            ->orWhere('trip_code', 'like', "%{$request->get('sq')}%");
+                    }
+                    
+                })
+                ->make(true);
+            }
+        
+        return view('backend.dashboard.wallet');
+    }
+    public function getEarning(Request $request){
+        return view('backend.dashboard.earning');
     }
 
     

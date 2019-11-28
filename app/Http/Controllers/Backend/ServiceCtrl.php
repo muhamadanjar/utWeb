@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
-
-class ServiceCtrl extends BackendCtrl
-{
-    //
+use App\ServiceType;
+class ServiceCtrl extends BackendCtrl{
+    public function __construct(){
+        parent::__construct();
+    }
+    public function index(){
+        
+    }
 }

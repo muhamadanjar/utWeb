@@ -35,6 +35,8 @@ Route::post('user/changeonline','ApiCtrl@userChangeOnline');
 Route::post('booking','ApiCtrl@PostBooking');
 Route::post('booking_details','ApiCtrl@PostBooking');
 
+Route::post('updateTripStatus','ApiCtrl@updateTripStatus');
+
 Route::post('rider/find_rider_by_number','ApiCtrl@findRiderByNumber');
 Route::post('get_available_driver_list','ApiCtrl@get_available_driver');
 Route::post('ajax_get_user_balance','ApiCtrl@get_user_balance');
@@ -51,4 +53,10 @@ Route::get('type_car','ApiCtrl@GetTypeCar');
 Route::get('rent_package/{id?}','ApiCtrl@GetRentPackage');
 Route::get('get_promo','ApiCtrl@GetPromo');
 Route::get('get_settings','ApiCtrl@GetSettings');
+Route::get('get_servicetype','ApiCtrl@get_servicetype');
+Route::get('get_bank','ApiCtrl@get_bank');
+Route::post('post_request_saldo','ApiCtrl@post_request_saldo');
+Route::post('post_upload_bukti','ApiCtrl@post_upload_bukti');
+
+
 

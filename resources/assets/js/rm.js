@@ -420,6 +420,7 @@ function loadGoogleMaps() {
     let vectorSource =null;
     let vectorLayer = null;
     var template_transaksi = Handlebars.compile($("#details-transaksi-template").html());
+    var table_dom = $('#table_dom').DataTable();
     var table_reservation = $('#table_reservation').DataTable({
         processing: true,
         serverSide: true,
@@ -437,13 +438,13 @@ function loadGoogleMaps() {
             {data: 'trip_type'},
             {data: 'trip_bookby'},
             {data: 'trip_code'},
-            {data: 'trip_address_origin'},
+            {data: 'trip_address_origin', width: "40%"},
             {data: 'trip_date'},
             {data: 'driverName'},
             {data: 'customerName'},
             {data: 'trip_total'},
             {data: 'trip_status'},
-            {data: 'action',name:'action', orderable: false, searchable: false,width: "100px"},
+            {data: 'action',name:'action', orderable: false, searchable: false,width: "8%"},
         ]
     });
     $('#table_reservation_search_form').on('submit', function(e) {
@@ -472,6 +473,33 @@ function loadGoogleMaps() {
             initMapTransaksi();
             // $(window).bind('gMapsLoaded', initializeMap('map_canvas_'+data.id));
         }
+    });
+
+    var table_wallet = $('#table_wallet').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url:window.Laravel.serverUrl+'/backend/dashboard/wallet',
+            type:'POST',
+            data: function (d) {
+                d.q = $('input[name=q]').val();
+            }
+        },
+        columns: [
+            {data: 'jurnal_desc'},
+            {data: 'jurnal_amount'},
+            {data: 'jurnal_type'},
+            {data: 'jurnal_create_date'},
+            
+            {data: 'jurnal_type'},
+            {data: 'jurnal_balance'},
+            
+        ]
+    });
+
+    $('#table_wallet_search_form').on('submit', function(e) {
+        table_wallet.draw();
+        e.preventDefault();
     });
     function initTableSubTransaksi(tableId, data) {
         $('#' + tableId).DataTable({

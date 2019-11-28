@@ -1,7 +1,7 @@
 <?php
 namespace App\Mobil;
 
-use App\Mobil\Contracts\RepositoryInterface;
+use MulutBusuk\Workspaces\Repositories\Contracts\RepositoryInterface;
 use MulutBusuk\Workspaces\Repositories\Eloquent\EloquentRepository as baseRepository;
 use App\Mobil\Models\Mobil;
 use DB;
@@ -19,8 +19,14 @@ class Repository extends baseRepository implements RepositoryInterface
     public function __construct()
     {
         parent::__construct(new Mobil());
-        $this->parent = 'jalan/';
+        $this->parent = 'mobil/';
         $this->vname = 'lists';
+    }
+
+    public function mobilavailable(){
+        $mobil = $this->model->where('status','tersedia')->orderBy('name', 'asc')->get();
+        $new = new Mobil();
+        return $mobil;
     }
 
     

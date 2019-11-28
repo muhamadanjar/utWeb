@@ -1,4 +1,4 @@
-@extends('layouts.adminlte.main')
+@extends('template::adminlte.main')
 @section('title','Semua Pemberitahuan')
 @section('breadcrumb')
 

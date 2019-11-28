@@ -17,8 +17,7 @@ class BackendCtrl extends Controller
     public $m;
     public $user;
     public $_links;
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
             return $next($request);
@@ -27,7 +26,7 @@ class BackendCtrl extends Controller
         $this->r = new Request();
         $s = new EloquentRepository();
         $this->m = new MenuRepository();
-        $s->UpdateStatistik();
+        // $s->UpdateStatistik();
         $_uri = url()->current();
         $user = request()->user();
         

@@ -5,7 +5,7 @@
             <h3 class="box-title">Trip</h3>
             <div class="box-tools text-right">
                 <div class="btn-group">
-                    <a href="{{ route('backend.promo.create') }}" class="btn btn-sm btn-primary"><span class="fa fa-plus"></span> Tambah</a>
+                    {{-- <a href="{{ route('backend.promo.create') }}" class="btn btn-sm btn-primary"><span class="fa fa-plus"></span> Tambah</a> --}}
                     
                 </div>
             </div>
@@ -13,15 +13,15 @@
         </div>
             <!-- /.box-header -->
         <div class="box-body">
-        	<table class="display table" cellspacing="0" width="100%" id="table_reservation">
+        	<table class="display table table-bordered" cellspacing="0" width="100%" id="table_reservation">
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Trip Type</th>
                         <th>Book By</th>
                         <th>Book No</th>
-                        <th>Alamat</th>
-                        <th>Trip Date</th>
+                        <th>Alamat Awal / Tujuan</th>
+                        <th>Tanggal Pemesanan</th>
                         <th>Driver</th>
                         <th>Customer</th>
                         <th>Fare</th>   
